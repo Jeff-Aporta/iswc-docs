@@ -13,7 +13,7 @@
 
 .dl,
 .rl,
-.dl is-button,
+.dl iswc-button,
 .dl [slot="trigger"] {
   min-inline-size: 2rem;
   min-block-size: 2rem;

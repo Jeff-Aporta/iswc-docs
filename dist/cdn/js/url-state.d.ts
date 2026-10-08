@@ -20,11 +20,11 @@ export declare const PARAM_OP_TAB = "opt";
 export declare const OP_TABS: readonly ["try", "examples", "doc"];
 export type SwOpTab = (typeof OP_TABS)[number];
 export declare const OP_TAB_DEFAULT: SwOpTab;
-export interface SwUrlState {
+export type SwUrlState = {
     tab: string;
     op: string;
     opTab: SwOpTab;
-}
+};
 export declare function readUrlState(): SwUrlState;
 /**
  * Fusiona solo las claves presentes; `''` borra el campo en `?s=`.

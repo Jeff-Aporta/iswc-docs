@@ -1,5 +1,5 @@
 /**
- * <sw-doc-actions> — descarga + recarga en un `<is-button-group pill>`.
+ * <sw-doc-actions> — descarga + recarga en un `<iswc-button-group pill>`.
  *
  * Une los dos iconos de documento (export y refresh) para que se lean como
  * una sola pastilla. Emite `sw-doc-reload` igual que `<sw-doc-reload>`.
@@ -16,13 +16,13 @@ const SwDocActions = crearComponente<Props>(
     const formatos = buildExportFormats(spec, config ?? {});
 
     root.append(html`
-      <is-button-group class="grupo" pill label="Documento" aria-label="Documento">
+      <iswc-button-group class="grupo" pill label="Documento" aria-label="Documento">
         ${formatos.length
           ? html`
-              <is-dropdown
+              <iswc-dropdown
                 class="dl"
                 placement="bottom-end"
-                onis-select=${(e: Event) => {
+                oniswc-select=${(e: Event) => {
                   const item = (e as CustomEvent<{ item: HTMLElement }>).detail?.item;
                   const id = item?.getAttribute('value');
                   const formato = formatos.find((f) => f.id === id);
@@ -41,37 +41,37 @@ const SwDocActions = crearComponente<Props>(
                   })();
                 }}
               >
-                <is-button
+                <iswc-button
                   slot="trigger"
                   variant="outlined"
                   color="neutral"
                   aria-label="Descargar documento"
                   title="Descargar documento"
                 >
-                  <is-icon icon="mdi:download-outline"></is-icon>
-                </is-button>
+                  <iswc-icon icon="mdi:download-outline"></iswc-icon>
+                </iswc-button>
                 ${formatos.map(
                   (f) => html`
-                    <is-dropdown-item value="${f.id}">
-                      <is-icon slot="icon" icon="${f.icon}"></is-icon>
+                    <iswc-dropdown-item value="${f.id}">
+                      <iswc-icon slot="icon" icon="${f.icon}"></iswc-icon>
                       ${f.label}
-                    </is-dropdown-item>
+                    </iswc-dropdown-item>
                   `,
                 )}
-              </is-dropdown>
+              </iswc-dropdown>
             `
           : null}
-        <is-button
+        <iswc-button
           class="rl"
           variant="outlined"
           color="neutral"
           aria-label="Actualizar documentación"
           title="Actualizar desde el servidor (ignora cache local de 24 h)"
-          onis-click=${() => emitir(host, 'sw-doc-reload', null)}
+          oniswc-click=${() => emitir(host, 'sw-doc-reload', null)}
         >
-          <is-icon icon="mdi:refresh"></is-icon>
-        </is-button>
-      </is-button-group>
+          <iswc-icon icon="mdi:refresh"></iswc-icon>
+        </iswc-button>
+      </iswc-button-group>
     `);
   },
   { spec: null, config: {} },

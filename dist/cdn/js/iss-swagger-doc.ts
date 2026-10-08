@@ -6,81 +6,25 @@
 export const ISS_SWAGGER_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'query', 'options', 'head'] as const;
 export type IssSwaggerMethod = (typeof ISS_SWAGGER_METHODS)[number];
 
-export interface IssSwaggerInfo {
-  title: string;
-  description?: string;
-  version?: string;
-}
+export type IssSwaggerInfo = { title: string; description?: string; version?: string; };
 
-export interface IssSwaggerOp {
-  summary?: string;
-  description?: string;
-  tags?: string[];
-  subgroup?: string;
-  doc?: string;
-  security?: string;
-  [k: string]: unknown;
-}
+export type IssSwaggerOp = { summary?: string; description?: string; tags?: string[]; subgroup?: string; doc?: string; security?: string; [k: string]: unknown; };
 
-export interface IssSwaggerMetaFile {
-  kind: 'meta';
-  version: number;
-  info: IssSwaggerInfo;
-  viewer?: Record<string, unknown>;
-  [k: string]: unknown;
-}
+export type IssSwaggerMetaFile = { kind: 'meta'; version: number; info: IssSwaggerInfo; viewer?: Record<string, unknown>; [k: string]: unknown; };
 
-export interface IssSwaggerPathsFile {
-  kind: 'paths';
-  version: number;
-  paths: Record<string, Partial<Record<IssSwaggerMethod, IssSwaggerOp>>>;
-}
+export type IssSwaggerPathsFile = { kind: 'paths'; version: number; paths: Record<string, Partial<Record<IssSwaggerMethod, IssSwaggerOp>>>; };
 
-export interface IssSwaggerCatalog {
-  schemas?: Record<string, Record<string, unknown>>;
-  payloads?: Record<string, unknown>;
-  requestBodies?: Record<string, unknown>;
-  docs?: Record<string, string>;
-  lookups?: Record<string, unknown>;
-  listFilters?: Record<string, unknown>;
-  inputRecommendations?: Record<string, unknown>;
-  bodyPresets?: Record<string, unknown>;
-  requestBodyExamples?: Record<string, unknown>;
-  tryitConfirm?: Record<string, unknown>;
-  tryitAttachments?: { templates?: Record<string, unknown> };
-}
+export type IssSwaggerCatalog = { schemas?: Record<string, Record<string, unknown>>; payloads?: Record<string, unknown>; requestBodies?: Record<string, unknown>; docs?: Record<string, string>; lookups?: Record<string, unknown>; listFilters?: Record<string, unknown>; inputRecommendations?: Record<string, unknown>; bodyPresets?: Record<string, unknown>; requestBodyExamples?: Record<string, unknown>; tryitConfirm?: Record<string, unknown>; tryitAttachments?: { templates?: Record<string, unknown> }; };
 
 /** Fichero en disco `swagger__config.json`: catálogo, sin paths. */
-export interface IssSwaggerCatalogFile {
-  kind: 'config';
-  version: number;
-  catalog: IssSwaggerCatalog;
-  paths?: never;
-}
+export type IssSwaggerCatalogFile = { kind: 'config'; version: number; catalog: IssSwaggerCatalog; paths?: never; };
 
 /** Documento unido que el visor descarga (handler, no operación del índice). */
-export interface InsoftConfig {
-  kind: string;
-  version: number;
-  info?: IssSwaggerInfo;
-  viewer?: Record<string, unknown>;
-  protocol?: { serverUrl?: string };
-  tags?: Array<Record<string, unknown>>;
-  paths?: Record<string, Record<string, unknown>>;
-  docs?: Record<string, string>;
-  catalog?: IssSwaggerCatalog;
-}
+export type InsoftConfig = { kind: string; version: number; info?: IssSwaggerInfo; viewer?: Record<string, unknown>; protocol?: { serverUrl?: string }; tags?: Array<Record<string, unknown>>; paths?: Record<string, Record<string, unknown>>; docs?: Record<string, string>; catalog?: IssSwaggerCatalog; };
 
 export type InsoftCatalog = IssSwaggerCatalog;
 
-export interface IssSwaggerGeneralFile {
-  kind: 'general';
-  version: number;
-  titulo?: string;
-  resumen?: string;
-  secciones?: unknown[];
-  [k: string]: unknown;
-}
+export type IssSwaggerGeneralFile = { kind: 'general'; version: number; titulo?: string; resumen?: string; secciones?: unknown[]; [k: string]: unknown; };
 
 const METODOS = new Set<string>(ISS_SWAGGER_METHODS);
 

@@ -18,7 +18,7 @@ import { paramEnum, paramInputMode, paramTypeLabel, sanitizeParamInputValue } fr
 
 type Props = { params: SwParam[]; values: Record<string, string>; disabled: boolean; titulo: string; };
 
-/** `is-select` cuando el schema declara `enum`; `is-input` en cualquier otro caso. */
+/** `iswc-select` cuando el schema declara `enum`; `iswc-input` en cualquier otro caso. */
 function campo(p: SwParam, valor: string, disabled: boolean, onChange: (v: string) => void): Node {
   const nombre = String(p.name ?? '');
   const tipo = paramTypeLabel(p.schema);
@@ -27,7 +27,7 @@ function campo(p: SwParam, valor: string, disabled: boolean, onChange: (v: strin
 
   if (opciones.length) {
     return html`
-      <is-select
+      <iswc-select
         class="campo"
         full-width
         label="${nombre}"
@@ -35,16 +35,16 @@ function campo(p: SwParam, valor: string, disabled: boolean, onChange: (v: strin
         value="${valor}"
         ${disabled ? 'disabled' : ''}
         ${p.required ? 'required' : ''}
-        onis-change=${(e: Event) => onChange(String((e.target as HTMLInputElement).value ?? ''))}
+        oniswc-change=${(e: Event) => onChange(String((e.target as HTMLInputElement).value ?? ''))}
       >
-        ${opciones.map((o) => html`<is-option value="${o}">${o}</is-option>`)}
-      </is-select>
+        ${opciones.map((o) => html`<iswc-option value="${o}">${o}</iswc-option>`)}
+      </iswc-select>
     `;
   }
 
   const placeholder = p.example != null ? String(p.example) : nombre;
   return html`
-    <is-input
+    <iswc-input
       class="campo"
       full-width
       clearable
@@ -55,7 +55,7 @@ function campo(p: SwParam, valor: string, disabled: boolean, onChange: (v: strin
       value="${valor}"
       ${disabled ? 'disabled' : ''}
       ${p.required ? 'required' : ''}
-      onis-input=${(e: Event) => {
+      oniswc-input=${(e: Event) => {
         const input = e.target as HTMLInputElement;
         const limpio = sanitizeParamInputValue(p.schema, input.value);
         // El saneado se refleja de vuelta: si no, el campo enseña un carácter
@@ -63,7 +63,7 @@ function campo(p: SwParam, valor: string, disabled: boolean, onChange: (v: strin
         if (limpio !== input.value) input.value = limpio;
         onChange(limpio);
       }}
-    ></is-input>
+    ></iswc-input>
   `;
 }
 

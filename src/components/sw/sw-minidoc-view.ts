@@ -6,7 +6,7 @@
  * parámetros agrupados por sitio (path, query, header, cookie) y cuerpo. Nada está plegado,
  * porque el driver ya filtró a una sola operación y esconder la mitad no ahorra nada.
  *
- * «Probar» abre `sw-try` en un panel anclado al botón (is-dropdown), no en un modal
+ * «Probar» abre `sw-try` en un panel anclado al botón (iswc-dropdown), no en un modal
  * centrado: queda pegado al trigger y no compite con la lectura del manual.
  */
 
@@ -143,13 +143,13 @@ class SwMinidocView extends HTMLElement {
       <div class="endpoint">
         ${metodo}
         ${ruta}
-        <is-dropdown class="probar-pop" placement="bottom-end" distance="6">
-          <is-button slot="trigger" class="probar" variant="solid" color="success">
+        <iswc-dropdown class="probar-pop" placement="bottom-end" distance="6">
+          <iswc-button slot="trigger" class="probar" variant="solid" color="success">
             Probar
-            <is-icon slot="end" icon="mdi:play"></is-icon>
-          </is-button>
+            <iswc-icon slot="end" icon="mdi:play"></iswc-icon>
+          </iswc-button>
           ${probar}
-        </is-dropdown>
+        </iswc-dropdown>
       </div>
 
       ${requiereBearer

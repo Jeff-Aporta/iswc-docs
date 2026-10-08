@@ -1,7 +1,7 @@
 /**
  * postman-md.ts — convierte el markdown InSoft (`x-iss-doc-md`) a algo que
  * Postman pueda pintar: diagramas `is-*` → `<img src="data:image/png;base64,…">`
- * con fondo transparente, y `<is-code>` → fences ```lang.
+ * con fondo transparente, y `<iswc-code>` → fences ```lang.
  *
  * La rasterización de diagramas solo corre en el navegador (necesita el kit
  * cargado y un SVG real). Fuera de DOM, los bloques de diagrama se omiten con
@@ -12,23 +12,23 @@ const EXT_DOC_MD = 'x-iss-doc-md';
 
 /** Tags de diagrama del kit que el export sabe rasterizar. */
 export const POSTMAN_DIAGRAM_TAGS = [
-  'is-flowchart',
-  'is-sequence-diagram',
-  'is-state-diagram',
-  'is-block-diagram',
-  'is-swimlane-diagram',
-  'is-component-diagram',
-  'is-class-diagram',
-  'is-er-diagram',
-  'is-mindmap',
-  'is-gantt',
-  'is-timeline',
-  'is-org-chart',
-  'is-journey-map',
-  'is-sankey-diagram',
-  'is-venn-diagram',
-  'is-use-case-diagram',
-  'is-quadrant-chart',
+  'iswc-flowchart',
+  'iswc-sequence-diagram',
+  'iswc-state-diagram',
+  'iswc-block-diagram',
+  'iswc-swimlane-diagram',
+  'iswc-component-diagram',
+  'iswc-class-diagram',
+  'iswc-er-diagram',
+  'iswc-mindmap',
+  'iswc-gantt',
+  'iswc-timeline',
+  'iswc-org-chart',
+  'iswc-journey-map',
+  'iswc-sankey-diagram',
+  'iswc-venn-diagram',
+  'iswc-use-case-diagram',
+  'iswc-quadrant-chart',
 ] as const;
 
 const DIAGRAM_BLOCK_RE = new RegExp(
@@ -36,7 +36,7 @@ const DIAGRAM_BLOCK_RE = new RegExp(
   'gi',
 );
 
-const IS_CODE_RE = /<is-code\b([^>]*)>([\s\S]*?)<\/is-code>/gi;
+const IS_CODE_RE = /<iswc-code\b([^>]*)>([\s\S]*?)<\/iswc-code>/gi;
 
 function decodeHtmlEntities(s: string): string {
   return String(s ?? '')
@@ -55,7 +55,7 @@ function attrOf(attrs: string, name: string): string | null {
   return m ? (m[1] ?? m[2] ?? '') : null;
 }
 
-/** `<is-code lang="http" value="…">` / hijos → fence markdown. */
+/** `<iswc-code lang="http" value="…">` / hijos → fence markdown. */
 export function convertIsCodeToFences(md: string): string {
   return String(md ?? '').replace(IS_CODE_RE, (_full, attrs: string, body: string) => {
     const lang = attrOf(attrs, 'lang') || '';
@@ -195,7 +195,7 @@ export async function convertDiagramsToPngImgs(md: string): Promise<string> {
   return out;
 }
 
-/** Pipeline completo: diagramas → PNG, `is-code` → fences. */
+/** Pipeline completo: diagramas → PNG, `iswc-code` → fences. */
 export async function issDocMdForPostman(md: string): Promise<string> {
   const withImgs = await convertDiagramsToPngImgs(md);
   return convertIsCodeToFences(withImgs).trim();

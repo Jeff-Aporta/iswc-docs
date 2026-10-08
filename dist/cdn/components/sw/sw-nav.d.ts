@@ -10,7 +10,7 @@
 import './sw-auth.js';
 import './sw-driver-switch.js';
 import './sw-doc-actions.js';
-interface Props {
+type Props = {
     brand: SwBrand;
     tabs: SwNavTab[];
     activeTab: string;
@@ -20,7 +20,7 @@ interface Props {
     authEnabled: boolean;
     auth: SwAuthConfig;
     session: SwSesion | null;
-}
+};
 declare class SwNav extends HTMLElement {
     #private;
     constructor();

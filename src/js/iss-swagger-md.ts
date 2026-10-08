@@ -1,11 +1,11 @@
 /**
  * JSON IS-Swagger → Markdown para agentes (GET /LLM.md).
- * Sin DOM. El HTML humano es `buildIssSwaggerLlmViewHtml` + `<is-md-render>`.
+ * Sin DOM. El HTML humano es `buildIssSwaggerLlmViewHtml` + `<iswc-md-render>`.
  */
 import { convertIsCodeToFences } from './postman-md.js';
 import { ISS_SWAGGER_METHODS, type IssSwaggerMethod } from './iss-swagger-doc.js';
 
-const FLOW_RE = /<(?:is-flowchart|is-sequence-diagram|is-er-diagram)\b[\s\S]*?<\/(?:is-flowchart|is-sequence-diagram|is-er-diagram)>/gi;
+const FLOW_RE = /<(?:iswc-flowchart|iswc-sequence-diagram|iswc-er-diagram)\b[\s\S]*?<\/(?:iswc-flowchart|iswc-sequence-diagram|iswc-er-diagram)>/gi;
 const TAG_RE = /<\/?[a-z][\s\S]*?>/gi;
 
 function obj(x: unknown): x is Record<string, unknown> {
@@ -20,7 +20,7 @@ function slug(s: string): string {
   return s.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
-/** Prosa para el modelo: sin web components, fences de is-code. */
+/** Prosa para el modelo: sin web components, fences de iswc-code. */
 export function issDocToLlmMarkdown(md: string): string {
   let out = convertIsCodeToFences(String(md ?? ''));
   out = out.replace(FLOW_RE, '\n\n_(Diagrama: ver el visor HTML `/is-swagger`.)_\n\n');
@@ -169,7 +169,7 @@ export type IssSwaggerLlmViewOpts = {
   palette?: string;
 };
 
-/** Página HTML: `<is-md-render>` pinta el GET /LLM.md. */
+/** Página HTML: `<iswc-md-render>` pinta el GET /LLM.md. */
 export function buildIssSwaggerLlmViewHtml(opts: IssSwaggerLlmViewOpts): string {
   const title = esc(opts.title || 'API · LLM.md');
   const href = esc(opts.llmMdHref || 'LLM.md');
@@ -200,14 +200,14 @@ export function buildIssSwaggerLlmViewHtml(opts: IssSwaggerLlmViewOpts): string 
     <h1>${title}</h1>
     <a href="${href}">LLM.md</a>
   </header>
-  <is-callout tone="info">Esto es lo que leen los agentes en <code>${href}</code>. El visor interactivo es <a href="is-swagger">/is-swagger</a>.</is-callout>
-  <is-md-render readonly placeholder="Cargando…"></is-md-render>
+  <iswc-callout tone="info">Esto es lo que leen los agentes en <code>${href}</code>. El visor interactivo es <a href="is-swagger">/is-swagger</a>.</iswc-callout>
+  <iswc-md-render readonly placeholder="Cargando…"></iswc-md-render>
 </main>
 <script type="module">
 import { ISWebComponentsLoader as L } from '${esc(kit)}/loader.min.js';
 ${pinLine}
-await L.load('is-md-render','is-callout','is-icon');
-const el = document.querySelector('is-md-render');
+await L.load('iswc-md-render','iswc-callout','iswc-icon');
+const el = document.querySelector('iswc-md-render');
 const r = await fetch('${href}', { headers: { accept: 'text/markdown, text/plain;q=0.9' } });
 el.value = r.ok ? await r.text() : '# Error\\nNo se pudo cargar ' + '${href}' + ' (' + r.status + ').';
 </script>

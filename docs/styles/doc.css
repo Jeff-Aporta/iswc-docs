@@ -292,10 +292,10 @@ tbody th[scope="row"] {
   min-width: 0;
 }
 
-.diagrama > is-flowchart,
-.diagrama > is-block-diagram,
-.diagrama > is-sequence-diagram,
-.diagrama > is-timeline {
+.diagrama > iswc-flowchart,
+.diagrama > iswc-block-diagram,
+.diagrama > iswc-sequence-diagram,
+.diagrama > iswc-timeline {
   max-width: 100%;
   border: 1px solid var(--is-border-soft, #1f242b);
   border-radius: 0.75rem;

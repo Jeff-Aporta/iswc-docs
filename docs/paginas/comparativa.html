@@ -6,9 +6,9 @@
   <title>Frente a Postman · IS-Swagger</title>
   <meta name="description" content="IS-Swagger comparado con Postman y con Swagger UI: qué gana, qué pierde y cuándo no usarlo.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
 <body>
@@ -36,7 +36,7 @@
         es distinto en cada caso: tú, tu pipeline, o el propio servidor.
       </p>
       <div class="diagrama">
-        <is-block-diagram open-on-click>
+        <iswc-block-diagram open-on-click>
           <script type="application/json">
             {
               "blockDiagram": {
@@ -69,7 +69,7 @@
               }
             }
           </script>
-        </is-block-diagram>
+        </iswc-block-diagram>
         <p class="diagrama__pie">
           Postman y Swagger UI producen una copia. IS-Swagger no produce ninguna,
           y por eso no tiene nada que sincronizar.
@@ -171,7 +171,7 @@
       <h2>Lo que IS-Swagger hace mejor</h2>
       <div class="rejilla">
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:link-variant"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:link-variant"></iswc-icon>
           <h3 class="tarjeta__titulo">Onboarding de un enlace</h3>
           <p>
             Mandas una URL y el otro ya está viendo tu API. Sin cuenta, sin
@@ -179,7 +179,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:sync"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:sync"></iswc-icon>
           <h3 class="tarjeta__titulo">Imposible que mienta</h3>
           <p>
             No hay copia del catálogo. Lo que ves es lo que el servidor dijo
@@ -187,7 +187,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:form-select"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:form-select"></iswc-icon>
           <h3 class="tarjeta__titulo">Campos que saben sus valores</h3>
           <p>
             Un parámetro con catálogo se pinta como selector con las opciones
@@ -195,7 +195,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:share-variant-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:share-variant-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">«Mira este endpoint»</h3>
           <p>
             El estado entero está en la URL. Pegas el enlace y el otro abre
@@ -203,7 +203,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:feather"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:feather"></iswc-icon>
           <h3 class="tarjeta__titulo">Peso de una página</h3>
           <p>
             Web components y módulos ES. Sin framework, sin transpilador en
@@ -211,7 +211,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:palette-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:palette-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Con la marca puesta</h3>
           <p>
             Tema y paleta del kit <code>is-*</code>: parece parte del producto,
@@ -261,12 +261,12 @@
       </p>
       <div class="rejilla">
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-export">
-          <is-icon class="tarjeta__icono" icon="mdi:download-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:download-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Ver las descargas</h3>
           <p>El componente de exportación, con las tres salidas funcionando.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-app">
-          <is-icon class="tarjeta__icono" icon="mdi:application-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:application-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Probar el visor</h3>
           <p>Con una API de muestra que responde de verdad.</p>
         </button>

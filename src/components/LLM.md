@@ -154,8 +154,8 @@ números. El kit ya los trae y entran con `all.min.js`.
 - Pintar UI genérica a mano existiendo el tag del kit.
 - Lógica de negocio dentro de un componente.
 - Que un hijo escriba la URL o el estado global.
-- Asumir que `<is-button type="submit">` envía el form: el `<button>` real está
-  en Shadow DOM. `sw-auth` escucha `is-click` y llama `requestSubmit()`.
+- Asumir que `<iswc-button type="submit">` envía el form: el `<button>` real está
+  en Shadow DOM. `sw-auth` escucha `iswc-click` y llama `requestSubmit()`.
 
 ## Errores conocidos y prevención
 
@@ -172,7 +172,7 @@ números. El kit ya los trae y entran con `all.min.js`.
 5. **Valores de enum inventados en un `is-*`** — `variant="ghost"` donde no
    existe no da error, no avisa y no se ve: se pinta con los valores por
    defecto. Verificar el enum en el `.md` del módulo.
-6. **`is-button type="submit"`** — ver arriba. Error conocido del kit.
+6. **`iswc-button type="submit"`** — ver arriba. Error conocido del kit.
 
 El patrón de fallo de este stack es siempre el mismo: **el artefacto se genera
 bien y el contenido está mal**. Build verde, navegador contento, y el CSS no

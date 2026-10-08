@@ -28,33 +28,33 @@ const SwServer = crearComponente<Props>(
     root.append(html`
       <div class="barra">
         <label class="etiqueta" for="server">Servidor</label>
-        <is-input
+        <iswc-input
           id="server"
           class="campo"
           full-width
           spellcheck="false"
           placeholder="https://host/api"
           value="${actual}"
-          onis-change=${(e: Event) => cambiar(String((e.target as HTMLInputElement).value ?? ''))}
-        ></is-input>
+          oniswc-change=${(e: Event) => cambiar(String((e.target as HTMLInputElement).value ?? ''))}
+        ></iswc-input>
         ${opciones.length > 1
           ? html`
-              <is-dropdown
+              <iswc-dropdown
                 class="atajos"
-                onis-select=${(e: Event) => {
+                oniswc-select=${(e: Event) => {
                   const item = (e as CustomEvent<{ item: HTMLElement }>).detail?.item;
                   if (item) cambiar(item.getAttribute('value') ?? '');
                 }}
               >
-                <is-button slot="trigger" variant="outlined" color="neutral" with-caret>Conocidos</is-button>
+                <iswc-button slot="trigger" variant="outlined" color="neutral" with-caret>Conocidos</iswc-button>
                 ${opciones.map(
                   (o) => html`
-                    <is-dropdown-item type="checkbox" value="${o}" ${o === actual ? 'checked' : ''}>
+                    <iswc-dropdown-item type="checkbox" value="${o}" ${o === actual ? 'checked' : ''}>
                       ${o}
-                    </is-dropdown-item>
+                    </iswc-dropdown-item>
                   `,
                 )}
-              </is-dropdown>
+              </iswc-dropdown>
             `
           : null}
       </div>

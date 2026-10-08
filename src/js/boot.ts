@@ -45,7 +45,7 @@
   raiz.dataset.theme = tema;
   raiz.dataset.palette = paleta;
 
-  // <is-theme-toggle> escribe sobre <html>; se persiste para la próxima visita.
+  // <iswc-theme-toggle> escribe sobre <html>; se persiste para la próxima visita.
   new MutationObserver(function () {
     try {
       localStorage.setItem('is-theme', raiz.dataset.theme || 'dark');

@@ -154,20 +154,20 @@ class SwTry extends HTMLElement {
         </p>
         <code class="sw-confirmar-url">${this.#url()}</code>
         <div slot="footer" class="sw-confirmar-acciones">
-          <is-button variant="plain" color="neutral" onis-click=${(e: Event) => {
-            const dlg = (e.currentTarget as HTMLElement).closest('is-dialog');
+          <iswc-button variant="plain" color="neutral" oniswc-click=${(e: Event) => {
+            const dlg = (e.currentTarget as HTMLElement).closest('iswc-dialog');
             dlg?.remove();
-          }}>Cancelar</is-button>
-          <is-button
+          }}>Cancelar</iswc-button>
+          <iswc-button
             color="danger"
-            onis-click=${(e: Event) => {
-              const dlg = (e.currentTarget as HTMLElement).closest('is-dialog');
+            oniswc-click=${(e: Event) => {
+              const dlg = (e.currentTarget as HTMLElement).closest('iswc-dialog');
               dlg?.remove();
               void this.#ejecutar();
             }}
           >
             Ejecutar de todos modos
-          </is-button>
+          </iswc-button>
         </div>
       `,
     });
@@ -266,9 +266,9 @@ class SwTry extends HTMLElement {
     if (!this.#aviso) return;
     const color = this.#resultado?.ok ? 'warning' : 'danger';
     zona.append(html`
-      <is-callout color="${color}" variant="filled-outlined" icon="mdi:alert-outline">
+      <iswc-callout color="${color}" variant="filled-outlined" icon="mdi:alert-outline">
         <pre class="aviso-texto">${this.#aviso}</pre>
-      </is-callout>
+      </iswc-callout>
     `);
   }
 
@@ -286,12 +286,12 @@ class SwTry extends HTMLElement {
     zona.append(html`
       <div class="resultado">
         <div class="resultado-meta">
-          <is-tag color="${r.ok ? 'success' : 'danger'}" variant="filled" class="resultado-status">
+          <iswc-tag color="${r.ok ? 'success' : 'danger'}" variant="filled" class="resultado-status">
             ${r.status} ${r.statusText}
-          </is-tag>
+          </iswc-tag>
           <span class="resultado-dato">${r.elapsed} ms</span>
           <span class="resultado-dato">
-            <is-format-bytes value="${new Blob([r.body]).size}"></is-format-bytes>
+            <iswc-format-bytes value="${new Blob([r.body]).size}"></iswc-format-bytes>
           </span>
         </div>
         ${json}
@@ -344,7 +344,7 @@ class SwTry extends HTMLElement {
       this.#bodyError = detail.error;
       // Un ejemplo aplicado desde los botones cambia el texto: hay que
       // reflejarlo en el textarea, que en ese caso no fue quien lo originó.
-      const ta = (cuerpo.shadowRoot?.querySelector('is-textarea') ?? null) as (HTMLElement & { value: string }) | null;
+      const ta = (cuerpo.shadowRoot?.querySelector('iswc-textarea') ?? null) as (HTMLElement & { value: string }) | null;
       if (ta && ta.value !== detail.value) ta.value = detail.value;
     });
 
@@ -353,13 +353,13 @@ class SwTry extends HTMLElement {
       ? html`
           <section class="adjuntos">
             <h4 class="adjuntos-titulo">Archivos adjuntos</h4>
-            <is-file-input
+            <iswc-file-input
               class="adjuntos-input"
               multiple
               label="Adjuntar archivos"
               hint="Cualquier tipo. Van con la petición."
               ${this.#ocupado ? 'disabled' : ''}
-            ></is-file-input>
+            ></iswc-file-input>
           </section>
         `
       : null;
@@ -373,7 +373,7 @@ class SwTry extends HTMLElement {
         <div class="preview">
           <span class="preview-metodo">${op.method.toUpperCase()}</span>
           <code class="preview-url"></code>
-          <is-copy-button class="preview-copiar" copy-label="Copiar URL"></is-copy-button>
+          <iswc-copy-button class="preview-copiar" copy-label="Copiar URL"></iswc-copy-button>
         </div>
 
         ${camposPath}
@@ -382,19 +382,19 @@ class SwTry extends HTMLElement {
         ${zonaAdjuntos}
 
         <div class="acciones">
-          <is-button
+          <iswc-button
             class="ejecutar"
             color="${peligroso ? 'danger' : 'brand'}"
             ${bloqueaCuerpo ? 'disabled' : ''}
-            onis-click=${() => this.#pedirEjecucion()}
+            oniswc-click=${() => this.#pedirEjecucion()}
           >
-            <is-icon slot="start" icon="mdi:play-circle-outline"></is-icon>
+            <iswc-icon slot="start" icon="mdi:play-circle-outline"></iswc-icon>
             Ejecutar
-          </is-button>
+          </iswc-button>
           ${requiereJwt
             ? html`
                 <span class="candado" title="Requiere Authorization: Bearer &lt;JWT&gt;">
-                  <is-icon icon="mdi:lock-outline"></is-icon>
+                  <iswc-icon icon="mdi:lock-outline"></iswc-icon>
                   Requiere sesión
                 </span>
               `
@@ -415,7 +415,7 @@ class SwTry extends HTMLElement {
     const picker = this.#root.querySelector('.adjuntos-input') as (HTMLElement & { files: File[] }) | null;
     if (picker) {
       if (this.#archivos.length) picker.files = this.#archivos;
-      picker.addEventListener('is-change', () => {
+      picker.addEventListener('iswc-change', () => {
         this.#archivos = picker.files ?? [];
       });
     }

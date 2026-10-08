@@ -82,37 +82,37 @@ class SwNav extends HTMLElement {
           title="Ir al inicio"
           onclick=${() => emitir(this, 'sw-reset', null)}
         >
-          ${brand?.icon ? html`<is-icon class="marca-icono" icon="${brand.icon}"></is-icon>` : null}
+          ${brand?.icon ? html`<iswc-icon class="marca-icono" icon="${brand.icon}"></iswc-icon>` : null}
           <div class="marca-texto">
             <span class="marca-titulo">${brand?.title ?? spec?.info?.title ?? 'API'}</span>
             ${brand?.subtitle ? html`<span class="marca-sub">${brand.subtitle}</span>` : null}
           </div>
         </button>
 
-        <is-input
+        <iswc-input
           class="busqueda"
           type="search"
           clearable
           placeholder="Buscar ruta, resumen u operationId…"
           aria-label="Buscar operaciones"
           value="${query}"
-          onis-input=${(e: Event) => emitir(this, 'sw-search', { query: String((e.target as HTMLInputElement).value ?? '') })}
+          oniswc-input=${(e: Event) => emitir(this, 'sw-search', { query: String((e.target as HTMLInputElement).value ?? '') })}
         >
-          <is-icon slot="start" icon="mdi:magnify"></is-icon>
-        </is-input>
+          <iswc-icon slot="start" icon="mdi:magnify"></iswc-icon>
+        </iswc-input>
 
         <div class="acciones">
           ${docAcciones}
           ${autenticacion}
           <sw-driver-switch></sw-driver-switch>
-          <is-theme-toggle></is-theme-toggle>
+          <iswc-theme-toggle></iswc-theme-toggle>
         </div>
       </header>
 
       ${query.trim()
         ? html`
             <div class="busqueda-titulo" role="status" aria-live="polite">
-              <is-icon icon="mdi:magnify"></is-icon>
+              <iswc-icon icon="mdi:magnify"></iswc-icon>
               <span>Resultados para <code class="busqueda-titulo__q">${esc(query)}</code></span>
               <button
                 type="button"
@@ -120,7 +120,7 @@ class SwNav extends HTMLElement {
                 aria-label="Limpiar búsqueda"
                 onclick=${() => emitir(this, 'sw-search', { query: '' })}
               >
-                <is-icon icon="mdi:close"></is-icon>
+                <iswc-icon icon="mdi:close"></iswc-icon>
                 Limpiar
               </button>
             </div>
@@ -138,7 +138,7 @@ class SwNav extends HTMLElement {
                       aria-selected="${t.id === activeTab ? 'true' : 'false'}"
                       onclick=${() => emitir(this, 'sw-nav-tab', { tab: t.id })}
                     >
-                      ${t.icon ? html`<is-icon icon="${t.icon}"></is-icon>` : null}
+                      ${t.icon ? html`<iswc-icon icon="${t.icon}"></iswc-icon>` : null}
                       ${t.label}
                     </button>
                   `,

@@ -1,4 +1,4 @@
-import{crearComponente as b,define as $,html as o,emitir as v}from"./_shared.js";import{resolveTryItBodyExamples as f,validateBodyJson as n,formatBodyExample as h}from"../../js/tryit-body.js";const c=b(import.meta.url,(d,{op:r,value:u,disabled:t},p)=>{if(!r)return;const l=String(u??""),s=n(l),a=f(r),m=r.requestBody?.required===!0,i=e=>v(p,"sw-body-change",{value:e,error:n(e)});d.append(o`
+import{crearComponente as b,define as $,html as o,emitir as v}from"./_shared.js";import{resolveTryItBodyExamples as y,validateBodyJson as n,formatBodyExample as h}from"../../js/tryit-body.js";const c=b(import.meta.url,(d,{op:r,value:u,disabled:t},p)=>{if(!r)return;const l=String(u??""),s=n(l),a=y(r),m=r.requestBody?.required===!0,i=e=>v(p,"sw-body-change",{value:e,error:n(e)});d.append(o`
       <section class="bloque">
         <header class="cabecera">
           <h4 class="titulo">

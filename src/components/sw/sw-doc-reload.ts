@@ -11,16 +11,16 @@ const SwDocReload = crearComponente<Record<string, never>>(
   import.meta.url,
   (root, _props, host) => {
     root.append(html`
-      <is-button
+      <iswc-button
         class="btn"
         variant="plain"
         color="neutral"
         aria-label="Actualizar documentación"
         title="Actualizar desde el servidor (ignora cache local de 24 h)"
-        onis-click=${() => emitir(host, 'sw-doc-reload', null)}
+        oniswc-click=${() => emitir(host, 'sw-doc-reload', null)}
       >
-        <is-icon icon="mdi:refresh"></is-icon>
-      </is-button>
+        <iswc-icon icon="mdi:refresh"></iswc-icon>
+      </iswc-button>
     `);
   },
   {},

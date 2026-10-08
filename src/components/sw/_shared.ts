@@ -221,7 +221,7 @@ const esCrudo = (v: unknown): v is SwHtmlCrudo => typeof v === 'object' && v !==
  *
  *   root.append(html`
  *     <h2 class="titulo">${titulo}</h2>
- *     <is-button onis-click=${() => ejecutar()}>Ejecutar</is-button>
+ *     <iswc-button oniswc-click=${() => ejecutar()}>Ejecutar</iswc-button>
  *   `);
  *
  * Reglas de interpolación:
@@ -247,8 +247,8 @@ export const html = (strings: TemplateStringsArray, ...values: unknown[]): Docum
     if (v == null || v === false || v === true) continue;
 
     // Manejador de evento: la plantilla trae `onclick=` justo antes del valor.
-    // Se admite guion (`onis-change=`) porque los `is-*` emiten eventos propios
-    // (`is-input`, `is-change`, `is-click`), no los nativos.
+    // Se admite guion (`oniswc-change=`) porque los `is-*` emiten eventos propios
+    // (`iswc-input`, `iswc-change`, `iswc-click`), no los nativos.
     const enAtributoEvento = typeof v === 'function' && /\s+on([a-zA-Z][\w-]*)=\s*$/.test(acc);
     if (enAtributoEvento) {
       const m = acc.match(/\s+on([a-zA-Z][\w-]*)=\s*$/)!;
@@ -362,7 +362,7 @@ export const emitir = (host: HTMLElement, nombre: string, detail?: unknown): voi
 
 /** Notificación con el toaster del kit; si no está montado, no hace nada. */
 export function avisar(mensaje: string, color: 'brand' | 'success' | 'warning' | 'danger' = 'brand'): void {
-  const host = document.querySelector('is-toast') as
+  const host = document.querySelector('iswc-toast') as
     | (HTMLElement & { create(msg: string, opts?: Record<string, unknown>): Promise<unknown> })
     | null;
   void host?.create(mensaje, { color });
@@ -370,8 +370,8 @@ export function avisar(mensaje: string, color: 'brand' | 'success' | 'warning' |
 
 /*
  * Aquí NO va formato de fechas, bytes ni números: el kit ya trae
- * `<is-format-date>`, `<is-format-bytes>`, `<is-format-number>` y
- * `<is-relative-time>`, y todos entran con `all.min.js`. Este archivo llegó a
+ * `<iswc-format-date>`, `<iswc-format-bytes>`, `<iswc-format-number>` y
+ * `<iswc-relative-time>`, y todos entran con `all.min.js`. Este archivo llegó a
  * tener un `fecha()` con su propio formateador —que no llamaba nadie— y un
  * `formatBytes()` con su propia tabla de unidades: dos formatos de salida que
  * podían divergir del resto de la app sin que nada avisara.

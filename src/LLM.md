@@ -50,8 +50,8 @@ funcione.
 
 - `_shared.ts` tuvo un `fecha()` con su propio `Intl.DateTimeFormat` —que no
   llamaba nadie— y un `formatBytes()` con su propia tabla de unidades. El kit
-  trae `<is-format-date>`, `<is-format-bytes>`, `<is-format-number>` y
-  `<is-relative-time>`, y todos entran con `all.min.js`. Dos formatos de salida
+  trae `<iswc-format-date>`, `<iswc-format-bytes>`, `<iswc-format-number>` y
+  `<iswc-relative-time>`, y todos entran con `all.min.js`. Dos formatos de salida
   que podían divergir del resto de la app sin que nada avisara. Eliminados.
 - `variant="ghost"` en un `is-*` que no acepta ese valor: no da error, no
   avisa y no se ve — el componente se pinta con los valores por defecto.
@@ -61,9 +61,9 @@ funcione.
 
 | Qué | Kit | Por qué sigue a mano |
 | --- | --- | --- |
-| Barra de secciones de `sw-nav` | `<is-tab-group>` | Las pestañas no tienen panel: filtran una lista que pinta `sw-app`. Migrarlo obliga a paneles vacíos |
-| Pestañas de `sw-operation` | `<is-tab-group>` | El cuerpo se monta **al abrir** (ver «coste diferido» en `../LLM.md`); `is-tab-group` monta los tres paneles |
-| Códigos de estado de `sw-minidoc-code` | `<is-tab-group>` | Son etiquetas de un solo panel que se repinta (200/400/429…), no tres paneles vivos. Con `is-tab-group` habría un panel por código y el JSON se montaría N veces para enseñar uno |
+| Barra de secciones de `sw-nav` | `<iswc-tab-group>` | Las pestañas no tienen panel: filtran una lista que pinta `sw-app`. Migrarlo obliga a paneles vacíos |
+| Pestañas de `sw-operation` | `<iswc-tab-group>` | El cuerpo se monta **al abrir** (ver «coste diferido» en `../LLM.md`); `iswc-tab-group` monta los tres paneles |
+| Códigos de estado de `sw-minidoc-code` | `<iswc-tab-group>` | Son etiquetas de un solo panel que se repinta (200/400/429…), no tres paneles vivos. Con `iswc-tab-group` habría un panel por código y el JSON se montaría N veces para enseñar uno |
 | `adoptCss` de `_shared.ts` | `IsUi.adoptCss` (`helpers/ui`) | Ver abajo |
 
 Ninguna es excusa para añadir más UI a mano. Si alguna se migra, se borra su

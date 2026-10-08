@@ -1,7 +1,7 @@
 /**
  * <sw-home> — portada del visor: título, versión y `info.description` completa.
  *
- * La descripción viene en Markdown (con HTML embebido vía `is-md-render` en `sw-doc`).
+ * La descripción viene en Markdown (con HTML embebido vía `iswc-md-render` en `sw-doc`).
  * Es la misma fuente que OpenAPI `info.description`; el JSON doc del ISS la define.
  */
 
@@ -39,9 +39,9 @@ const SwHome = crearComponente<Props>(
         ${doc
           ? html`<div class="home-doc">${doc}</div>`
           : html`
-              <is-callout color="neutral" variant="plain" icon="mdi:book-open-page-variant-outline">
+              <iswc-callout color="neutral" variant="plain" icon="mdi:book-open-page-variant-outline">
                 Elige una operación en el índice para ver su documentación.
-              </is-callout>
+              </iswc-callout>
             `}
       </article>
     `);

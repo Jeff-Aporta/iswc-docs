@@ -220,7 +220,7 @@ class SwMinidocCode extends HTMLElement {
       <section class="panel">
         <header class="panel-cab vistas" role="tablist" aria-label="Formato de la petición">
           ${pestanasVista}
-          <is-copy-button class="al-final" copy-label="Copiar petición"></is-copy-button>
+          <iswc-copy-button class="al-final" copy-label="Copiar petición"></iswc-copy-button>
         </header>
         ${chipsEjemplo}
         <div class="peticion"></div>
@@ -229,7 +229,7 @@ class SwMinidocCode extends HTMLElement {
       <section class="panel">
         <header class="panel-cab estados" role="tablist">
           ${pestanasEstado}
-          <is-copy-button class="al-final" copy-label="Copiar respuesta"></is-copy-button>
+          <iswc-copy-button class="al-final" copy-label="Copiar respuesta"></iswc-copy-button>
         </header>
         <div class="cuerpo"></div>
       </section>
@@ -237,8 +237,8 @@ class SwMinidocCode extends HTMLElement {
 
     this.#peticionNodo = this.#root.querySelector('.peticion');
     this.#cuerpoNodo = this.#root.querySelector('.cuerpo');
-    this.#copiarPeticion = this.#root.querySelector('.vistas is-copy-button');
-    this.#copiarRespuesta = this.#root.querySelector('.estados is-copy-button');
+    this.#copiarPeticion = this.#root.querySelector('.vistas iswc-copy-button');
+    this.#copiarRespuesta = this.#root.querySelector('.estados iswc-copy-button');
     this.#pintarPeticion();
     this.#pintarCuerpo();
     adoptCss(this.#root, import.meta.url, 'sw-minidoc-code');

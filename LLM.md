@@ -22,10 +22,10 @@ Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
 |---|---|
 | CSS en el `.css` **hermano** del componente + `adoptCss(shadow, import.meta.url)` | CSS en una constante del `.ts` (el error de is-tkts) |
 | Reusar `is-*` del kit por CDN | Reinventar botones, diálogos, tablas, toasts o iconos |
-| **`<is-button>`** en vez de `<button>` | Botones nativos en el shadow (el kit ya da todo: variantes, colores, a11y) |
-| **`<is-input>`** en vez de `<input>` | Inputs nativos (excepto `type="color"`, `type="file"`, `type="range"` — sin equivalente) |
-| **`<is-select>` + `<is-option>`** en vez de `<select>` + `<option>` | Selects nativos (el kit los estiliza y los integra con el tema) |
-| **`<is-checkbox>`** en vez de `<input type="checkbox">` | Checkboxes nativos en formularios |
+| **`<iswc-button>`** en vez de `<button>` | Botones nativos en el shadow (el kit ya da todo: variantes, colores, a11y) |
+| **`<iswc-input>`** en vez de `<input>` | Inputs nativos (excepto `type="color"`, `type="file"`, `type="range"` — sin equivalente) |
+| **`<iswc-select>` + `<iswc-option>`** en vez de `<select>` + `<option>` | Selects nativos (el kit los estiliza y los integra con el tema) |
+| **`<iswc-checkbox>`** en vez de `<input type="checkbox">` | Checkboxes nativos en formularios |
 | Dominio sin DOM en `src/js/`, pintado en `src/components/` | Lógica de negocio dentro de un componente |
 | `sw-app` es el único dueño del estado; los hijos reciben `props` y emiten eventos | Que un hijo escriba la URL o el estado global |
 | `props` por **propiedad** | `props` por atributo (llevan objetos y saltos de línea) |
@@ -39,7 +39,7 @@ Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
 | Click en la marca = reset (`?s=`); la `?conn=` se queda | Reiniciar vía location.reload() (rompe el shell sin redibujar) |
 | Botón descargar / reload: `variant="plain"` solo icono + `aria-label` | Texto «Descargar» u otro label en la cabecera |
 | Reload documento: `clearJsonCache` + `loadViewerDocument(..., { force: true })` | Esperar 24 h o pedir al usuario vaciar localStorage a mano |
-| Selector Documento/Clásico: control compacto (~2 rem de alto) | `is-select` a altura de campo de formulario grande |
+| Selector Documento/Clásico: control compacto (~2 rem de alto) | `iswc-select` a altura de campo de formulario grande |
 | Registrar el componente en `index.html`, `all.ts` y `docs/manifest.js` | Dejarlo en uno solo (parcial = bug mudo) |
 | Tests en `tests/*.test.ts` contra `dist/cdn/` | Importarlos desde `src/`: probaría código que nadie sirve |
 | `?conn=` → `kind: "config"` InSoft pasa por `parseInsoftConfig` | Asumir OpenAPI: el spec sintetizado no lleva `openapi:` en la salida |
@@ -63,7 +63,7 @@ componente: son dos custom elements, cada uno con su shell, su shadow y su hoja.
 | Presentación | Lista por tags, la operación se despliega en su sitio | Índice · una operación por página · código fijo a la derecha |
 | Para qué | Barrer una API entera, comparar endpoints vecinos | Integrar un endpoint concreto sin perder de vista la petición |
 | Inspiración | Swagger UI, corregido | Documentación de plataforma tipo MiniMax |
-| Probar | Pestaña dentro de la tarjeta | Botón que abre `sw-try` en un `is-dialog` |
+| Probar | Pestaña dentro de la tarjeta | Botón que abre `sw-try` en un `iswc-dialog` |
 | Estado en URL | `?tab`, `?op`, `?opt`, `?server`, `?s` | `?op` |
 
 ### Cambiar de driver en caliente
@@ -101,7 +101,7 @@ El visor guarda dos cosas en `localStorage`, y se tratan distinto **a propósito
 
 | Qué | Clave | Caduca al cambiar de build |
 |---|---|---|
-| Ancho de los paneles (geometría) | `is-components` → `is-split-panel` → `sw:split:*` | **Sí** |
+| Ancho de los paneles (geometría) | `is-components` → `iswc-split-panel` → `sw:split:*` | **Sí** |
 | Driver elegido | `sw:driver` | No |
 
 Cada build lleva un sello de fecha y hora (`__SW_BUILD__`, lo inyecta `scripts/build.ts` y lo
@@ -218,7 +218,7 @@ declarado **una sola vez** en `src/js/kit-tags.ts` (`SW_KIT_TAGS`) y publicado e
 ```html
 <script type="module">
   import { ISWebComponentsLoader as L } from
-    'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/loader.min.js';
+    'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/loader.min.js';
   import { SW_KIT_TAGS } from
     'https://cdn.jsdelivr.net/gh/Jeff-Aporta/isc-swagger@main/dist/cdn/js/kit-tags.js';
   await L.load(...SW_KIT_TAGS);
@@ -230,26 +230,26 @@ declarado **una sola vez** en `src/js/kit-tags.ts` (`SW_KIT_TAGS`) y publicado e
 Si un `sw-*` empieza a usar otro tag del kit, añadirlo **en `src/js/kit-tags.ts`** (y
 actualizar esta tabla). El host ISS **no** mantiene `isSwaggerKitTags`: sin el tag el
 custom element no hace upgrade y el tag queda en el DOM sin shadow — sin error en consola.
-Caso real: sin `is-code`, cURL y respuestas salían cajas vacías.
+Caso real: sin `iswc-code`, cURL y respuestas salían cajas vacías.
 
 | Categoría | Tags que se usan | Fichero en el CDN |
 |---|---|---|
-| `actions` | `is-button`, `is-copy-button`, `is-dropdown`, `is-dropdown-item` | `actions/<nombre>.min.js` |
-| `forms` | `is-checkbox`, `is-input`, `is-option`, `is-select`, `is-textarea` | `forms/<nombre>.min.js` |
-| `feedback` | `is-spinner`, `is-tag`, `is-theme-toggle`, `is-toast` | `feedback/<nombre>.min.js` |
-| `helpers` | `is-format-bytes`, `is-format-date`, `is-format-number`, `is-relative-time` | `helpers/<nombre>.min.js` |
-| `layout` | `is-callout`, `is-details`, `is-dialog`, `is-divider`, `is-drawer`, `is-split-panel` | `layout/<nombre>.min.js` |
-| `media` | `is-icon` | `media/icon.min.js` |
-| `code` | `is-code` | `code/code.min.js` |
-| `helpers` | `is-md-render` | `helpers/md-render.min.js` |
-| `diagrams` | `is-flowchart`, `is-sequence-diagram`, `is-er-diagram`, `is-diagram-lightbox` | `diagrams/<nombre>.min.js` |
+| `actions` | `iswc-button`, `iswc-copy-button`, `iswc-dropdown`, `iswc-dropdown-item` | `actions/<nombre>.min.js` |
+| `forms` | `iswc-checkbox`, `iswc-input`, `iswc-option`, `iswc-select`, `iswc-textarea` | `forms/<nombre>.min.js` |
+| `feedback` | `iswc-spinner`, `iswc-tag`, `iswc-theme-toggle`, `iswc-toast` | `feedback/<nombre>.min.js` |
+| `helpers` | `iswc-format-bytes`, `iswc-format-date`, `iswc-format-number`, `iswc-relative-time` | `helpers/<nombre>.min.js` |
+| `layout` | `iswc-callout`, `iswc-details`, `iswc-dialog`, `iswc-divider`, `iswc-drawer`, `iswc-split-panel` | `layout/<nombre>.min.js` |
+| `media` | `iswc-icon` | `media/icon.min.js` |
+| `code` | `iswc-code` | `code/code.min.js` |
+| `helpers` | `iswc-md-render` | `helpers/md-render.min.js` |
+| `diagrams` | `iswc-flowchart`, `iswc-sequence-diagram`, `iswc-er-diagram`, `iswc-diagram-lightbox` | `diagrams/<nombre>.min.js` |
 
-Los MD de Notas (`x-iss-doc-md`) pueden embutir `<is-flowchart>` e `<is-code>` porque
-`is-md-render` pinta por `innerHTML` y el kit hace upgrade. Al exportar a Postman,
+Los MD de Notas (`x-iss-doc-md`) pueden embutir `<iswc-flowchart>` e `<iswc-code>` porque
+`iswc-md-render` pinta por `innerHTML` y el kit hace upgrade. Al exportar a Postman,
 `postman-md.ts` rasteriza diagramas a PNG transparente (`<img src="data:image/png;base64,…">`)
-y convierte `<is-code>` a fences ```.
+y convierte `<iswc-code>` a fences ```.
 
-El nombre del fichero va **sin** el prefijo `is-`: `is-copy-button` vive en
+El nombre del fichero va **sin** el prefijo `is-`: `iswc-copy-button` vive en
 `actions/copy-button.min.js`. El loader hace esa traducción; solo importa al depurar un 404.
 
 Cargar por tag son ~215 KB de JS. Cargar las 6 categorías enteras traería componentes que el
@@ -264,26 +264,26 @@ adjuntos por form association, `<input type="range">` para sliders).
 
 | Necesidad | Usar | No usar |
 |---|---|---|
-| Acción (icono, texto, ambos) | `<is-button variant="…" pill? with-caret? color="…">` | `<button>` |
-| Campo de texto / búsqueda | `<is-input type="search\|text\|email\|…">` | `<input>` |
-| Menú desplegable | `<is-dropdown>` con `<is-dropdown-item>` | `<select>` |
-| Set finito de opciones | `<is-select>` con `<is-option>` | `<select><option>` |
-| Booleano | `<is-checkbox>` | `<input type="checkbox">` |
-| Icono | `<is-icon icon="mdi:nombre">` (MDI path) | `<svg>` inline, glifos manuales |
-| Diálogo modal | `<is-dialog label="…">` | `<dialog>` manual |
-| Toast | `<is-toast placement="…">` (en `document.body`) | UI de notificación propia |
-| Tema | `<is-theme-toggle>` | lógica de `data-theme` propia |
-| Paleta | `<is-palette-selector>` | variables CSS propias |
+| Acción (icono, texto, ambos) | `<iswc-button variant="…" pill? with-caret? color="…">` | `<button>` |
+| Campo de texto / búsqueda | `<iswc-input type="search\|text\|email\|…">` | `<input>` |
+| Menú desplegable | `<iswc-dropdown>` con `<iswc-dropdown-item>` | `<select>` |
+| Set finito de opciones | `<iswc-select>` con `<iswc-option>` | `<select><option>` |
+| Booleano | `<iswc-checkbox>` | `<input type="checkbox">` |
+| Icono | `<iswc-icon icon="mdi:nombre">` (MDI path) | `<svg>` inline, glifos manuales |
+| Diálogo modal | `<iswc-dialog label="…">` | `<dialog>` manual |
+| Toast | `<iswc-toast placement="…">` (en `document.body`) | UI de notificación propia |
+| Tema | `<iswc-theme-toggle>` | lógica de `data-theme` propia |
+| Paleta | `<iswc-palette-selector>` | variables CSS propias |
 | Menú contextual | `<is-context-menu>` + `<is-context-menu-item>` | listas flotantes caseras |
-| Grupo de botones | `<is-button-group>` | `<div>` con `is-button` flex |
+| Grupo de botones | `<iswc-button-group>` | `<div>` con `iswc-button` flex |
 | FAB | `<is-fab>` | botón circular hecho a mano |
 | Speed dial | `<is-speed-dial>` | FAB con sub-acciones caseras |
-| Botón copiar | `<is-copy-button>` | `<is-button>` con handler |
-| Botón-icono checkbox | `<is-check-icon-button>` | `<is-button>` con icono toggle |
+| Botón copiar | `<iswc-copy-button>` | `<iswc-button>` con handler |
+| Botón-icono checkbox | `<iswc-check-icon-button>` | `<iswc-button>` con icono toggle |
 
 Propiedades del kit que **no son atributos**: `variant`, `color`, `pill`,
 `with-caret`, `loading`, `disabled` (este sí), `invalid`. Pasarlas como
-atributos HTML no falla en silencio — `is-button variant="ghost"` se pinta con
+atributos HTML no falla en silencio — `iswc-button variant="ghost"` se pinta con
 los defaults sin error y el botón queda sin estilo. Asignar por propiedad:
 
 ```ts
@@ -407,8 +407,8 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
    `src/css/app.css` (`.sw-confirmar-*`). Un `.css` de componente nunca alcanza
    a un nodo fuera de su shadow.
 
-4. **`is-button type="submit"` no envía el form** — el `<button>` real está en
-   Shadow DOM. `sw-auth` escucha `is-click` y llama `requestSubmit()`. Error
+4. **`iswc-button type="submit"` no envía el form** — el `<button>` real está en
+   Shadow DOM. `sw-auth` escucha `iswc-click` y llama `requestSubmit()`. Error
    conocido del kit; no confiar en el tipo nativo.
 
 5. **Valores de enum inventados en los `is-*`** — `variant="ghost"` cuando el
@@ -456,7 +456,7 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
     `js/hojas.js` parchea `ShadowRoot.prototype.prepend` para los shadow
     roots del kit; los nuestros ya usan `adoptCss` directamente.
 
-14. **`is-button` ignora atributos que no conoce** — `variant="ghost"` cuando
+14. **`iswc-button` ignora atributos que no conoce** — `variant="ghost"` cuando
     el kit no acepta `ghost` se pinta con los valores por defecto sin
     error ni aviso. Lo mismo con `color="brandish"`. Verifica el enum en
     `is-webcomponents/src/components/actions/button.md` antes de usarlo.
@@ -482,7 +482,7 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
     `dominio.test.ts`.
 
 18. **Adjuntos: picker general** — si la op admite archivos (`tryitAttachments`,
-    multipart/octet-stream, schema `dataUrl`/`base64`) se pinta `<is-file-input
+    multipart/octet-stream, schema `dataUrl`/`base64`) se pinta `<iswc-file-input
     multiple>` **sin** `accept=`. No hay lista MIME por endpoint. Empaquetado:
     `tryit-attach.ts` → FormData `files`+`body` o data URL en el JSON. `QUERY` de
     listado (sqlFiltering) **no** muestra picker. `api-fetch.ts` no pone
@@ -529,7 +529,7 @@ colgarse en JSDOM/`search-state`: un hang no cuenta como verde; corre el archivo
 |---|---|
 | `openapi.test.ts` | Lectura de la spec: agrupación, orden, `$ref`, seguridad |
 | `dominio.test.ts` | Filtros, URLs, errores HTTP, markdown, Postman, sesión, búsqueda, conn |
-| `postman-md.test.ts` | Conversión MD InSoft → Postman (`is-code`→fences; pipeline diagramas) |
+| `postman-md.test.ts` | Conversión MD InSoft → Postman (`iswc-code`→fences; pipeline diagramas) |
 | `render.test.ts` | Que el shadow se llene (jsdom, `is-*` sin registrar) |
 | `app.test.ts` | El ciclo completo de `sw-app` con la spec de demo real |
 | `minidoc.test.ts` | Driver 2: vistas, pestañas de estado, cURL y que los dos drivers convivan |
@@ -569,3 +569,24 @@ No ignorar `tests/*.test.ts`: son contrato ejecutable.
 Commits con `-m "..."` plano; nada de heredocs de bash. `git show > archivo` en
 PowerShell sale UTF-16 y el contenido «desaparece» al parsearlo — usar
 `-Encoding utf8` o `execSync` desde Node.
+
+## Pendiente — estándar demos/e2e iswc (auditoría 2026-09-03, NO ejecutado)
+
+Estado verificado (sin cambios funcionales en esta ronda): consume el kit `is-*`
+por CDN (`@sha40`; hosts RAG = GitHub Pages, ISS = jsDelivr) y su «galería» real
+es el sitio documental (`docs/previews/*.html` + `docs/manifest.js`, HTML plano
+que consume `dist/cdn/`). **No** existe suite e2e con Stagehand
+(`src/utils/health/e2e` ausente), ni harness de tests separado, ni demos JSON
+`is-preview/v1` con controles; `demo/` solo trae `openapi.sample.json`.
+
+Cuando se ejecute, aplicar el estándar de apps iswc (piloto en PatyIA/app):
+harness separado de la app, demos JSON-driven con controles (JSON → prop/attr),
+e2e por componente con Stagehand en `src/utils/health/e2e`, sin `.env` (secretos
+de rutas fijas) y servidor controlado (ataque a CF-worker: apuntar directo, sin
+servidor local). Referencias:
+`../is-webcomponents/specs/galeria/{spec,e2e,preview-cdn}.md` y
+`PatyIA/app/specs/demo-preview-inventario.md`.
+
+⚠ **No documentar como implementado.** Nota: varios `*.md` de este repo arrastran
+mojibake UTF-8 histórico (legacy de re-escrituras PowerShell); corregirlo es
+cambio de texto, fuera del alcance de una ronda funcional.

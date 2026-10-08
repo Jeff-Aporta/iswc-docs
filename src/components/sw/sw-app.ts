@@ -329,11 +329,11 @@ class SwApp extends HTMLElement {
 
     if (!grupos.length) {
       zona.append(html`
-        <is-callout color="neutral" variant="filled-outlined" icon="mdi:magnify-close">
+        <iswc-callout color="neutral" variant="filled-outlined" icon="mdi:magnify-close">
           ${this.#query
             ? `Ninguna operación coincide con «${this.#query}».`
             : 'Esta sección no tiene operaciones.'}
-        </is-callout>
+        </iswc-callout>
       `);
       return;
     }
@@ -351,7 +351,7 @@ class SwApp extends HTMLElement {
     if (this.#estado === 'cargando') {
       this.#root.append(html`
         <div class="cargando" role="status">
-          <is-spinner></is-spinner>
+          <iswc-spinner></iswc-spinner>
           <p>Cargando documentación…</p>
         </div>
       `);
@@ -362,14 +362,14 @@ class SwApp extends HTMLElement {
     if (this.#estado === 'error') {
       this.#root.append(html`
         <div class="fallo">
-          <is-callout color="danger" variant="filled-outlined" icon="mdi:alert-octagon-outline">
+          <iswc-callout color="danger" variant="filled-outlined" icon="mdi:alert-octagon-outline">
             <h2 class="fallo-titulo">No se pudo cargar el documento</h2>
             <pre class="fallo-texto">${this.#error}</pre>
             <p class="fallo-pista">
               Quema el JSON en el atributo <code>doc</code> del componente, o deja el fallback
               <code>paths.docs</code> (default <code>/docs?v=json</code>).
             </p>
-          </is-callout>
+          </iswc-callout>
         </div>
       `);
       adoptCss(this.#root, import.meta.url, 'sw-app');

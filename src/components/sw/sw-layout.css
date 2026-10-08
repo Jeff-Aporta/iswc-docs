@@ -90,14 +90,14 @@
 /* ── Cajones ──────────────────────────────────────────────── */
 
 /* Dentro del cajón el lateral ya no compite por ancho: ocupa lo que le den. */
-is-drawer .hueco {
+iswc-drawer .hueco {
   display: block;
   height: 100%;
   overflow: auto;
 }
 
-is-drawer[data-lado='inicio'] { --size: min(20rem, 86vw); }
-is-drawer[data-lado='fin'] { --size: min(34rem, 92vw); }
+iswc-drawer[data-lado='inicio'] { --size: min(20rem, 86vw); }
+iswc-drawer[data-lado='fin'] { --size: min(34rem, 92vw); }
 
 /* Al pasar a cajón, el hueco del split se queda vacío: sin esto dejaría una franja muerta. */
 @media (max-width: 87.5rem) {
@@ -111,5 +111,5 @@ is-drawer[data-lado='fin'] { --size: min(34rem, 92vw); }
 
 @media print {
   :host { height: auto; overflow: visible; }
-  .cabecera, is-drawer { display: none; }
+  .cabecera, iswc-drawer { display: none; }
 }

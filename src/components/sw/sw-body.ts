@@ -38,16 +38,16 @@ const SwBody = crearComponente<Props>(
                 <div class="ejemplos" role="group" aria-label="Ejemplos de cuerpo">
                   ${ejemplos.map(
                     (ex) => html`
-                      <is-button
+                      <iswc-button
                         size="small"
                         variant="outlined"
                         color="neutral"
                         ${disabled ? 'disabled' : ''}
-                        onis-click=${() => emitirCambio(formatBodyExample(ex.example))}
+                        oniswc-click=${() => emitirCambio(formatBodyExample(ex.example))}
                       >
-                        ${ex.icon ? html`<is-icon slot="start" icon="${ex.icon}"></is-icon>` : null}
+                        ${ex.icon ? html`<iswc-icon slot="start" icon="${ex.icon}"></iswc-icon>` : null}
                         ${ex.label}
-                      </is-button>
+                      </iswc-button>
                     `,
                   )}
                 </div>
@@ -55,7 +55,7 @@ const SwBody = crearComponente<Props>(
             : null}
         </header>
 
-        <is-textarea
+        <iswc-textarea
           class="editor"
           full-width
           resize="auto"
@@ -66,8 +66,8 @@ const SwBody = crearComponente<Props>(
           ${disabled ? 'disabled' : ''}
           ${error ? 'error' : ''}
           error-text="${error ?? ''}"
-          onis-input=${(e: Event) => emitirCambio(String((e.target as HTMLTextAreaElement).value ?? ''))}
-        ></is-textarea>
+          oniswc-input=${(e: Event) => emitirCambio(String((e.target as HTMLTextAreaElement).value ?? ''))}
+        ></iswc-textarea>
       </section>
     `);
   },

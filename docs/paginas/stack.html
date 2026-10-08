@@ -6,9 +6,9 @@
   <title>El stack · IS-Swagger</title>
   <meta name="description" content="TypeScript sin bundler, web components vanilla y CSS hermano por componente.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
 <body>
@@ -85,7 +85,7 @@
         CDN, un worker, una carpeta — sin que nada tenga que resolver rutas.
       </p>
       <div class="diagrama">
-        <is-flowchart open-on-click>
+        <iswc-flowchart open-on-click>
           <script type="application/json">
             {
               "flowchart": {
@@ -121,7 +121,7 @@
               }
             }
           </script>
-        </is-flowchart>
+        </iswc-flowchart>
         <p class="diagrama__pie">
           El <code>.css</code> no pasa por el compilador de TypeScript: se
           minifica y se copia al lado de su módulo. Ese emparejamiento es el
@@ -165,7 +165,7 @@ dist/cdn/sw-operation.css</code></pre>
       <h2>Las piezas</h2>
       <div class="rejilla">
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:language-typescript"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:language-typescript"></iswc-icon>
           <h3 class="tarjeta__titulo">TypeScript estricto</h3>
           <p>
             <code>strict</code> + <code>noUncheckedIndexedAccess</code>. Los tipos
@@ -173,7 +173,7 @@ dist/cdn/sw-operation.css</code></pre>
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:web"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:web"></iswc-icon>
           <h3 class="tarjeta__titulo">Web components</h3>
           <p>
             Shadow DOM y <code>customElements</code> nativos. Un componente es
@@ -181,7 +181,7 @@ dist/cdn/sw-operation.css</code></pre>
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:package-variant-closed"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:package-variant-closed"></iswc-icon>
           <h3 class="tarjeta__titulo">Kit <code>is-*</code> por CDN</h3>
           <p>
             Botones, diálogos, campos, tablas, toasts e iconos ya resueltos. No
@@ -189,7 +189,7 @@ dist/cdn/sw-operation.css</code></pre>
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:flash-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:flash-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">esbuild</h3>
           <p>
             Única dependencia de build junto a TypeScript y jsdom. El build
@@ -197,7 +197,7 @@ dist/cdn/sw-operation.css</code></pre>
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:test-tube"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:test-tube"></iswc-icon>
           <h3 class="tarjeta__titulo"><code>node --test</code></h3>
           <p>
             Sin runner externo. Las pruebas corren contra
@@ -205,7 +205,7 @@ dist/cdn/sw-operation.css</code></pre>
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:palette-swatch-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:palette-swatch-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Tokens del kit</h3>
           <p>
             Todo el color sale de <code>--is-*</code>. Cambiar de tema o de
@@ -230,12 +230,12 @@ npm test           # build + node --test tests/*.test.ts</code></pre>
       </p>
       <div class="rejilla">
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="arquitectura">
-          <is-icon class="tarjeta__icono" icon="mdi:sitemap-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:sitemap-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Arquitectura</h3>
           <p>Cómo se reparten las capas y cómo viaja un dato hasta la pantalla.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="estrategias">
-          <is-icon class="tarjeta__icono" icon="mdi:chess-knight"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:chess-knight"></iswc-icon>
           <h3 class="tarjeta__titulo">Estrategias</h3>
           <p>Por qué el estado tiene un solo dueño y cuándo se repinta a medias.</p>
         </button>

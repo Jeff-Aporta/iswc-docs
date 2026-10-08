@@ -12,15 +12,15 @@
 export declare const JSON_CACHE_TTL_MS: number;
 export declare const JSON_CACHE_PREFIX = "sw:json-cache:v1:";
 export type JsonCacheSource = 'cache' | 'network' | 'stale-cache';
-export interface JsonCacheEntry {
+export type JsonCacheEntry = {
     /** Epoch ms del último GET exitoso. */
     fetchedAt: number;
     data: unknown;
-}
-export interface FetchJsonCachedResult {
+};
+export type FetchJsonCachedResult = {
     data: unknown;
     source: JsonCacheSource;
-}
+};
 export declare function readJsonCache(url: string): JsonCacheEntry | null;
 export declare function writeJsonCache(url: string, data: unknown, fetchedAt?: number): void;
 /** Borra una URL o, sin argumento, todas las entradas `sw:json-cache:v1:`. */

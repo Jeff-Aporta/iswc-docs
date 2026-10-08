@@ -1,4 +1,4 @@
-import{crearComponente as r,define as s,html as n}from"./_shared.js";import"./sw-doc.js";const c=r(import.meta.url,(i,{spec:l})=>{const e=l?.info;if(!e){i.append(n`
+import{crearComponente as r,define as s,html as n}from"./_shared.js";import"./sw-doc.js";const l=r(import.meta.url,(i,{spec:c})=>{const e=c?.info;if(!e){i.append(n`
         <div class="vacio">
           <p>Elige una operación en el índice para ver su documentación.</p>
         </div>
@@ -14,4 +14,4 @@ import{crearComponente as r,define as s,html as n}from"./_shared.js";import"./sw
               </is-callout>
             `}
       </article>
-    `)},{spec:null},"sw-home");s("sw-home",c);export{c as SwHome};
+    `)},{spec:null},"sw-home");s("sw-home",l);export{l as SwHome};

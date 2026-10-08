@@ -30,7 +30,7 @@ módulo. Están al final de esta página.
 | `tryit-attach.ts` | Adjuntos del «Probar»: cuándo mostrar el picker y cómo empaquetarlos |
 | `markdown.ts` | Markdown → HTML **ya escapado** |
 | `export.ts` | Documento JSON, colección Postman, formato IS |
-| `postman-md.ts` | MD InSoft → Postman: diagramas→PNG, `is-code`→fences |
+| `postman-md.ts` | MD InSoft → Postman: diagramas→PNG, `iswc-code`→fences |
 | `iss-swagger-doc.ts` | Forma y asserts de piezas `swagger__*.json`. CDN: `dist/cdn/js/iss-swagger-doc.{js,d.ts,ts}` |
 | `iss-swagger-md.ts` | JSON → Markdown agentes. CDN: `js/iss-swagger-md.js` y `js/iss-swagger-md.min.js` |
 | `json-cache.ts` | Cache 24 h de config/spec; `clearJsonCache` + `force` para el botón actualizar |
@@ -38,8 +38,8 @@ módulo. Están al final de esta página.
 ## Reusar antes de crear
 
 - Formato de fechas, bytes y números: **no se escribe aquí**. El kit trae
-  `<is-format-date>`, `<is-format-bytes>`, `<is-format-number>` y
-  `<is-relative-time>`. Ver [`../LLM.md`](../LLM.md).
+  `<iswc-format-date>`, `<iswc-format-bytes>`, `<iswc-format-number>` y
+  `<iswc-relative-time>`. Ver [`../LLM.md`](../LLM.md).
 - Nada de este directorio debe importar de `../components/`. La flecha va en un
   solo sentido.
 

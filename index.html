@@ -93,12 +93,17 @@
   html, body { font-family: var(--is-font-sans); }
 </style>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
 <script type="module">
-  import { ISWebComponentsLoader as L } from
-    'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/core/loader.min.js';
-  import { SW_KIT_TAGS } from './dist/cdn/js/kit-tags.js';
+  // Todo el kit (CSS base + tags) sale del loader ISWC: el loader aplica host + mirrors +
+  // sheet-cache. El consumer fija origen/bust y solo espera assets; así el CSS
+  // resuelve la ruta correcta (raíz o core/) y se invalidan caches viejos al cambiar el `v`.
+  const KIT = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn';
+  const { ISWebComponentsLoader: L } = await import(`${KIT}/core/loader.min.js`);
+  const { SW_KIT_TAGS } = await import('./dist/cdn/js/kit-tags.js');
+  // host + mirrors por el loader; los overrides de test (host/v/mirrors/ref) van en ?iswc=<b64url-json>.
+
+  await L.loadCSSBase();
+  await L.loadCSSPalettesDefault();
   // Sin L.pin → tip de main. Pin solo si el host lo pide de forma explícita.
   await L.load(...SW_KIT_TAGS);
 </script>
@@ -203,7 +208,7 @@
     `?driver=` y en localStorage.
   -->
   <sw-viewer hidden></sw-viewer>
-  <is-toast placement="bottom-end"></is-toast>
+  <iswc-toast placement="bottom-end"></iswc-toast>
 
   <noscript>
     <div class="sw-sin-js">

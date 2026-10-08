@@ -1,5 +1,5 @@
 /**
- * Estilos del host light-DOM para diálogos del visor (`is-dialog` montado en body).
+ * Estilos del host light-DOM para diálogos del visor (`iswc-dialog` montado en body).
  * El CSS de `app.css` no llega al embed de PatyIA; se inyecta una sola vez.
  */
 
@@ -32,13 +32,13 @@ const CSS = /* css */ `
     gap: 0.5rem;
     width: 100%;
   }
-  is-dialog.sw-dialog-try,
-  is-dialog.sw-dialog-confirm {
+  iswc-dialog.sw-dialog-try,
+  iswc-dialog.sw-dialog-confirm {
     --is-dialog-width: min(52rem, calc(100vw - 2rem));
     --is-dialog-spacing: 1.1rem;
     --spacing: var(--is-dialog-spacing);
   }
-  is-dialog.sw-dialog-try sw-try {
+  iswc-dialog.sw-dialog-try sw-try {
     display: block;
     min-width: 0;
   }
@@ -53,10 +53,10 @@ export function ensureDialogHostStyles(): void {
   document.head.appendChild(style);
 }
 
-/** Monta un `is-dialog` en `document.body` con ancho usable y estilos de confirmación. */
+/** Monta un `iswc-dialog` en `document.body` con ancho usable y estilos de confirmación. */
 export function openHostDialog(opts: { label: string; className?: string; content: Node | DocumentFragment; width?: string; }): HTMLElement {
   ensureDialogHostStyles();
-  const dlg = document.createElement('is-dialog');
+  const dlg = document.createElement('iswc-dialog');
   dlg.setAttribute('label', opts.label);
   dlg.setAttribute('light-dismiss', '');
   if (opts.className) dlg.classList.add(...opts.className.split(/\s+/).filter(Boolean));
@@ -65,8 +65,8 @@ export function openHostDialog(opts: { label: string; className?: string; conten
   dlg.style.setProperty('--is-dialog-width', width);
   dlg.style.setProperty('--spacing', 'var(--is-dialog-spacing, 1.1rem)');
   dlg.append(opts.content);
-  // Solo el propio is-dialog puede cerrarse: tooltips/dropdowns anidados emiten is-hide composed.
-  dlg.addEventListener('is-after-hide', (e: Event) => {
+  // Solo el propio iswc-dialog puede cerrarse: tooltips/dropdowns anidados emiten iswc-hide composed.
+  dlg.addEventListener('iswc-after-hide', (e: Event) => {
     if (e.target !== dlg) return;
     dlg.remove();
   });

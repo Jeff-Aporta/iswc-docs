@@ -15,9 +15,9 @@ const SwMethod = crearComponente<Props>(
   (root, { method }) => {
     const m = String(method ?? '').toLowerCase();
     root.append(html`
-      <is-tag class="metodo" color="${METHOD_COLOR[m] ?? 'neutral'}" variant="filled" data-method="${m}">
+      <iswc-tag class="metodo" color="${METHOD_COLOR[m] ?? 'neutral'}" variant="filled" data-method="${m}">
         ${m.toUpperCase()}
-      </is-tag>
+      </iswc-tag>
     `);
   },
   { method: 'get' },

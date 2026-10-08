@@ -13,12 +13,12 @@
 import './sw-params.js';
 import './sw-body.js';
 import './sw-json.js';
-interface Props {
+type Props = {
     op: SwOp | null;
     spec: SwSpec | null;
     serverBase: string;
     authEnabled: boolean;
-}
+};
 declare class SwTry extends HTMLElement {
     #private;
     constructor();

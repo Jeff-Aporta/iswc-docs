@@ -14,10 +14,10 @@
  */
 
 const MOTORES = new Set([
-  'is-sequence-diagram', 'is-flowchart', 'is-state-diagram', 'is-er-diagram',
-  'is-class-diagram', 'is-gantt', 'is-timeline', 'is-mindmap', 'is-sankey-diagram',
-  'is-quadrant-chart', 'is-block-diagram', 'is-component-diagram', 'is-use-case-diagram',
-  'is-swimlane-diagram', 'is-journey-map', 'is-venn-diagram',
+  'iswc-sequence-diagram', 'iswc-flowchart', 'iswc-state-diagram', 'iswc-er-diagram',
+  'iswc-class-diagram', 'iswc-gantt', 'iswc-timeline', 'iswc-mindmap', 'iswc-sankey-diagram',
+  'iswc-quadrant-chart', 'iswc-block-diagram', 'iswc-component-diagram', 'iswc-use-case-diagram',
+  'iswc-swimlane-diagram', 'iswc-journey-map', 'iswc-venn-diagram',
 ]);
 
 /** Módulo y hoja del kit que hace falta para un motor. El kit no publica bundle único. */

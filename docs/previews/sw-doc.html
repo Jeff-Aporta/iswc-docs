@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>sw-doc Â· preview</title>
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/preview.css">
 </head>
 <body>
   <main class="preview"></main>
-  <is-toast placement="bottom-end"></is-toast>
+  <iswc-toast placement="bottom-end"></iswc-toast>
 
   <script type="module">
     import '../../dist/cdn/components/sw/sw-doc.js';
@@ -44,7 +44,7 @@
 
     montar('sw-doc', 'Prosa Markdown: encabezados, tablas GFM, listas, cita, cÃ³digo cercado e inline. Todo se escapa antes de componer.', [
       caso('Documento completo', null, crear('sw-doc', { markdown: md })),
-      caso('Sin documentaciÃ³n', 'El estado vacÃ­o es un is-callout, no un pÃ¡rrafo suelto.', crear('sw-doc', { markdown: '' })),
+      caso('Sin documentaciÃ³n', 'El estado vacÃ­o es un iswc-callout, no un pÃ¡rrafo suelto.', crear('sw-doc', { markdown: '' })),
       caso('Markdown hostil', 'El HTML del origen se pinta como texto, no se ejecuta.',
         crear('sw-doc', { markdown: 'Una descripciÃ³n con <script>alert(1)</script> dentro.' })),
     ]);

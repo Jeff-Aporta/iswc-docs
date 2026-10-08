@@ -15,13 +15,13 @@
  * El param plano `?driver=` es legado: se migra a `?s=` al leer/escribir.
  */
 export declare const PARAM_DRIVER = "driver";
-export interface SwDriver {
+export type SwDriver = {
     /** Tag del custom element que monta este driver. */
     id: 'sw-app' | 'sw-minidoc';
     label: string;
     /** Una línea para el `title` del selector: qué gana quien lo elige. */
     detalle: string;
-}
+};
 export declare const DRIVERS: readonly SwDriver[];
 export declare const DRIVER_DEFAULT: SwDriver['id'];
 /** `true` si el valor es uno de los drivers registrados. */

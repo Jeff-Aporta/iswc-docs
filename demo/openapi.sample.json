@@ -3,7 +3,7 @@
   "info": {
     "title": "API de ejemplo · ContaPyme",
     "version": "1.4.0",
-    "description": "Documento de muestra para abrir el visor sin backend.\n\nCubre los casos que el visor trata de forma especial:\n\n- parámetros de **ruta**, **query** y **cabecera**\n- `enum` (se pinta como `is-select` en vez de campo libre)\n- cuerpo JSON con varios ejemplos con nombre\n- subgrupos por `x-isa-subgroups`\n- operaciones que exigen `Authorization: Bearer`\n- una operación marcada como obsoleta\n\n> Los servidores apuntan a `httpbin.org`, así que «Ejecutar» funciona de verdad."
+    "description": "Documento de muestra para abrir el visor sin backend.\n\nCubre los casos que el visor trata de forma especial:\n\n- parámetros de **ruta**, **query** y **cabecera**\n- `enum` (se pinta como `iswc-select` en vez de campo libre)\n- cuerpo JSON con varios ejemplos con nombre\n- subgrupos por `x-isa-subgroups`\n- operaciones que exigen `Authorization: Bearer`\n- una operación marcada como obsoleta\n\n> Los servidores apuntan a `httpbin.org`, así que «Ejecutar» funciona de verdad."
   },
   "servers": [
     { "url": "https://httpbin.org", "description": "Eco público (para probar Ejecutar)" },

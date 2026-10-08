@@ -25,14 +25,14 @@ Cómo se escribe uno, cómo se adopta el CSS y qué está prohibido:
 | `<sw-params>` | `params`, `values`, `disabled`, `titulo` | `sw-param-change` | Campos de los parámetros |
 | `<sw-body>` | `op`, `value`, `disabled` | `sw-body-change` | Editor del cuerpo JSON |
 | `<sw-responses>` | `responses` | — | Respuestas **declaradas** (documentación, no resultado) |
-| `<sw-doc>` | `markdown`, `vacio` | — | Prosa Markdown vía `is-md-render` (HTML embebido: `is-flowchart`, `is-sequence-diagram`, `is-er-diagram`, `is-code`) |
+| `<sw-doc>` | `markdown`, `vacio` | — | Prosa Markdown vía `iswc-md-render` (HTML embebido: `iswc-flowchart`, `iswc-sequence-diagram`, `iswc-er-diagram`, `iswc-code`) |
 | `<sw-json>` | `value`, `maxHeight` | — | Bloque JSON con resaltado y copiar |
-| `<sw-method>` | `method` | — | Chip del verbo HTTP. Delega en `<is-tag>` |
+| `<sw-method>` | `method` | — | Chip del verbo HTTP. Delega en `<iswc-tag>` |
 | `<sw-path>` | `path` | — | Ruta con los `{parámetros}` resaltados |
 | `<sw-auth>` | `authEnabled`, `auth`, `session` | `sw-session-change` | Sesión JWT: chip, diálogo de login, pegado de token |
 | `<sw-export>` | `spec`, `config` | — | Descargas: documento JSON, Postman, IS (trigger solo icono) |
 | `<sw-doc-reload>` | — | `sw-doc-reload` | Actualiza config desde API (invalida cache 24 h); solo icono |
-| `<sw-doc-actions>` | `spec`, `config` | `sw-doc-reload` | Pastilla: descarga + recarga en `<is-button-group pill>` (cabeceras) |
+| `<sw-doc-actions>` | `spec`, `config` | `sw-doc-reload` | Pastilla: descarga + recarga en `<iswc-button-group pill>` (cabeceras) |
 | `<sw-viewer>` | `conn`, `driver` | — | Envoltura: monta el driver elegido y escucha `sw-driver-change` |
 | `<sw-driver-switch>` | `value` | `sw-driver-change` | Selector de presentación, en la cabecera junto al tema |
 | `<sw-layout>` | — (slots) | `sw-layout-modo` | Armazón de 3 zonas: splits arrastrables y colapso a cajón |
@@ -53,7 +53,7 @@ demás usan `crearComponente`. Cada uno de los seis debe llamar
 
 ```
 sw-app
-├── sw-nav ── sw-auth · sw-doc-actions · is-theme-toggle
+├── sw-nav ── sw-auth · sw-doc-actions · iswc-theme-toggle
 ├── sw-info
 ├── sw-server
 └── sw-tag-group *
@@ -71,12 +71,12 @@ bloque de abajo **al abrir**, no al pintar la lista.
 ```
 sw-minidoc
 └── sw-layout                    ← splits arrastrables + cajones en pantalla estrecha
-    ├── slot cabecera ── is-icon · is-input · sw-auth · sw-doc-actions · sw-driver-switch · is-theme-toggle
+    ├── slot cabecera ── iswc-icon · iswc-input · sw-auth · sw-doc-actions · sw-driver-switch · iswc-theme-toggle
     ├── slot inicio (índice) ── sw-method *
     ├── slot centro ── sw-minidoc-view
     │   ├── sw-method · sw-path
     │   ├── (parámetros por sitio: path, query, header, cookie)
-    │   └── sw-json | sw-try (en is-dialog, al pulsar «Probar»)
+    │   └── sw-json | sw-try (en iswc-dialog, al pulsar «Probar»)
     └── slot fin ── sw-minidoc-code
         └── sw-json  ← cURL arriba, respuesta del código activo abajo
 ```
@@ -93,16 +93,16 @@ Lo que estos componentes **no** deben pintar a mano, porque el kit lo trae:
 
 | Necesidad | Tag del kit |
 | --- | --- |
-| Botón, menú, copiar | `<is-button>`, `<is-dropdown>`, `<is-copy-button>` |
-| Chip / etiqueta | `<is-tag>` |
-| Aviso, tarjeta, desplegable | `<is-callout>`, `<is-card>`, `<is-details>` |
-| Diálogo | `<is-dialog>` |
-| Campo, área, selector, casilla | `<is-input>`, `<is-textarea>`, `<is-select>`, `<is-checkbox>` |
-| Icono | `<is-icon icon="mdi:…">` |
-| Carga | `<is-spinner>`, `<is-skeleton>` |
-| Notificación | `<is-toast>` (vía `avisar()`) |
-| Fecha, bytes, número, tiempo relativo | `<is-format-date>`, `<is-format-bytes>`, `<is-format-number>`, `<is-relative-time>` |
-| Tema | `<is-theme-toggle>` |
+| Botón, menú, copiar | `<iswc-button>`, `<iswc-dropdown>`, `<iswc-copy-button>` |
+| Chip / etiqueta | `<iswc-tag>` |
+| Aviso, tarjeta, desplegable | `<iswc-callout>`, `<iswc-card>`, `<iswc-details>` |
+| Diálogo | `<iswc-dialog>` |
+| Campo, área, selector, casilla | `<iswc-input>`, `<iswc-textarea>`, `<iswc-select>`, `<iswc-checkbox>` |
+| Icono | `<iswc-icon icon="mdi:…">` |
+| Carga | `<iswc-spinner>`, `<is-skeleton>` |
+| Notificación | `<iswc-toast>` (vía `avisar()`) |
+| Fecha, bytes, número, tiempo relativo | `<iswc-format-date>`, `<iswc-format-bytes>`, `<iswc-format-number>`, `<iswc-relative-time>` |
+| Tema | `<iswc-theme-toggle>` |
 
 Dependencia interna: `_shared.ts` y nada más.
 
@@ -137,7 +137,7 @@ Los transversales están en [`../LLM.md`](../LLM.md). Los propios de esta capa:
 - **`sw-try` repintando entero** — le quitaba el foco al campo en cada tecla.
   Por eso reparte el repintado en zonas (URL, aviso, resultado).
 - **`sw-try` cuerpo `"null"` / picker MIME** — ver raíz `LLM.md` errores 17–18.
-  `<is-file-input multiple>` sin `accept=`. No `type="file"` nativo.
+  `<iswc-file-input multiple>` sin `accept=`. No `type="file"` nativo.
 - **`sw-nav` repintando con cada tecla** — la búsqueda la escribe el usuario en
   ese mismo shadow. Ignora el cambio de `query` cuando viene solo.
 - **`sw-operation` montando todo al pintar la lista** — doscientos endpoints,
@@ -147,7 +147,7 @@ Los transversales están en [`../LLM.md`](../LLM.md). Los propios de esta capa:
   **OpenAPI 3** y **Postman** como descargas (conversión local). Guardián:
   `tests/invariantes.test.ts`.
 - **Barras de pestañas a mano** (`sw-nav` secciones, `sw-operation` pestañas) —
-  deuda conocida frente a `<is-tab-group>`, con su motivo en
+  deuda conocida frente a `<iswc-tab-group>`, con su motivo en
   [`../../LLM.md`](../../LLM.md). No es permiso para añadir una tercera.
 - **Títulos del índice minidoc en 2+ líneas** — el panel es estrecho; `.op-nombre`
   debe ser **una línea** con `overflow: hidden; text-overflow: ellipsis;

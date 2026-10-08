@@ -125,28 +125,28 @@ class SwAuth extends HTMLElement {
       <div class="auth">
         ${activa
           ? html`
-              <is-dropdown class="menu">
-                <is-button slot="trigger" variant="outlined" color="success" with-caret>
-                  <is-icon slot="start" icon="mdi:account-check-outline"></is-icon>
+              <iswc-dropdown class="menu">
+                <iswc-button slot="trigger" variant="outlined" color="success" with-caret>
+                  <iswc-icon slot="start" icon="mdi:account-check-outline"></iswc-icon>
                   ${sessionLabel(session)}
-                </is-button>
-                <is-dropdown-item onclick=${() => this.abrirLogin()}>Cambiar sesión</is-dropdown-item>
-                <is-dropdown-item color="danger" onclick=${() => this.#salir()}>Cerrar sesión</is-dropdown-item>
-              </is-dropdown>
+                </iswc-button>
+                <iswc-dropdown-item onclick=${() => this.abrirLogin()}>Cambiar sesión</iswc-dropdown-item>
+                <iswc-dropdown-item color="danger" onclick=${() => this.#salir()}>Cerrar sesión</iswc-dropdown-item>
+              </iswc-dropdown>
             `
           : html`
-              <is-button variant="outlined" color="neutral" onis-click=${() => this.abrirLogin()}>
-                <is-icon slot="start" icon="mdi:login-variant"></is-icon>
+              <iswc-button variant="outlined" color="neutral" oniswc-click=${() => this.abrirLogin()}>
+                <iswc-icon slot="start" icon="mdi:login-variant"></iswc-icon>
                 Iniciar sesión
-              </is-button>
+              </iswc-button>
             `}
 
-        <is-dialog class="dialogo" label="Sesión para probar endpoints">
+        <iswc-dialog class="dialogo" label="Sesión para probar endpoints">
           ${this.#error
             ? html`
-                <is-callout color="danger" variant="filled-outlined" icon="mdi:alert-outline">
+                <iswc-callout color="danger" variant="filled-outlined" icon="mdi:alert-outline">
                   <pre class="error">${this.#error}</pre>
-                </is-callout>
+                </iswc-callout>
               `
             : null}
 
@@ -161,15 +161,15 @@ class SwAuth extends HTMLElement {
               void this.#entrar(usuario, clave, recordar);
             }}
           >
-            <is-input
+            <iswc-input
               id="usuario"
               full-width
               label="Usuario o correo"
               autocomplete="username"
               value="${guardadas.username}"
               ${this.#ocupado ? 'disabled' : ''}
-            ></is-input>
-            <is-input
+            ></iswc-input>
+            <iswc-input
               id="clave"
               type="password"
               full-width
@@ -178,46 +178,46 @@ class SwAuth extends HTMLElement {
               autocomplete="current-password"
               value="${guardadas.password}"
               ${this.#ocupado ? 'disabled' : ''}
-            ></is-input>
-            <is-checkbox id="recordar" ${guardadas.remember ? 'checked' : ''}>
+            ></iswc-input>
+            <iswc-checkbox id="recordar" ${guardadas.remember ? 'checked' : ''}>
               Recordar en este equipo
-            </is-checkbox>
+            </iswc-checkbox>
             <p class="nota">
               El token vive solo en esta pestaña. «Recordar» guarda las credenciales
               ofuscadas en este navegador; no lo actives en un equipo compartido.
             </p>
-            <is-button type="submit" color="brand" ${this.#ocupado ? 'loading' : ''}>Entrar</is-button>
+            <iswc-button type="submit" color="brand" ${this.#ocupado ? 'loading' : ''}>Entrar</iswc-button>
           </form>
 
-          <is-divider></is-divider>
+          <iswc-divider></iswc-divider>
 
           <div class="pegar">
-            <is-input
+            <iswc-input
               id="token"
               full-width
               label="…o pega un JWT"
               placeholder="eyJhbGciOi…"
               spellcheck="false"
-            ></is-input>
-            <is-button
+            ></iswc-input>
+            <iswc-button
               variant="outlined"
               color="neutral"
-              onis-click=${() =>
+              oniswc-click=${() =>
                 this.#pegarToken((this.#root.querySelector('#token') as HTMLInputElement | null)?.value ?? '')}
             >
               Usar token
-            </is-button>
+            </iswc-button>
           </div>
-        </is-dialog>
+        </iswc-dialog>
       </div>
     `);
 
     this.#dialogo = this.#root.querySelector('.dialogo');
-    // `is-button type=submit` vive en Shadow DOM: el submit nativo no cruza,
+    // `iswc-button type=submit` vive en Shadow DOM: el submit nativo no cruza,
     // hay que pedirlo explícitamente (error conocido del kit).
-    const enviar = this.#root.querySelector('is-button[type="submit"]');
+    const enviar = this.#root.querySelector('iswc-button[type="submit"]');
     const form = this.#root.querySelector('form');
-    enviar?.addEventListener('is-click', () => form?.requestSubmit());
+    enviar?.addEventListener('iswc-click', () => form?.requestSubmit());
 
     adoptCss(this.#root, import.meta.url, 'sw-auth');
   }

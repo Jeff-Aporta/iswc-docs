@@ -6,9 +6,9 @@
   <title>IS-Swagger · Documentación</title>
   <meta name="description" content="Visor de APIs de InSoft: documenta, prueba y comparte sin instalar nada.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
   <link rel="stylesheet" href="../styles/hero.css">
 </head>
@@ -29,14 +29,14 @@
           sin exportar colecciones, sin mantener un segundo catálogo en paralelo.
         </p>
         <div class="hero__acciones">
-          <is-button color="brand" data-ir-a="empezar">
-            <is-icon slot="start" icon="mdi:rocket-launch-outline"></is-icon>
+          <iswc-button color="brand" data-ir-a="empezar">
+            <iswc-icon slot="start" icon="mdi:rocket-launch-outline"></iswc-icon>
             Empezar
-          </is-button>
-          <is-button variant="outlined" color="neutral" data-ir-a="comparativa">
-            <is-icon slot="start" icon="mdi:compare-horizontal"></is-icon>
+          </iswc-button>
+          <iswc-button variant="outlined" color="neutral" data-ir-a="comparativa">
+            <iswc-icon slot="start" icon="mdi:compare-horizontal"></iswc-icon>
             Frente a Postman
-          </is-button>
+          </iswc-button>
         </div>
       </div>
 
@@ -66,7 +66,7 @@
       <h2>Qué hace, en una frase por pieza</h2>
       <div class="rejilla">
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:link-variant"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:link-variant"></iswc-icon>
           <h3 class="tarjeta__titulo">Se conecta con un enlace</h3>
           <p>
             <code>?conn=</code> lleva la base de la API dentro del propio
@@ -74,7 +74,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:play-circle-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:play-circle-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Prueba en el sitio</h3>
           <p>
             Cada endpoint trae sus parámetros, su cuerpo de ejemplo y un botón.
@@ -82,7 +82,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:shield-key-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:shield-key-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Respeta la sesión</h3>
           <p>
             Login contra el orquestador o un JWT pegado a mano. El token vive en
@@ -90,7 +90,7 @@
           </p>
         </article>
         <article class="tarjeta">
-          <is-icon class="tarjeta__icono" icon="mdi:share-variant-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:share-variant-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Se comparte por URL</h3>
           <p>
             Sección, endpoint abierto, pestaña y búsqueda viajan en la query.
@@ -133,32 +133,32 @@
       <h2>Por dónde seguir</h2>
       <div class="rejilla">
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="porque">
-          <is-icon class="tarjeta__icono" icon="mdi:help-circle-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:help-circle-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Por qué existe</h3>
           <p>El problema real: documentación que se desincroniza del código.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="comparativa">
-          <is-icon class="tarjeta__icono" icon="mdi:compare-horizontal"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:compare-horizontal"></iswc-icon>
           <h3 class="tarjeta__titulo">Frente a Postman</h3>
           <p>Qué gana y qué pierde comparado con Postman y con Swagger UI.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="arquitectura">
-          <is-icon class="tarjeta__icono" icon="mdi:sitemap-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:sitemap-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Arquitectura</h3>
           <p>Cómo viaja un dato desde el backend hasta la tarjeta que se pinta.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="estrategias">
-          <is-icon class="tarjeta__icono" icon="mdi:chess-knight"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:chess-knight"></iswc-icon>
           <h3 class="tarjeta__titulo">Estrategias</h3>
           <p>Las decisiones que sostienen el proyecto y el porqué de cada una.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-app">
-          <is-icon class="tarjeta__icono" icon="mdi:application-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:application-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Verlo funcionando</h3>
           <p>El visor completo, con una API de muestra que responde de verdad.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="empezar">
-          <is-icon class="tarjeta__icono" icon="mdi:rocket-launch-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:rocket-launch-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Empezar</h3>
           <p>Conectar tu API, embeberlo en un host o levantarlo en local.</p>
         </button>

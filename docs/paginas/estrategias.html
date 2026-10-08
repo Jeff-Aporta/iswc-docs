@@ -6,9 +6,9 @@
   <title>Estrategias · IS-Swagger</title>
   <meta name="description" content="Las decisiones de diseño del visor y el error concreto que enseñó cada una.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
 <body>
@@ -52,7 +52,7 @@
       <div class="contraste">
         <div class="contraste__lado contraste__lado--antes">
           <h3 class="contraste__titulo">
-            <is-icon icon="mdi:close-circle-outline"></is-icon>
+            <iswc-icon icon="mdi:close-circle-outline"></iswc-icon>
             Estado repartido
           </h3>
           <ul>
@@ -63,7 +63,7 @@
         </div>
         <div class="contraste__lado contraste__lado--despues">
           <h3 class="contraste__titulo">
-            <is-icon icon="mdi:check-circle-outline"></is-icon>
+            <iswc-icon icon="mdi:check-circle-outline"></iswc-icon>
             Dueño único
           </h3>
           <ul>
@@ -136,7 +136,7 @@
         <code>&lt;link&gt;</code>.
       </p>
       <div class="diagrama">
-        <is-flowchart open-on-click>
+        <iswc-flowchart open-on-click>
           <script type="application/json">
             {
               "flowchart": {
@@ -171,7 +171,7 @@
               }
             }
           </script>
-        </is-flowchart>
+        </iswc-flowchart>
         <p class="diagrama__pie">
           El primer intento fue conservar el <code>&lt;link&gt;</code> a través del
           vaciado. No bastaba, porque el problema no era que se borrara: era que
@@ -279,12 +279,12 @@
       </p>
       <div class="rejilla">
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="arquitectura">
-          <is-icon class="tarjeta__icono" icon="mdi:sitemap-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:sitemap-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Arquitectura</h3>
           <p>Dónde vive cada capa y cómo se comunican.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="empezar">
-          <is-icon class="tarjeta__icono" icon="mdi:rocket-launch-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:rocket-launch-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Empezar</h3>
           <p>Conectar tu API, embeberlo o levantarlo en local.</p>
         </button>

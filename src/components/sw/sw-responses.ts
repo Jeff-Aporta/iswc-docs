@@ -30,9 +30,9 @@ const SwResponses = crearComponente<Props>(
     const entradas = Object.entries(responses ?? {});
     if (!entradas.length) {
       root.append(html`
-        <is-callout color="neutral" variant="plain" icon="mdi:reply-outline">
+        <iswc-callout color="neutral" variant="plain" icon="mdi:reply-outline">
           La operación no declara respuestas.
-        </is-callout>
+        </iswc-callout>
       `);
       return;
     }
@@ -45,9 +45,9 @@ const SwResponses = crearComponente<Props>(
           const esSchema = !!resp?.content && extractJsonExample(Object.values(resp.content)[0]) === undefined;
 
           return html`
-            <is-details class="respuesta" variant="outlined" data-code="${code}">
+            <iswc-details class="respuesta" variant="outlined" data-code="${code}">
               <div slot="summary" class="resumen">
-                <is-tag color="${color}" variant="filled-outlined" class="codigo">${code}</is-tag>
+                <iswc-tag color="${color}" variant="filled-outlined" class="codigo">${code}</iswc-tag>
                 <span class="descripcion">${resp?.description ?? ''}</span>
               </div>
               ${cuerpo
@@ -62,7 +62,7 @@ const SwResponses = crearComponente<Props>(
                     </div>
                   `
                 : html`<p class="sin-cuerpo">Sin cuerpo declarado.</p>`}
-            </is-details>
+            </iswc-details>
           `;
         })}
       </div>

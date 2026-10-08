@@ -8,13 +8,13 @@
  * Postman: la description de cada request usa `x-iss-doc-md` convertido —
  * diagramas `is-*` → PNG transparente en `<img src="data:…">`, `<is-code>` → fences.
  */
-export interface SwFormatoExport {
+export type SwFormatoExport = {
     id: string;
     label: string;
     icon: string;
     filename: string;
     build(): string | Promise<string>;
-}
+};
 /** OpenAPI 3.0 portable a partir del SwSpec interno del visor. */
 export declare function toOpenApi30(spec: SwSpec): Record<string, unknown>;
 /**

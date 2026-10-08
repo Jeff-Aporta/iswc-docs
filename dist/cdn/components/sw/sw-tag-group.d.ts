@@ -6,7 +6,7 @@
  */
 import type { SwOpTab } from '../../js/url-state.js';
 import './sw-operation.js';
-interface Props {
+type Props = {
     group: SwGrupo | null;
     spec: SwSpec | null;
     serverBase: string;
@@ -15,7 +15,7 @@ interface Props {
     /** `operationId` de la operación abierta, o vacío. */
     opAbierta: string;
     opTab: SwOpTab;
-}
+};
 declare class SwTagGroup extends HTMLElement {
     #private;
     constructor();

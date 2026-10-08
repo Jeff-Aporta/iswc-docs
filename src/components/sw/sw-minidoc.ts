@@ -258,7 +258,7 @@ class SwMinidoc extends HTMLElement {
     const ruta = String(o.path || '');
     const requiereJwt = this.#auth.enabled && operationRequiresBearer(o, this.#spec);
     const candado = requiereJwt
-      ? html`<is-icon class="op-lock" icon="mdi:lock" title="Requiere JWT" aria-label="Requiere JWT"></is-icon>`
+      ? html`<iswc-icon class="op-lock" icon="mdi:lock" title="Requiere JWT" aria-label="Requiere JWT"></iswc-icon>`
       : html`<span class="op-lock op-lock--vacio" aria-hidden="true"></span>`;
     return html`
       <button
@@ -307,7 +307,7 @@ class SwMinidoc extends HTMLElement {
     this.#codigoNodo = null;
 
     if (this.#estado === 'cargando') {
-      this.#root.append(html`<div class="centrado"><is-spinner></is-spinner></div>`);
+      this.#root.append(html`<div class="centrado"><iswc-spinner></iswc-spinner></div>`);
       adoptCss(this.#root, import.meta.url, 'sw-minidoc');
       return;
     }
@@ -315,10 +315,10 @@ class SwMinidoc extends HTMLElement {
     if (this.#estado === 'error') {
       this.#root.append(html`
         <div class="centrado">
-          <is-callout color="danger" variant="outlined">
+          <iswc-callout color="danger" variant="outlined">
             <strong>No se pudo cargar la documentación.</strong>
             <p>${this.#error}</p>
-          </is-callout>
+          </iswc-callout>
         </div>
       `);
       adoptCss(this.#root, import.meta.url, 'sw-minidoc');
@@ -344,22 +344,22 @@ class SwMinidoc extends HTMLElement {
       <sw-layout>
         <div slot="cabecera" class="cabecera">
           <button type="button" class="marca" aria-label="Ir al inicio" title="Ir al inicio" onclick=${() => this.#irHome()}>
-            <is-icon class="marca-logo" icon="${iconoMarca}"></is-icon>
+            <iswc-icon class="marca-logo" icon="${iconoMarca}"></iswc-icon>
             <span class="marca-texto">${titulo}</span>
           </button>
-          <is-input
+          <iswc-input
             class="buscar"
             type="search"
             placeholder="Buscar endpoint…"
-            onis-input=${(e: Event) => {
+            oniswc-input=${(e: Event) => {
               this.#query = String((e.target as HTMLInputElement).value ?? '');
               this.#pintarIndice();
             }}
-          ></is-input>
+          ></iswc-input>
           ${autenticacion}
           ${docAcciones}
           <sw-driver-switch></sw-driver-switch>
-          <is-theme-toggle></is-theme-toggle>
+          <iswc-theme-toggle></iswc-theme-toggle>
         </div>
 
         <nav slot="inicio" class="indice" aria-label="Índice de endpoints"></nav>

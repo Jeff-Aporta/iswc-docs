@@ -10,18 +10,18 @@
        estático y el valor guardado en localStorage. -->
   <script src="preview-boot.js"></script>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
 
   <link rel="stylesheet" href="styles/shell.css">
 </head>
 <body>
   <header class="shell-bar">
-    <is-button class="shell-bar__menu" id="btnMenu" color="neutral" variant="plain" pill type="button"
+    <iswc-button class="shell-bar__menu" id="btnMenu" color="neutral" variant="plain" pill type="button"
                aria-label="Abrir el índice" aria-expanded="false" aria-controls="nav">
-      <is-icon slot="start" icon="mdi:menu"></is-icon>
-    </is-button>
+      <iswc-icon slot="start" icon="mdi:menu"></iswc-icon>
+    </iswc-button>
 
     <button type="button" class="marca" id="btnInicio" aria-label="IS-Swagger — volver al inicio">
       <span>IS-Swagger</span><span class="marca__acento">2</span>
@@ -29,12 +29,12 @@
     </button>
 
     <div class="shell-bar__fin">
-      <is-palette-selector id="paleta" aria-label="Elegir paleta" storage-key="is-palette"></is-palette-selector>
-      <is-button id="btnPantallaCompleta" color="neutral" variant="plain" pill type="button"
+      <iswc-palette-selector id="paleta" aria-label="Elegir paleta" storage-key="is-palette"></iswc-palette-selector>
+      <iswc-button id="btnPantallaCompleta" color="neutral" variant="plain" pill type="button"
                  aria-label="Abrir esta página en pantalla completa" title="Abrir en pantalla completa">
-        <is-icon slot="start" icon="mdi:open-in-new"></is-icon>
-      </is-button>
-      <is-theme-toggle id="tema" dark="true"></is-theme-toggle>
+        <iswc-icon slot="start" icon="mdi:open-in-new"></iswc-icon>
+      </iswc-button>
+      <iswc-theme-toggle id="tema" dark="true"></iswc-theme-toggle>
     </div>
   </header>
 
@@ -107,7 +107,7 @@
       btn.dataset.tag = entrada.tag;
 
       if (entrada.icon) {
-        const icono = document.createElement('is-icon');
+        const icono = document.createElement('iswc-icon');
         icono.className = 'shell-nav__icono';
         icono.setAttribute('icon', entrada.icon);
         btn.append(icono);
@@ -245,9 +245,9 @@
       pintar();
     });
 
-    // <is-palette-selector> ya aplica data-palette y persiste; aquí solo se
+    // <iswc-palette-selector> ya aplica data-palette y persiste; aquí solo se
     // sincroniza el iframe, que no ve el <html> del shell.
-    selectorPaleta.addEventListener('is-palette-change', (e) => {
+    selectorPaleta.addEventListener('iswc-palette-change', (e) => {
       paleta = PALETAS.has(e.detail?.value) ? e.detail.value : 'contapyme';
       pintar();
     });
@@ -259,7 +259,7 @@
     // Las páginas piden navegación con el mismo mensaje que usa el kit.
     window.addEventListener('message', (e) => {
       if (e.origin !== location.origin) return;
-      if (e.data?.type === 'is-select' && typeof e.data.tag === 'string') seleccionar(e.data.tag);
+      if (e.data?.type === 'iswc-select' && typeof e.data.tag === 'string') seleccionar(e.data.tag);
     });
 
     marco.src = srcPagina(actual.page);

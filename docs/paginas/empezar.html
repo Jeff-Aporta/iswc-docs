@@ -6,9 +6,9 @@
   <title>Empezar · IS-Swagger</title>
   <meta name="description" content="Conectar tu API con ?conn=, embeber el visor en un host o levantarlo en local.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
 <body>
@@ -128,9 +128,9 @@ const b64url = (obj) =&gt; btoa(
         el tag.
       </p>
       <pre><code>&lt;!-- Tokens del kit is-* --&gt;
-&lt;link rel="stylesheet" href="…/is-webcomponents@main/dist/cdn/is-base.min.css"&gt;
-&lt;link rel="stylesheet" href="…/is-webcomponents@main/dist/cdn/palettes.min.css"&gt;
-&lt;script type="module" src="…/is-webcomponents@main/dist/cdn/all.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="…/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css"&gt;
+&lt;link rel="stylesheet" href="…/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css"&gt;
+&lt;script type="module" src="…/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"&gt;&lt;/script&gt;
 
 &lt;!-- Tema antes del primer pintado --&gt;
 &lt;script src="…/isc-swagger/dist/cdn/boot.js"&gt;&lt;/script&gt;
@@ -142,7 +142,7 @@ const b64url = (obj) =&gt; btoa(
 &lt;/script&gt;
 
 &lt;sw-app&gt;&lt;/sw-app&gt;
-&lt;is-toast placement="bottom-end"&gt;&lt;/is-toast&gt;
+&lt;iswc-toast placement="bottom-end"&gt;&lt;/iswc-toast&gt;
 
 &lt;!-- Los dieciséis componentes en un módulo --&gt;
 &lt;script type="module" src="…/isc-swagger/dist/cdn/sw.all.js"&gt;&lt;/script&gt;</code></pre>
@@ -242,17 +242,17 @@ import './sw-x.js';</code></pre>
       <h2>Verlo funcionando</h2>
       <div class="rejilla">
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-app">
-          <is-icon class="tarjeta__icono" icon="mdi:application-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:application-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">El visor completo</h3>
           <p>Con secciones, subgrupos y una API que responde.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-try">
-          <is-icon class="tarjeta__icono" icon="mdi:play-circle-outline"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:play-circle-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Probar un endpoint</h3>
           <p>El panel de peticiones, disparando contra un eco público.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="estrategias">
-          <is-icon class="tarjeta__icono" icon="mdi:chess-knight"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:chess-knight"></iswc-icon>
           <h3 class="tarjeta__titulo">Las reglas del proyecto</h3>
           <p>Léelas antes de tocar código: son contrato, no sugerencia.</p>
         </button>

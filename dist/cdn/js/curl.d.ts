@@ -10,12 +10,12 @@
  */
 /** Valor de muestra de un parámetro: el declarado, si no el default, si no el tipo. */
 export declare function ejemploDeParam(p: SwParam): string;
-export interface MuestraCurl {
+export type MuestraCurl = {
     /** Comando completo, ya partido en líneas con `\` de continuación. */
     texto: string;
     /** Cada línea suelta, para pintarla con resaltado sin volver a partir el texto. */
     lineas: string[];
-}
+};
 /**
  * Comando cURL de la operación contra `serverBase`.
  *

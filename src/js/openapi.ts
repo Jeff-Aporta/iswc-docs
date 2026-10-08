@@ -286,7 +286,7 @@ export const METHOD_COLOR: Record<string, string> = {
   put: 'warning',
   patch: 'brand',
   delete: 'danger',
-  // Teal propio en sw-method.css / sw-operation.css (el enum is-tag no trae cyan).
+  // Teal propio en sw-method.css / sw-operation.css (el enum iswc-tag no trae cyan).
   query: 'neutral',
   options: 'neutral',
   head: 'neutral',

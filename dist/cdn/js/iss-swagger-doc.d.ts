@@ -5,12 +5,12 @@
  */
 export declare const ISS_SWAGGER_METHODS: readonly ["get", "post", "put", "patch", "delete", "query", "options", "head"];
 export type IssSwaggerMethod = (typeof ISS_SWAGGER_METHODS)[number];
-export interface IssSwaggerInfo {
+export type IssSwaggerInfo = {
     title: string;
     description?: string;
     version?: string;
-}
-export interface IssSwaggerOp {
+};
+export type IssSwaggerOp = {
     summary?: string;
     description?: string;
     tags?: string[];
@@ -18,20 +18,20 @@ export interface IssSwaggerOp {
     doc?: string;
     security?: string;
     [k: string]: unknown;
-}
-export interface IssSwaggerMetaFile {
+};
+export type IssSwaggerMetaFile = {
     kind: 'meta';
     version: number;
     info: IssSwaggerInfo;
     viewer?: Record<string, unknown>;
     [k: string]: unknown;
-}
-export interface IssSwaggerPathsFile {
+};
+export type IssSwaggerPathsFile = {
     kind: 'paths';
     version: number;
     paths: Record<string, Partial<Record<IssSwaggerMethod, IssSwaggerOp>>>;
-}
-export interface IssSwaggerCatalog {
+};
+export type IssSwaggerCatalog = {
     schemas?: Record<string, Record<string, unknown>>;
     payloads?: Record<string, unknown>;
     requestBodies?: Record<string, unknown>;
@@ -45,16 +45,16 @@ export interface IssSwaggerCatalog {
     tryitAttachments?: {
         templates?: Record<string, unknown>;
     };
-}
+};
 /** Fichero en disco `swagger__config.json`: catálogo, sin paths. */
-export interface IssSwaggerCatalogFile {
+export type IssSwaggerCatalogFile = {
     kind: 'config';
     version: number;
     catalog: IssSwaggerCatalog;
     paths?: never;
-}
+};
 /** Documento unido que el visor descarga (handler, no operación del índice). */
-export interface InsoftConfig {
+export type InsoftConfig = {
     kind: string;
     version: number;
     info?: IssSwaggerInfo;
@@ -66,16 +66,16 @@ export interface InsoftConfig {
     paths?: Record<string, Record<string, unknown>>;
     docs?: Record<string, string>;
     catalog?: IssSwaggerCatalog;
-}
+};
 export type InsoftCatalog = IssSwaggerCatalog;
-export interface IssSwaggerGeneralFile {
+export type IssSwaggerGeneralFile = {
     kind: 'general';
     version: number;
     titulo?: string;
     resumen?: string;
     secciones?: unknown[];
     [k: string]: unknown;
-}
+};
 export declare function assertIssSwaggerMeta(doc: unknown): string[];
 export declare function assertIssSwaggerPaths(doc: unknown): string[];
 export declare function assertIssSwaggerCatalogFile(doc: unknown): string[];

@@ -6,9 +6,9 @@
   <title>Por qué existe · IS-Swagger</title>
   <meta name="description" content="El problema que resuelve IS-Swagger: la documentación de API que se desincroniza del código.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
 <body>
@@ -50,7 +50,7 @@
     <section class="seccion">
       <h2>Dónde se rompe la cadena</h2>
       <div class="diagrama">
-        <is-flowchart open-on-click>
+        <iswc-flowchart open-on-click>
           <script type="application/json">
             {
               "flowchart": {
@@ -85,7 +85,7 @@
               }
             }
           </script>
-        </is-flowchart>
+        </iswc-flowchart>
         <p class="diagrama__pie">
           Tres pasos manuales entre el cambio y quien lo consume. Cada uno se
           puede olvidar sin que ningún proceso avise.
@@ -109,7 +109,7 @@
       <div class="contraste">
         <div class="contraste__lado contraste__lado--antes">
           <h3 class="contraste__titulo">
-            <is-icon icon="mdi:close-circle-outline"></is-icon>
+            <iswc-icon icon="mdi:close-circle-outline"></iswc-icon>
             Catálogo mantenido a mano
           </h3>
           <ul>
@@ -121,7 +121,7 @@
         </div>
         <div class="contraste__lado contraste__lado--despues">
           <h3 class="contraste__titulo">
-            <is-icon icon="mdi:check-circle-outline"></is-icon>
+            <iswc-icon icon="mdi:check-circle-outline"></iswc-icon>
             Servido por el propio backend
           </h3>
           <ul>
@@ -173,12 +173,12 @@
       </p>
       <div class="rejilla">
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="comparativa">
-          <is-icon class="tarjeta__icono" icon="mdi:compare-horizontal"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:compare-horizontal"></iswc-icon>
           <h3 class="tarjeta__titulo">Comparativa completa</h3>
           <p>Frente a Postman y frente a Swagger UI, criterio por criterio.</p>
         </button>
         <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="estrategias">
-          <is-icon class="tarjeta__icono" icon="mdi:chess-knight"></is-icon>
+          <iswc-icon class="tarjeta__icono" icon="mdi:chess-knight"></iswc-icon>
           <h3 class="tarjeta__titulo">Las decisiones</h3>
           <p>Qué se eligió, qué se descartó y qué error enseñó cada regla.</p>
         </button>

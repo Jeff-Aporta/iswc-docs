@@ -12,8 +12,8 @@
  * pintado de ese shadow. El navegador pinta los hijos sin estilos y los vuelve
  * a pintar cuando resuelve la hoja — también si viene del caché HTTP, porque
  * cargar un `<link>` nunca es síncrono. Con un shadow root eso no se nota; al
- * cambiar de sección se destruyen y recrean decenas (cada `is-icon`,
- * `is-details`, `is-button`, `is-tag` de la lista) y se ve la vista entera
+ * cambiar de sección se destruyen y recrean decenas (cada `iswc-icon`,
+ * `iswc-details`, `iswc-button`, `iswc-tag` de la lista) y se ve la vista entera
  * desordenarse durante un frame y recolocarse. Es el flicker que se reporta.
  *
  * El kit `is-*` enlaza dos hojas por componente (`scrollbars.css` y la suya) y

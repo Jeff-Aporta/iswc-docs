@@ -253,22 +253,22 @@ function journey2mmd(j) {
 }
 
 const TRADUCTORES = {
-  'is-sequence-diagram': (doc) => sequence2mmd(doc.sequence),
-  'is-flowchart': (doc) => flowchart2mmd(doc.flowchart),
-  'is-state-diagram': (doc) => state2mmd(doc.stateDiagram),
-  'is-er-diagram': (doc) => er2mmd(doc.erDiagram),
-  'is-class-diagram': (doc) => class2mmd(doc.classDiagram),
-  'is-gantt': (doc) => gantt2mmd(doc.gantt),
-  'is-timeline': (doc) => timeline2mmd(doc.timeline),
-  'is-mindmap': (doc) => mindmap2mmd(doc.mindmap),
-  'is-sankey-diagram': (doc) => sankey2mmd(doc.sankey),
-  'is-quadrant-chart': (doc) => quadrant2mmd(doc.quadrant),
-  'is-block-diagram': (doc) => block2mmd(doc.blockDiagram),
-  'is-component-diagram': (doc) => component2mmd(doc.componentDiagram),
-  'is-use-case-diagram': (doc) => useCase2mmd(doc.useCase),
-  'is-swimlane-diagram': (doc) => swimlane2mmd(doc.swimlane),
-  'is-journey-map': (doc) => journey2mmd(doc.journey),
-  // is-venn-diagram: Mermaid no tiene diagrama de Venn. Se queda el PNG.
+  'iswc-sequence-diagram': (doc) => sequence2mmd(doc.sequence),
+  'iswc-flowchart': (doc) => flowchart2mmd(doc.flowchart),
+  'iswc-state-diagram': (doc) => state2mmd(doc.stateDiagram),
+  'iswc-er-diagram': (doc) => er2mmd(doc.erDiagram),
+  'iswc-class-diagram': (doc) => class2mmd(doc.classDiagram),
+  'iswc-gantt': (doc) => gantt2mmd(doc.gantt),
+  'iswc-timeline': (doc) => timeline2mmd(doc.timeline),
+  'iswc-mindmap': (doc) => mindmap2mmd(doc.mindmap),
+  'iswc-sankey-diagram': (doc) => sankey2mmd(doc.sankey),
+  'iswc-quadrant-chart': (doc) => quadrant2mmd(doc.quadrant),
+  'iswc-block-diagram': (doc) => block2mmd(doc.blockDiagram),
+  'iswc-component-diagram': (doc) => component2mmd(doc.componentDiagram),
+  'iswc-use-case-diagram': (doc) => useCase2mmd(doc.useCase),
+  'iswc-swimlane-diagram': (doc) => swimlane2mmd(doc.swimlane),
+  'iswc-journey-map': (doc) => journey2mmd(doc.journey),
+  // iswc-venn-diagram: Mermaid no tiene diagrama de Venn. Se queda el PNG.
 };
 
 /** Documento `<TK>-diagrama.json` (cualquier motor) → fuente Mermaid, o ''. */

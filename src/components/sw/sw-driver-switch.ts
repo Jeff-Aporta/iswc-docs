@@ -22,20 +22,20 @@ const SwDriverSwitch = crearComponente<Props>(
   (root, { value }, host) => {
     const activo = value || readDriver();
     root.append(html`
-      <is-select
+      <iswc-select
         class="selector"
         size="small"
         value="${activo}"
         title="${driverMeta(activo).detalle}"
         aria-label="Presentación de la documentación"
-        onis-change=${(e: Event) => {
+        oniswc-change=${(e: Event) => {
           const elegido = String((e.target as HTMLInputElement).value ?? '');
           writeDriver(elegido);
           emitir(host, 'sw-driver-change', { driver: driverMeta(elegido).id });
         }}
       >
-        ${DRIVERS.map((d) => html`<is-option value="${d.id}" title="${d.detalle}">${d.label}</is-option>`)}
-      </is-select>
+        ${DRIVERS.map((d) => html`<iswc-option value="${d.id}" title="${d.detalle}">${d.label}</iswc-option>`)}
+      </iswc-select>
     `);
   },
   { value: '' },

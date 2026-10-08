@@ -81,7 +81,7 @@
   opacity: 0.72;
   text-transform: uppercase;
 
-  is-icon {
+  iswc-icon {
     color: var(--is-accent, #1a6eb0);
     opacity: 0.85;
   }

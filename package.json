@@ -12,7 +12,8 @@
     "dev": "node scripts/build.ts --watch",
     "serve": "npx --yes serve . -l 4190",
     "typecheck": "tsc --noEmit",
-    "test": "npm run build && node --test tests/*.test.ts"
+    "test": "npm run build && node --test tests/*.test.ts",
+    "audit": "python -B ../../../RAG/auditor/auditor.py audit isc-swagger"
   },
   "devDependencies": {
     "@types/jsdom": "^30.0.0",

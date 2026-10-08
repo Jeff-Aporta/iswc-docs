@@ -19,10 +19,10 @@ const SwExport = crearComponente<Props>(
     if (!formatos.length) return;
 
     root.append(html`
-      <is-dropdown
+      <iswc-dropdown
         class="menu"
         placement="bottom-end"
-        onis-select=${(e: Event) => {
+        oniswc-select=${(e: Event) => {
           const item = (e as CustomEvent<{ item: HTMLElement }>).detail?.item;
           const id = item?.getAttribute('value');
           const formato = formatos.find((f) => f.id === id);
@@ -41,18 +41,18 @@ const SwExport = crearComponente<Props>(
           })();
         }}
       >
-        <is-button slot="trigger" variant="plain" color="neutral" aria-label="Descargar documento" title="Descargar documento">
-          <is-icon icon="mdi:download-outline"></is-icon>
-        </is-button>
+        <iswc-button slot="trigger" variant="plain" color="neutral" aria-label="Descargar documento" title="Descargar documento">
+          <iswc-icon icon="mdi:download-outline"></iswc-icon>
+        </iswc-button>
         ${formatos.map(
           (f) => html`
-            <is-dropdown-item value="${f.id}">
-              <is-icon slot="icon" icon="${f.icon}"></is-icon>
+            <iswc-dropdown-item value="${f.id}">
+              <iswc-icon slot="icon" icon="${f.icon}"></iswc-icon>
               ${f.label}
-            </is-dropdown-item>
+            </iswc-dropdown-item>
           `,
         )}
-      </is-dropdown>
+      </iswc-dropdown>
     `);
   },
   { spec: null, config: {} },

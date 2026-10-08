@@ -1,8 +1,8 @@
 /**
- * <sw-json> — bloque de código via `<is-code>` (kit is-webcomponents).
+ * <sw-json> — bloque de código via `<iswc-code>` (kit is-webcomponents).
  *
  * Sin botón de copiar propio: quien embebe (p. ej. `sw-minidoc-code`) pone el
- * `is-copy-button` en la cabecera del panel. Así no quedan dos copys.
+ * `iswc-copy-button` en la cabecera del panel. Así no quedan dos copys.
  *
  * `lang` tipico: `json` (respuestas / body) o `shell`/`curl` (petición cURL).
  */
@@ -13,7 +13,7 @@ type Props = {
   value: string;
   /** Alto máximo antes de hacer scroll interno. */
   maxHeight: string;
-  /** Lenguaje de `<is-code>` (json | shell | curl | …). */
+  /** Lenguaje de `<iswc-code>` (json | shell | curl | …). */
   lang: string;
 };
 
@@ -24,7 +24,7 @@ const SwJson = crearComponente<Props>(
     const idioma = String(lang || 'json').trim() || 'json';
     host.style.setProperty('--sw-json-max', maxHeight || '28rem');
 
-    const code = document.createElement('is-code') as HTMLElement & {
+    const code = document.createElement('iswc-code') as HTMLElement & {
       value?: string;
       lang?: string;
     };

@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>sw-doc-actions · preview</title>
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/preview.css">
 </head>
 <body>
   <main class="preview"></main>
-  <is-toast placement="bottom-end"></is-toast>
+  <iswc-toast placement="bottom-end"></iswc-toast>
 
   <script type="module">
     import '../../dist/cdn/components/sw/sw-doc-actions.js';
@@ -30,11 +30,11 @@
 
     const conSpec = crear('sw-doc-actions', { spec, config: { ns: 'ISA', brand: { title: 'IS-Swagger' } } });
     conSpec.addEventListener('sw-doc-reload', () => {
-      document.querySelector('is-toast')?.toast?.({ message: 'sw-doc-reload', variant: 'brand' })
+      document.querySelector('iswc-toast')?.toast?.({ message: 'sw-doc-reload', variant: 'brand' })
         ?? console.log('sw-doc-reload');
     });
 
-    montar('sw-doc-actions', 'Descarga y recarga juntas en <is-button-group pill>.', [
+    montar('sw-doc-actions', 'Descarga y recarga juntas en <iswc-button-group pill>.', [
       caso('Con documento', 'Pastilla: menú de descarga + icono de actualizar.', conSpec),
       caso('Sin spec', 'Solo el botón de recarga (sin menú de descarga).',
         crear('sw-doc-actions', { spec: null, config: {} })),

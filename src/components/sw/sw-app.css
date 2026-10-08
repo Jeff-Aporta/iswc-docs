@@ -46,7 +46,7 @@
   color: var(--is-text, #e6edf3);
   text-align: center;
 
-  is-spinner { font-size: 2rem; }
+  iswc-spinner { font-size: 2rem; }
 
   p {
     margin: 0;

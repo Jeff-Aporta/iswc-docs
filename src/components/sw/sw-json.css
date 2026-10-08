@@ -1,4 +1,4 @@
-/* sw-json — envoltorio de <is-code> sin copy interno. */
+/* sw-json — envoltorio de <iswc-code> sin copy interno. */
 
 :host {
   display: block;
@@ -16,7 +16,7 @@
 }
 
 .codigo,
-is-code {
+iswc-code {
   display: block;
   width: 100%;
   min-width: 0;

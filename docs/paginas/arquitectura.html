@@ -6,9 +6,9 @@
   <title>Arquitectura · IS-Swagger</title>
   <meta name="description" content="Capas, flujo de datos y jerarquía de componentes del visor IS-Swagger.">
   <script src="../preview-boot.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
     <section class="seccion">
       <h2>Las capas</h2>
       <div class="diagrama">
-        <is-block-diagram open-on-click>
+        <iswc-block-diagram open-on-click>
           <script type="application/json">
             {
               "blockDiagram": {
@@ -65,7 +65,7 @@
               }
             }
           </script>
-        </is-block-diagram>
+        </iswc-block-diagram>
         <p class="diagrama__pie">
           <code>src/js</code> es puro: se prueba sin navegador.
           <code>src/components/sw</code> traduce esos datos a <code>is-*</code>.
@@ -77,7 +77,7 @@
     <section class="seccion">
       <h2>Cómo arranca el visor</h2>
       <div class="diagrama">
-        <is-sequence-diagram open-on-click>
+        <iswc-sequence-diagram open-on-click>
           <script type="application/json">
             {
               "sequence": {
@@ -105,7 +105,7 @@
               }
             }
           </script>
-        </is-sequence-diagram>
+        </iswc-sequence-diagram>
         <p class="diagrama__pie">
           Un fallo en cualquiera de esos pasos se enseña en pantalla con la URL
           que falló, no en la consola.
@@ -128,7 +128,7 @@
         lectura al arrancar.
       </p>
       <div class="diagrama">
-        <is-flowchart open-on-click>
+        <iswc-flowchart open-on-click>
           <script type="application/json">
             {
               "flowchart": {
@@ -166,7 +166,7 @@
               }
             }
           </script>
-        </is-flowchart>
+        </iswc-flowchart>
         <p class="diagrama__pie">
           Las flechas continuas son <code>props</code>; las discontinuas,
           eventos. Ninguna discontinua salta directo a <code>url-state</code>.

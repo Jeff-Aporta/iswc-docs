@@ -25,7 +25,7 @@
 import { adoptCss, precargarCss, define, html, emitir } from './_shared.js';
 import { caducarPrefsSiCambioBuild } from '../../js/prefs.js';
 
-// Al cargar el módulo, antes de que ningún `is-split-panel` se monte: su connectedCallback
+// Al cargar el módulo, antes de que ningún `iswc-split-panel` se monte: su connectedCallback
 // restaura la posición de localStorage, así que purgar después no serviría de nada.
 caducarPrefsSiCambioBuild();
 
@@ -78,7 +78,7 @@ class SwLayout extends HTMLElement {
   /**
    * Fija el reparto de los splits en píxeles, ya con el layout medido.
    *
-   * `is-split-panel` cachea su posición **en píxeles** al conectarse, y ese píxel es canónico:
+   * `iswc-split-panel` cachea su posición **en píxeles** al conectarse, y ese píxel es canónico:
    * gana sobre el porcentaje y se reaplica en cada resize. Aquí el split se conecta dentro de un
    * shadow recién construido, cuando el host todavía mide 0, así que cachea `0px` — el índice y
    * el contenido colapsaban y el panel de código se quedaba con todo el ancho.
@@ -110,7 +110,7 @@ class SwLayout extends HTMLElement {
 
   /** Abre el lateral que esté en modo cajón. */
   abrir(lado: 'inicio' | 'fin'): void {
-    const cajon = this.#root.querySelector(`is-drawer[data-lado="${lado}"]`) as (HTMLElement & { open?: boolean }) | null;
+    const cajon = this.#root.querySelector(`iswc-drawer[data-lado="${lado}"]`) as (HTMLElement & { open?: boolean }) | null;
     if (cajon) cajon.open = true;
   }
 
@@ -126,11 +126,11 @@ class SwLayout extends HTMLElement {
       ['fin', this.#finEsCajon],
     ];
     for (const [lado, esCajon] of estados) {
-      const destino = this.#root.querySelector(esCajon ? `is-drawer[data-lado="${lado}"] .hueco` : `.hueco-${lado}`);
+      const destino = this.#root.querySelector(esCajon ? `iswc-drawer[data-lado="${lado}"] .hueco` : `.hueco-${lado}`);
       const ranura = this.#root.querySelector(`slot[name="${lado}"]`);
       if (destino && ranura && ranura.parentElement !== destino) destino.append(ranura);
       // El split oculta el panel vacío: si no, dejaría una franja muerta y un divisor inútil.
-      const split = this.#root.querySelector(`is-split-panel[data-zona="${lado}"]`) as (HTMLElement & { collapse?: string | null }) | null;
+      const split = this.#root.querySelector(`iswc-split-panel[data-zona="${lado}"]`) as (HTMLElement & { collapse?: string | null }) | null;
       if (split) {
         if (esCajon) split.setAttribute('collapse', lado === 'inicio' ? 'start' : 'end');
         else split.removeAttribute('collapse');
@@ -145,31 +145,31 @@ class SwLayout extends HTMLElement {
     this.#root.replaceChildren();
     this.#root.append(html`
       <header class="cabecera">
-        <is-button
+        <iswc-button
           class="hamburguesa hamburguesa-inicio"
           variant="plain"
           size="small"
           hidden
           aria-label="Abrir el índice de endpoints"
-          onis-click=${() => this.abrir('inicio')}
-        ><is-icon icon="mdi:menu"></is-icon></is-button>
+          oniswc-click=${() => this.abrir('inicio')}
+        ><iswc-icon icon="mdi:menu"></iswc-icon></iswc-button>
 
         <div class="cabecera-slot"><slot name="cabecera"></slot></div>
 
-        <is-button
+        <iswc-button
           class="hamburguesa hamburguesa-fin"
           variant="plain"
           size="small"
           hidden
           aria-label="Abrir la petición y la respuesta"
-          onis-click=${() => this.abrir('fin')}
-        ><is-icon icon="mdi:code-braces"></is-icon></is-button>
+          oniswc-click=${() => this.abrir('fin')}
+        ><iswc-icon icon="mdi:code-braces"></iswc-icon></iswc-button>
       </header>
 
-      <is-split-panel class="split-externo" data-zona="inicio" position="18" snap="14% 18% 24%" snap-threshold="16" storage-key="sw:split:inicio">
+      <iswc-split-panel class="split-externo" data-zona="inicio" position="18" snap="14% 18% 24%" snap-threshold="16" storage-key="sw:split:inicio">
         <div slot="start" class="lateral hueco-inicio"><slot name="inicio"></slot></div>
         <div slot="end" class="resto">
-          <is-split-panel
+          <iswc-split-panel
             class="split-interno"
             data-zona="fin"
             primary="end"
@@ -180,12 +180,12 @@ class SwLayout extends HTMLElement {
           >
             <div slot="start" class="centro"><slot name="centro"></slot></div>
             <div slot="end" class="lateral hueco-fin"><slot name="fin"></slot></div>
-          </is-split-panel>
+          </iswc-split-panel>
         </div>
-      </is-split-panel>
+      </iswc-split-panel>
 
-      <is-drawer data-lado="inicio" placement="start" label="Endpoints"><div class="hueco"></div></is-drawer>
-      <is-drawer data-lado="fin" placement="end" label="Petición y respuesta"><div class="hueco"></div></is-drawer>
+      <iswc-drawer data-lado="inicio" placement="start" label="Endpoints"><div class="hueco"></div></iswc-drawer>
+      <iswc-drawer data-lado="fin" placement="end" label="Petición y respuesta"><div class="hueco"></div></iswc-drawer>
     `);
     adoptCss(this.#root, import.meta.url, 'sw-layout');
   }

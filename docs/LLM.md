@@ -52,7 +52,7 @@ HTML estático. La navegación interna se declara, no se programa:
 
 ```html
 <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="comparativa">
-  <is-icon class="tarjeta__icono" icon="mdi:compare-horizontal"></is-icon>
+  <iswc-icon class="tarjeta__icono" icon="mdi:compare-horizontal"></iswc-icon>
   <h3 class="tarjeta__titulo">Frente a Postman</h3>
   <p>Qué gana y qué pierde.</p>
 </button>
@@ -94,8 +94,8 @@ por tag: no se repite aquí.
 
 ## Diagramas
 
-Se usan los del kit, nunca imágenes ni Mermaid: `<is-flowchart>`,
-`<is-block-diagram>`, `<is-sequence-diagram>`, `<is-timeline>`. Config por
+Se usan los del kit, nunca imágenes ni Mermaid: `<iswc-flowchart>`,
+`<iswc-block-diagram>`, `<iswc-sequence-diagram>`, `<iswc-timeline>`. Config por
 `<script type="application/json">` hijo, y `open-on-click` para el visor a
 pantalla completa.
 

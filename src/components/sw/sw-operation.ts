@@ -154,26 +154,26 @@ class SwOperation extends HTMLElement {
     (ruta as HTMLElement & { props: unknown }).props = { path: op.path };
 
     this.#root.append(html`
-      <is-details
+      <iswc-details
         class="tarjeta"
         variant="outlined"
         data-method="${op.method}"
         ${abierto ? 'open' : ''}
-        onis-show=${() => emitir(this, 'sw-op-toggle', { operationId: op.operationId, abierto: true })}
-        onis-hide=${() => emitir(this, 'sw-op-toggle', { operationId: op.operationId, abierto: false })}
+        oniswc-show=${() => emitir(this, 'sw-op-toggle', { operationId: op.operationId, abierto: true })}
+        oniswc-hide=${() => emitir(this, 'sw-op-toggle', { operationId: op.operationId, abierto: false })}
       >
         <div slot="summary" class="resumen">
           ${metodo}
           ${requiereJwt
             ? html`
                 <span class="candado" title="Requiere Authorization: Bearer &lt;JWT&gt;" aria-label="Requiere sesión">
-                  <is-icon icon="mdi:lock-outline"></is-icon>
+                  <iswc-icon icon="mdi:lock-outline"></iswc-icon>
                 </span>
               `
             : null}
           ${ruta}
           <span class="sumario">${op.summary ?? ''}</span>
-          ${op.deprecated ? html`<is-tag color="warning" variant="outlined" class="obsoleta">obsoleta</is-tag>` : null}
+          ${op.deprecated ? html`<iswc-tag color="warning" variant="outlined" class="obsoleta">obsoleta</iswc-tag>` : null}
         </div>
 
         ${abierto
@@ -195,7 +195,7 @@ class SwOperation extends HTMLElement {
                         aria-selected="${p.id === tab ? 'true' : 'false'}"
                         onclick=${() => emitir(this, 'sw-op-tab', { operationId: op.operationId, tab: p.id })}
                       >
-                        <is-icon icon="${p.icon}"></is-icon>
+                        <iswc-icon icon="${p.icon}"></iswc-icon>
                         ${p.label}
                       </button>
                     `,
@@ -206,7 +206,7 @@ class SwOperation extends HTMLElement {
               </div>
             `
           : null}
-      </is-details>
+      </iswc-details>
     `);
 
     this.#cuerpoNodo = this.#root.querySelector('.zona-pestana');

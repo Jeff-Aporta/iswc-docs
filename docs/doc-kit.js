@@ -1,6 +1,6 @@
 function irA(tag) {
   if (window.parent !== window) {
-    parent.postMessage({ type: "is-select", tag }, location.origin);
+    parent.postMessage({ type: "iswc-select", tag }, location.origin);
     return;
   }
   void navegarSuelto(tag);

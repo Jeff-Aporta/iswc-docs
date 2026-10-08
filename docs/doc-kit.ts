@@ -12,7 +12,7 @@
 /** Pide al shell que navegue. Fuera del iframe, abre la página directamente. */
 export function irA(tag: string): void {
   if (window.parent !== window) {
-    parent.postMessage({ type: 'is-select', tag }, location.origin);
+    parent.postMessage({ type: 'iswc-select', tag }, location.origin);
     return;
   }
   // Página abierta a pelo (pantalla completa): se resuelve contra el manifest.

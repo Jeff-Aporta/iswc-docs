@@ -8,12 +8,12 @@
 export declare const BODY_HTTP_METHODS: Set<string>;
 export declare const EXT_REQUEST_BODY = "x-iss-request-body";
 export declare const EXT_REQUEST_BODY_EXAMPLES = "x-iss-request-body-examples";
-export interface SwBodyEjemplo {
+export type SwBodyEjemplo = {
     id: string;
     label: string;
     icon?: string;
     example: unknown;
-}
+};
 export declare const opUsesRequestBody: (method: unknown) => boolean;
 export declare const shouldShowTryItBody: (op: SwOp | undefined) => boolean;
 export declare function resolveTryItBodyExample(op: SwOp | undefined): unknown;

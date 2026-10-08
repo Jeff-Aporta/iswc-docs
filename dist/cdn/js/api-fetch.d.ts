@@ -6,17 +6,17 @@
  * cuando la petición ni siquiera llegó a salir (red, CORS, host caído).
  */
 export declare function authHeaders(includeAuth?: boolean): Record<string, string>;
-export interface SwFetchOpts extends Omit<RequestInit, 'headers'> {
+export type SwFetchOpts = Omit<RequestInit, 'headers'> & {
     headers?: Record<string, string>;
     /** `false` no adjunta el JWT (endpoints públicos). */
     auth?: boolean;
-}
-export interface SwFetchResult {
+};
+export type SwFetchResult = {
     data: unknown;
     res: Response;
     text: string;
     ok: boolean;
-}
+};
 export declare function fetchApiRaw(url: string, opts?: SwFetchOpts): Promise<SwFetchResult>;
 export declare function fetchApiJson(url: string, opts?: SwFetchOpts & {
     errorHint?: string;

@@ -15,7 +15,7 @@ import './sw-try.js';
 import './sw-responses.js';
 import './sw-doc.js';
 import './sw-json.js';
-interface Props {
+type Props = {
     op: SwOp | null;
     spec: SwSpec | null;
     serverBase: string;
@@ -23,7 +23,7 @@ interface Props {
     docMd: string;
     abierto: boolean;
     tab: SwOpTab;
-}
+};
 declare class SwOperation extends HTMLElement {
     #private;
     constructor();

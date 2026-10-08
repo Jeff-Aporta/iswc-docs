@@ -11,7 +11,7 @@
   align-items: center;
 }
 
-.menu is-button,
+.menu iswc-button,
 .menu [slot="trigger"] {
   min-inline-size: 2rem;
   min-block-size: 2rem;

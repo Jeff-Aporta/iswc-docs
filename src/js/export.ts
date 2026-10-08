@@ -6,7 +6,7 @@
  * dejaría de funcionar al abrir el HTML suelto.
  *
  * Postman: la description de cada request usa `x-iss-doc-md` convertido —
- * diagramas `is-*` → PNG transparente en `<img src="data:…">`, `<is-code>` → fences.
+ * diagramas `is-*` → PNG transparente en `<img src="data:…">`, `<iswc-code>` → fences.
  */
 
 import { listOperations, resolveServerUrl, jsonPretty } from './openapi.js';

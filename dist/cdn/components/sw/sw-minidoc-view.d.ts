@@ -14,14 +14,14 @@ import './sw-path.js';
 import './sw-json.js';
 import './sw-try.js';
 import './sw-doc.js';
-interface Props {
+type Props = {
     op: SwOp | null;
     spec: SwSpec | null;
     grupo: string;
     serverBase: string;
     authEnabled: boolean;
     docMd: string;
-}
+};
 declare class SwMinidocView extends HTMLElement {
     #private;
     constructor();
