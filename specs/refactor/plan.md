@@ -313,3 +313,26 @@ Abiertas (se deciden en su fase, con propuesta):
 
 5. `markdown.ts` propio vs `iswc-md-render` del kit; `tk-*` aquí o en el kit (`diagrams`) — F10.
 6. `all.min.js` como bundle de compatibilidad durante la transición (propuesta: sí) o solo loader — F5.
+
+---
+
+## 10. Renombres pendientes (2026-10-09)
+
+Estado:
+
+| Qué | Estado |
+|---|---|
+| Repo `isc-swagger` → `iswc-docs` | hecho, con push; Pages `jeff-aporta.github.io/iswc-docs/` en 200 |
+| Nomenclatura `swagger`/`sw-*` → `docs`/`docs-*` en el código | hecho (`4c1d580`), legado en `src/js/legado.ts` |
+| Repo `is-webcomponents` → `iswc-root` | **pendiente**: el renombre en GitHub quedó sin permiso; commits `65337d7` y `5219af5` solo en local |
+| Carpetas `isc-swagger` → `iswc-docs`, `is-webcomponents` → `iswc-root` | **pendiente**: Cursor las tiene abiertas |
+| Pin de iswc-docs al SHA de iswc-root y barrido de consumidores | después de lo anterior |
+
+Para retomarlo: cerrar esas carpetas en Cursor y correr
+`powershell -ExecutionPolicy Bypass -File C:\ContaPyme\Personal\apps\renombrar-iswc.ps1`
+(`-SoloVerificar` para solo mirar). El script renombra el repo, hace push, espera a que jsDelivr y
+Pages respondan con el nombre nuevo, renombra las carpetas e imprime lo que sigue.
+
+No hacer push de iswc-root antes de renombrar el repo: el loader de `5219af5` ya pide
+`gh/Jeff-Aporta/iswc-root` y daría 404 a todos los consumidores. jsDelivr y raw siguen resolviendo el
+nombre viejo de un repo renombrado; GitHub Pages no.
