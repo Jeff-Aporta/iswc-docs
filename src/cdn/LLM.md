@@ -77,7 +77,7 @@ const md = issSwaggerToMarkdown({ meta, paths, config, general });
 ```html
 <script type="module">
   import { ISWebComponentsLoader as L } from
-    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/loader.min.js";
+    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/loader.min.js";
   import { SW_KIT_TAGS } from
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/isc-swagger@main/dist/cdn/js/kit-tags.js";
   await L.load(...SW_KIT_TAGS);

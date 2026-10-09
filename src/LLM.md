@@ -38,7 +38,7 @@ Este proyecto consume [is-webcomponents](https://github.com/Jeff-Aporta/is-webco
 por CDN. Antes de escribir HTML/CSS/JS propio para un botón, un diálogo, una
 tabla, un toast, un icono, un formato de fecha o de bytes:
 
-1. Buscar la intención en el [catálogo del kit](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/main/src/skills/is-webcomponents/catalog.md).
+1. Buscar la intención en el [catálogo del kit](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/skills/is-webcomponents/catalog.md).
 2. Abrir el `LLM.md` de la categoría y el `.md` del módulo.
 3. Confirmar props y eventos **en el MD**. No inferir la API desde el nombre.
 4. Usar el tag `is-*`. Los `sw-*` solo **traducen datos** del documento al kit.
@@ -119,6 +119,6 @@ sí vienen del kit. Todo el detalle en [components/LLM.md](components/LLM.md).
 ## Navegación
 
 - Leyes, historia de errores y testing: [`../LLM.md`](../LLM.md)
-- Kit: [SKILL.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/main/src/skills/is-webcomponents/SKILL.md)
-  · [catalog.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/main/src/skills/is-webcomponents/catalog.md)
-  · [índice de componentes](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/main/src/components/LLM.md)
+- Kit: [SKILL.md](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/skills/is-webcomponents/SKILL.md)
+  · [catalog.md](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/skills/is-webcomponents/catalog.md)
+  · [índice de componentes](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/specs/componentes.md)

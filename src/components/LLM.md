@@ -18,7 +18,7 @@ concepto del documento (una operación, un parámetro, una respuesta) a esos
 tags. Si el componente nuevo no traduce nada del dominio, no debería existir.
 
 Catálogo del kit:
-[catalog.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/main/src/skills/is-webcomponents/catalog.md).
+[catalog.md](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/skills/is-webcomponents/catalog.md).
 Confirmar props y eventos en el `.md` del módulo, nunca por el nombre del tag.
 
 ## Anatomía de un `sw-*`

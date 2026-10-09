@@ -97,7 +97,7 @@
   // Todo el kit (CSS base + tags) sale del loader ISWC: el loader aplica host + mirrors +
   // sheet-cache. El consumer fija origen/bust y solo espera assets; así el CSS
   // resuelve la ruta correcta (raíz o core/) y se invalidan caches viejos al cambiar el `v`.
-  const KIT = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn';
+  const KIT = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn';
   const { ISWebComponentsLoader: L } = await import(`${KIT}/core/loader.min.js`);
   const { SW_KIT_TAGS } = await import('./dist/cdn/js/kit-tags.js');
   // host + mirrors por el loader; los overrides de test (host/v/mirrors/ref) van en ?iswc=<b64url-json>.

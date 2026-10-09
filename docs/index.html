@@ -10,9 +10,13 @@
        estático y el valor guardado en localStorage. -->
   <script src="preview-boot.js"></script>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/is-base.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/palettes.min.css">
-  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { SW_KIT_TAGS } = await import('../dist/cdn/js/kit-tags.js');
+    await L.load(...SW_KIT_TAGS, 'iswc-palette-selector');
+  </script>
 
   <link rel="stylesheet" href="styles/shell.css">
 </head>
