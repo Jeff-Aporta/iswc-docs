@@ -4,7 +4,7 @@
 
 Es **documentación**, no una galería de la app. Vive fuera de `src/` porque no
 se compila: es HTML plano que consume `dist/cdn/` como cualquier otro
-consumidor. Se publica tal cual (GitHub Pages) y se abre con `npm run serve` →
+consumidor. Se publica tal cual (GitHub Pages) y se abre con `deno task serve` →
 `docs/index.html`.
 
 Dos clases de página, y la distinción importa:

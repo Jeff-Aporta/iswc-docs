@@ -6,7 +6,7 @@
  * parámetros agrupados por sitio (path, query, header, cookie) y cuerpo. Nada está plegado,
  * porque el driver ya filtró a una sola operación y esconder la mitad no ahorra nada.
  *
- * «Probar» abre `sw-try` en un panel anclado al botón (is-dropdown), no en un modal
+ * «Probar» abre `sw-try` en un panel anclado al botón (iswc-dropdown), no en un modal
  * centrado: queda pegado al trigger y no compite con la lectura del manual.
  */
 import './sw-method.js';

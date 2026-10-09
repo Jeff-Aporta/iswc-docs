@@ -1,8 +1,8 @@
 /**
- * <sw-json> — bloque de código via `<is-code>` (kit is-webcomponents).
+ * <sw-json> — bloque de código via `<iswc-code>` (kit is-webcomponents).
  *
  * Sin botón de copiar propio: quien embebe (p. ej. `sw-minidoc-code`) pone el
- * `is-copy-button` en la cabecera del panel. Así no quedan dos copys.
+ * `iswc-copy-button` en la cabecera del panel. Así no quedan dos copys.
  *
  * `lang` tipico: `json` (respuestas / body) o `shell`/`curl` (petición cURL).
  */

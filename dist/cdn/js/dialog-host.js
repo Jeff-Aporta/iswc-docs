@@ -11,7 +11,7 @@ const n="sw-dialog-host-css",r=`
     padding: 0.65rem 0.75rem;
     border: 1px solid var(--is-border-soft, var(--is-border, #1f242b));
     border-radius: 0.5rem;
-    background: var(--is-code-bg, #0f1318);
+    background: var(--iswc-code-bg, #0f1318);
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
     font-size: 0.75rem;
@@ -25,14 +25,14 @@ const n="sw-dialog-host-css",r=`
     gap: 0.5rem;
     width: 100%;
   }
-  is-dialog.sw-dialog-try,
-  is-dialog.sw-dialog-confirm {
+  iswc-dialog.sw-dialog-try,
+  iswc-dialog.sw-dialog-confirm {
     --is-dialog-width: min(52rem, calc(100vw - 2rem));
     --is-dialog-spacing: 1.1rem;
     --spacing: var(--is-dialog-spacing);
   }
-  is-dialog.sw-dialog-try sw-try {
+  iswc-dialog.sw-dialog-try sw-try {
     display: block;
     min-width: 0;
   }
-`;function a(){if(typeof document>"u"||document.getElementById(n))return;const t=document.createElement("style");t.id=n,t.textContent=r,document.head.appendChild(t)}function d(t){a();const e=document.createElement("is-dialog");e.setAttribute("label",t.label),e.setAttribute("light-dismiss",""),t.className&&e.classList.add(...t.className.split(/\s+/).filter(Boolean));const o=t.width||"min(52rem, calc(100vw - 2rem))";e.setAttribute("width",o),e.style.setProperty("--is-dialog-width",o),e.style.setProperty("--spacing","var(--is-dialog-spacing, 1.1rem)"),e.append(t.content),e.addEventListener("is-after-hide",s=>{s.target===e&&e.remove()}),document.body.appendChild(e);const i=e;return typeof i.show=="function"?i.show():i.open=!0,e}export{a as ensureDialogHostStyles,d as openHostDialog};
+`;function a(){if(typeof document>"u"||document.getElementById(n))return;const t=document.createElement("style");t.id=n,t.textContent=r,document.head.appendChild(t)}function d(t){a();const e=document.createElement("iswc-dialog");e.setAttribute("label",t.label),e.setAttribute("light-dismiss",""),t.className&&e.classList.add(...t.className.split(/\s+/).filter(Boolean));const o=t.width||"min(52rem, calc(100vw - 2rem))";e.setAttribute("width",o),e.style.setProperty("--is-dialog-width",o),e.style.setProperty("--spacing","var(--is-dialog-spacing, 1.1rem)"),e.append(t.content),e.addEventListener("iswc-after-hide",s=>{s.target===e&&e.remove()}),document.body.appendChild(e);const i=e;return typeof i.show=="function"?i.show():i.open=!0,e}export{a as ensureDialogHostStyles,d as openHostDialog};

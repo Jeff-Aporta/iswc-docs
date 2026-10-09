@@ -1,4 +1,4 @@
-import{convertIsCodeToFences as v}from"./postman-md.js";import{ISS_SWAGGER_METHODS as L}from"./iss-swagger-doc.js";const S=/<(?:is-flowchart|is-sequence-diagram|is-er-diagram)\b[\s\S]*?<\/(?:is-flowchart|is-sequence-diagram|is-er-diagram)>/gi,b=/<\/?[a-z][\s\S]*?>/gi;function n(e){return!!e&&typeof e=="object"&&!Array.isArray(e)}function r(e){return typeof e=="string"?e.trim():""}function A(e){return e.toLowerCase().normalize("NFD").replace(/\p{M}/gu,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}function y(e){let t=v(String(e??""));return t=t.replace(S,`
+import{convertIsCodeToFences as v}from"./postman-md.js";import{ISS_SWAGGER_METHODS as L}from"./iss-swagger-doc.js";const S=/<(?:iswc-flowchart|iswc-sequence-diagram|iswc-er-diagram)\b[\s\S]*?<\/(?:iswc-flowchart|iswc-sequence-diagram|iswc-er-diagram)>/gi,b=/<\/?[a-z][\s\S]*?>/gi;function n(e){return!!e&&typeof e=="object"&&!Array.isArray(e)}function r(e){return typeof e=="string"?e.trim():""}function A(e){return e.toLowerCase().normalize("NFD").replace(/\p{M}/gu,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}function y(e){let t=v(String(e??""));return t=t.replace(S,`
 
 _(Diagrama: ver el visor HTML \`/is-swagger\`.)_
 
@@ -31,14 +31,14 @@ _(Diagrama: ver el visor HTML \`/is-swagger\`.)_
     <h1>${t}</h1>
     <a href="${i}">LLM.md</a>
   </header>
-  <is-callout tone="info">Esto es lo que leen los agentes en <code>${i}</code>. El visor interactivo es <a href="is-swagger">/is-swagger</a>.</is-callout>
-  <is-md-render readonly placeholder="Cargando\u2026"></is-md-render>
+  <iswc-callout tone="info">Esto es lo que leen los agentes en <code>${i}</code>. El visor interactivo es <a href="is-swagger">/is-swagger</a>.</iswc-callout>
+  <iswc-md-render readonly placeholder="Cargando\u2026"></iswc-md-render>
 </main>
 <script type="module">
 import { ISWebComponentsLoader as L } from '${u(c)}/loader.min.js';
 ${l}
-await L.load('is-md-render','is-callout','is-icon');
-const el = document.querySelector('is-md-render');
+await L.load('iswc-md-render','iswc-callout','iswc-icon');
+const el = document.querySelector('iswc-md-render');
 const r = await fetch('${i}', { headers: { accept: 'text/markdown, text/plain;q=0.9' } });
 el.value = r.ok ? await r.text() : '# Error\\nNo se pudo cargar ' + '${i}' + ' (' + r.status + ').';
 <\/script>

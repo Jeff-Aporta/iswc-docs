@@ -1,4 +1,4 @@
-/** Prosa para el modelo: sin web components, fences de is-code. */
+/** Prosa para el modelo: sin web components, fences de iswc-code. */
 export declare function issDocToLlmMarkdown(md: string): string;
 /** Markdown canónico para GET /LLM.md. */
 export declare function issSwaggerToMarkdown(input: unknown): string;
@@ -11,5 +11,5 @@ export type IssSwaggerLlmViewOpts = {
     kitPin?: string;
     palette?: string;
 };
-/** Página HTML: `<is-md-render>` pinta el GET /LLM.md. */
+/** Página HTML: `<iswc-md-render>` pinta el GET /LLM.md. */
 export declare function buildIssSwaggerLlmViewHtml(opts: IssSwaggerLlmViewOpts): string;

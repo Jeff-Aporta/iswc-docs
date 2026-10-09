@@ -18,7 +18,7 @@ const CSS = /* css */ `
     padding: 0.65rem 0.75rem;
     border: 1px solid var(--is-border-soft, var(--is-border, #1f242b));
     border-radius: 0.5rem;
-    background: var(--is-code-bg, #0f1318);
+    background: var(--iswc-code-bg, #0f1318);
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
     font-size: 0.75rem;

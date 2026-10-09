@@ -1,1 +1,1 @@
-:host{display:inline-flex;align-items:center;font-family:var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif)}.grupo{display:inline-flex;align-items:center}.dl,.rl,.dl is-button,.dl [slot=trigger]{min-inline-size:2rem;min-block-size:2rem;padding-inline:.35rem}
+:host{display:inline-flex;align-items:center;font-family:var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif)}.grupo{display:inline-flex;align-items:center}.dl,.rl,.dl iswc-button,.dl [slot=trigger]{min-inline-size:2rem;min-block-size:2rem;padding-inline:.35rem}

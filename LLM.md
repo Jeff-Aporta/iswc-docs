@@ -47,7 +47,7 @@ Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
 | `index.html` decide `data-modo` (hero vs app) **en `<head>`**, antes del primer pintado | Decidir el modo desde un módulo: el visor parpadea como hero antes de cambiar |
 | Título del índice (`.op-nombre`): **1 línea** + `ellipsis` | `-webkit-line-clamp: 2` u otro wrap (rompe el panel estrecho) |
 | `SW_KIT_TAGS` en `src/js/kit-tags.ts` (CDN); hosts ISS lo importan | Lista de tags `is-*` hardcodeada en el host (PatyIA ya la erradicó) |
-| Tras cambiar CSS/JS del visor: `npm run build` + push `main` + avisar al host que bumpee el pin SHA | Solo editar `src/` sin rebuild/push: jsDelivr sigue el commit viejo |
+| Tras cambiar CSS/JS del visor: `deno task build` + push `main` + avisar al host que bumpee el pin SHA | Solo editar `src/` sin rebuild/push: jsDelivr sigue el commit viejo |
 | Cuerpo try-it vacío = `{ }` (`formatBodyExample`) | `JSON.stringify(null)` → literal `"null"` en el editor |
 | Picker de adjuntos general, sin `accept=` | Filtrar MIME por endpoint o inventar un input nativo |
 | Host RAG = GitHub Pages; host ISS = jsDelivr `@sha40` | Asumir que un push actualiza los dos canales |
@@ -489,9 +489,9 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
     `Content-Type` a mano sobre `FormData`.
 
 19. **FileReader no existe en Node** — el polyfill de tests debe usar
-    `arrayBuffer` + `btoa`. Un `FileReader` inventado no corre en `node --test`.
+    `arrayBuffer` + `btoa`. Un `FileReader` inventado no corre en `deno test`.
 
-20. **`npm test` completo puede no terminar** — JSDOM + `search-state` a veces
+20. **`deno task test` completo puede no terminar** — JSDOM + `search-state` a veces
     cuelga tras los asserts. Un hang no es verde. Correr el archivo puntual
     (`dominio.test.ts`, `invariantes.test.ts`, …).
 
@@ -517,12 +517,12 @@ parte del contrato.
 5. Si `#render()` es manual: `adoptCss(this.#root, import.meta.url)` al final
    de cada salida del render, y `precargarCss(import.meta.url)` junto al
    `define(...)`. Con `crearComponente` no hay que hacer nada.
-6. `npm test` — `estructura.test.ts` + `invariantes.test.ts` + `docs.test.ts`
+6. `deno task test` — `estructura.test.ts` + `invariantes.test.ts` + `docs.test.ts`
    verifican.
 
 ## Testing
 
-`npm test` compila y corre `node --test tests/*.test.ts`. La suite entera puede
+`deno task test` compila y corre `deno test tests/`. La suite entera puede
 colgarse en JSDOM/`search-state`: un hang no cuenta como verde; corre el archivo.
 
 | Archivo | Caza |
@@ -537,6 +537,7 @@ colgarse en JSDOM/`search-state`: un hang no cuenta como verde; corre el archivo
 | `conn.test.ts` | `?conn=`: precedencia, override de paths, default ISS, conn > `<script>` |
 | `insoft-config.test.ts` | Parser InSoft con fixture real + smoke contra la red |
 | `json-cache.test.ts` | Cache local ≥24 h de los JSON del documento; fallback si la API cae |
+| `login-providers.test.ts` | Login por servidor: el orquestador por defecto y los presets (`patyia-portal`) arman la petición que cada backend espera |
 | `css-adopcion.test.ts` | `adoptCss`: hoja síncrona desde caché, una descarga por href, repintar no la pierde |
 | `docs.test.ts` | Que los `LLM.md` no mienten: catálogo completo, enlaces vivos, reglas que el código sigue cumpliendo |
 | `hojas.test.ts` | El parche de `js/hojas.js` sobre los shadow roots del kit y el caché compartido |

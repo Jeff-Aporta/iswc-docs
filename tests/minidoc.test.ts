@@ -80,7 +80,7 @@ test('sw-minidoc-view pinta la operación entera, sin plegar nada', () => {
   assert.match(texto, /Parámetros de consulta/, 'no agrupa los de consulta');
   assert.match(texto, /page_num/, 'falta un parámetro');
   // Sin acordeón: la razón de existir de este driver es que no haya nada que abrir.
-  assert.equal(root.querySelectorAll<HTMLElement>('is-details').length, 0, 'la vista no debe plegar contenido');
+  assert.equal(root.querySelectorAll<HTMLElement>('iswc-details').length, 0, 'la vista no debe plegar contenido');
 });
 
 test('sw-minidoc-view marca los obligatorios y enseña los valores de un enum', () => {
@@ -303,7 +303,7 @@ test('sw-viewer monta el driver activo y lo cambia en caliente', () => {
 test('sw-driver-switch ofrece una opción por driver registrado', () => {
   const sel = dom.window.document.createElement('sw-driver-switch');
   dom.window.document.body.append(sel);
-  const valores = [...sel.shadowRoot!.querySelectorAll<HTMLElement>('is-option')].map((o) => o.getAttribute('value'));
+  const valores = [...sel.shadowRoot!.querySelectorAll<HTMLElement>('iswc-option')].map((o) => o.getAttribute('value'));
   assert.deepEqual(valores, DRIVERS.map((d) => d.id));
   sel.remove();
 });
@@ -317,9 +317,9 @@ test('sw-driver-switch no monta drivers: solo emite el cambio', () => {
   sel.addEventListener('sw-driver-change', (e) => { recibido = e.detail?.driver; });
 
   const otro = DRIVERS.find((d) => d.id !== readDriver()).id;
-  const select = sel.shadowRoot!.querySelector<HTMLElement>('is-select');
+  const select = sel.shadowRoot!.querySelector<HTMLElement>('iswc-select');
   select.value = otro;
-  select.dispatchEvent(new dom.window.CustomEvent('is-change', { bubbles: true }));
+  select.dispatchEvent(new dom.window.CustomEvent('iswc-change', { bubbles: true }));
 
   assert.equal(recibido, otro, 'no emitió sw-driver-change');
   assert.equal(readDriver(), otro, 'no persistió la elección');
@@ -373,7 +373,7 @@ test('sw-layout expone las cuatro zonas por slot', () => {
 test('sw-layout anida dos splits, uno por divisor arrastrable', () => {
   const l = dom.window.document.createElement('sw-layout');
   dom.window.document.body.append(l);
-  const splits = l.shadowRoot!.querySelectorAll<HTMLElement>('is-split-panel');
+  const splits = l.shadowRoot!.querySelectorAll<HTMLElement>('iswc-split-panel');
   assert.equal(splits.length, 2, 'hacen falta dos: índice|resto y centro|código');
   // storage-key: el ancho que el usuario elige tiene que sobrevivir a recargar.
   for (const sp of splits) assert.ok(sp.getAttribute('storage-key'), 'split sin storage-key');
@@ -384,7 +384,7 @@ test('sw-layout trae un cajón y una hamburguesa por lateral', () => {
   const l = dom.window.document.createElement('sw-layout');
   dom.window.document.body.append(l);
   for (const lado of ['inicio', 'fin']) {
-    assert.ok(l.shadowRoot!.querySelector<HTMLElement>(`is-drawer[data-lado="${lado}"]`), `sin cajón ${lado}`);
+    assert.ok(l.shadowRoot!.querySelector<HTMLElement>(`iswc-drawer[data-lado="${lado}"]`), `sin cajón ${lado}`);
     assert.ok(l.shadowRoot!.querySelector<HTMLElement>(`.hamburguesa-${lado}`), `sin hamburguesa ${lado}`);
   }
   l.remove();
@@ -466,7 +466,7 @@ test('sw-viewer entrega el conn ANTES de conectar el driver', () => {
 });
 
 test('sw-layout corrige un reparto degenerado de los splits', async () => {
-  // `is-split-panel` cachea su posición en píxeles al conectarse; dentro de un shadow recién
+  // `iswc-split-panel` cachea su posición en píxeles al conectarse; dentro de un shadow recién
   // construido el host mide 0, cachea 0px y —como el píxel es canónico— el índice y el
   // contenido colapsan. Con storage-key ese cero además se persiste y envenena las siguientes
   // cargas. La corrección debe escribir píxeles, no porcentaje.
@@ -487,12 +487,12 @@ test('la geometría guardada caduca al cambiar de build', async () => {
 
   // Estado escrito por una versión anterior, con el cero que rompía el layout.
   globalThis.localStorage.setItem(CLAVE_KIT, JSON.stringify({
-    'is-split-panel': {
+    'iswc-split-panel': {
       'sw:split:inicio': { positionInPixels: 0 },
       'sw:split:fin': { positionInPixels: 0 },
       'otra-app': { positionInPixels: 250 },
     },
-    'is-otro-componente': { algo: 1 },
+    'iswc-otro-componente': { algo: 1 },
   }));
   globalThis.localStorage.setItem(CLAVE_VERSION, 'build-viejo');
   globalThis.localStorage.setItem('sw:driver', 'sw-app');
@@ -500,11 +500,11 @@ test('la geometría guardada caduca al cambiar de build', async () => {
   assert.equal(caducarPrefsSiCambioBuild(), true, 'debió purgar: el sello no coincide');
 
   const tras = JSON.parse(globalThis.localStorage.getItem(CLAVE_KIT));
-  assert.equal(tras['is-split-panel']['sw:split:inicio'], undefined, 'no borró la geometría propia');
-  assert.equal(tras['is-split-panel']['sw:split:fin'], undefined, 'no borró la geometría propia');
+  assert.equal(tras['iswc-split-panel']['sw:split:inicio'], undefined, 'no borró la geometría propia');
+  assert.equal(tras['iswc-split-panel']['sw:split:fin'], undefined, 'no borró la geometría propia');
   // Cirugía, no demolición: lo que no es nuestro se queda.
-  assert.deepEqual(tras['is-split-panel']['otra-app'], { positionInPixels: 250 }, 'tocó geometría ajena');
-  assert.deepEqual(tras['is-otro-componente'], { algo: 1 }, 'tocó otro componente del kit');
+  assert.deepEqual(tras['iswc-split-panel']['otra-app'], { positionInPixels: 250 }, 'tocó geometría ajena');
+  assert.deepEqual(tras['iswc-otro-componente'], { algo: 1 }, 'tocó otro componente del kit');
   // El driver es una elección deliberada del lector: cambiar de versión no se la cambia.
   assert.equal(globalThis.localStorage.getItem('sw:driver'), 'sw-app', 'borró una preferencia del usuario');
   assert.equal(globalThis.localStorage.getItem(CLAVE_VERSION), SW_VERSION, 'no dejó sellado el build actual');
@@ -515,7 +515,7 @@ test('con el mismo build no se toca nada', async () => {
     await import('../dist/cdn/js/prefs.js?bust=' + Math.random());
 
   globalThis.localStorage.setItem(CLAVE_VERSION, SW_VERSION);
-  const guardado = JSON.stringify({ 'is-split-panel': { 'sw:split:inicio': { positionInPixels: 320 } } });
+  const guardado = JSON.stringify({ 'iswc-split-panel': { 'sw:split:inicio': { positionInPixels: 320 } } });
   globalThis.localStorage.setItem(CLAVE_KIT, guardado);
 
   assert.equal(caducarPrefsSiCambioBuild(), false, 'purgó sin haber cambiado de build');

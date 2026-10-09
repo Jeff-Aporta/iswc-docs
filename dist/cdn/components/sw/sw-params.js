@@ -1,5 +1,5 @@
-import{crearComponente as $,define as h,html as t,emitir as g}from"./_shared.js";import{paramEnum as v,paramInputMode as b,paramTypeLabel as f,sanitizeParamInputValue as w}from"../../js/param-schema.js";function S(e,s,o,c){const i=String(e.name??""),m=f(e.schema),r=[e.description,m&&`\xB7 ${m}`].filter(Boolean).join(" "),u=v(e.schema);if(u.length)return t`
-      <is-select
+import{crearComponente as $,define as h,html as t,emitir as g}from"./_shared.js";import{paramEnum as v,paramInputMode as w,paramTypeLabel as b,sanitizeParamInputValue as f}from"../../js/param-schema.js";function S(e,s,o,c){const i=String(e.name??""),m=b(e.schema),r=[e.description,m&&`\xB7 ${m}`].filter(Boolean).join(" "),u=v(e.schema);if(u.length)return t`
+      <iswc-select
         class="campo"
         full-width
         label="${i}"
@@ -7,24 +7,24 @@ import{crearComponente as $,define as h,html as t,emitir as g}from"./_shared.js"
         value="${s}"
         ${o?"disabled":""}
         ${e.required?"required":""}
-        onis-change=${n=>c(String(n.target.value??""))}
+        oniswc-change=${n=>c(String(n.target.value??""))}
       >
-        ${u.map(n=>t`<is-option value="${n}">${n}</is-option>`)}
-      </is-select>
+        ${u.map(n=>t`<iswc-option value="${n}">${n}</iswc-option>`)}
+      </iswc-select>
     `;const a=e.example!=null?String(e.example):i;return t`
-    <is-input
+    <iswc-input
       class="campo"
       full-width
       clearable
       label="${i}"
       hint="${r}"
       placeholder="${a}"
-      inputmode="${b(e.schema)}"
+      inputmode="${w(e.schema)}"
       value="${s}"
       ${o?"disabled":""}
       ${e.required?"required":""}
-      onis-input=${n=>{const l=n.target,p=w(e.schema,l.value);p!==l.value&&(l.value=p),c(p)}}
-    ></is-input>
+      oniswc-input=${n=>{const l=n.target,p=f(e.schema,l.value);p!==l.value&&(l.value=p),c(p)}}
+    ></iswc-input>
   `}const d=$(import.meta.url,(e,{params:s,values:o,disabled:c,titulo:i},m)=>{const r=Array.isArray(s)?s.filter(a=>a?.name):[];if(!r.length)return;const u=a=>n=>g(m,"sw-param-change",{name:a,value:n});e.append(t`
       <section class="bloque">
         ${i?t`<h4 class="titulo">${i}</h4>`:null}

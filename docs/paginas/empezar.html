@@ -171,13 +171,13 @@ const b64url = (obj) =&gt; btoa(
     <!-- ── 3 · Local ───────────────────────────────────────── -->
     <section class="seccion">
       <h2>3 · Levantarlo en local</h2>
-      <pre><code>npm install
-npm run build     # src/**.ts → dist/cdn/
-npm run serve     # http://localhost:4190</code></pre>
+      <pre><code>deno install
+deno task build     # src/**.ts → dist/cdn/
+deno task serve     # http://localhost:4190</code></pre>
       <p>
         Sin argumentos, <code>index.html</code> arranca con una API de muestra que
         responde de verdad, así que se puede pulsar «Ejecutar» desde el primer
-        momento. Para desarrollar, <code>npm run dev</code> deja el build en watch.
+        momento. Para desarrollar, <code>deno task dev</code> deja el build en watch.
       </p>
       <div class="tabla">
         <table>
@@ -185,11 +185,11 @@ npm run serve     # http://localhost:4190</code></pre>
             <tr><th scope="col">Comando</th><th scope="col">Qué hace</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row"><code>npm run build</code></th><td>Transpila y aplana a <code>dist/cdn/</code></td></tr>
-            <tr><th scope="row"><code>npm run dev</code></th><td>El mismo build, en watch</td></tr>
-            <tr><th scope="row"><code>npm run serve</code></th><td>Servidor estático en el 4190</td></tr>
-            <tr><th scope="row"><code>npm run typecheck</code></th><td><code>tsc --noEmit</code>, sin emitir nada</td></tr>
-            <tr><th scope="row"><code>npm test</code></th><td>Build + <code>node --test tests/*.test.ts</code></td></tr>
+            <tr><th scope="row"><code>deno task build</code></th><td>Transpila y aplana a <code>dist/cdn/</code></td></tr>
+            <tr><th scope="row"><code>deno task dev</code></th><td>El mismo build, en watch</td></tr>
+            <tr><th scope="row"><code>deno task serve</code></th><td>Servidor estático en el 4190</td></tr>
+            <tr><th scope="row"><code>deno task check</code></th><td><code>tsc --noEmit</code>, sin emitir nada</td></tr>
+            <tr><th scope="row"><code>deno task test</code></th><td>Build + <code>deno test tests/</code></td></tr>
           </tbody>
         </table>
       </div>
@@ -235,7 +235,7 @@ import './sw-x.js';</code></pre>
           </div>
         </li>
       </ol>
-      <p>Después, <code>npm test</code>.</p>
+      <p>Después, <code>deno task test</code>.</p>
     </section>
 
     <section class="seccion">

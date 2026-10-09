@@ -43,7 +43,7 @@ export declare const raw: (valor: unknown) => SwHtmlCrudo;
  *
  *   root.append(html`
  *     <h2 class="titulo">${titulo}</h2>
- *     <is-button onis-click=${() => ejecutar()}>Ejecutar</is-button>
+ *     <iswc-button oniswc-click=${() => ejecutar()}>Ejecutar</iswc-button>
  *   `);
  *
  * Reglas de interpolación:

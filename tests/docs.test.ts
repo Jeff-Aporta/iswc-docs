@@ -108,7 +108,7 @@ test('el patrón de flicker ya descartado no vuelve al código', () => {
 
 test('_shared.ts no reimplementa formatos que ya trae el kit', () => {
   // `fecha()` con su propio Intl y `formatBytes()` con su tabla de unidades
-  // vivieron aquí. El kit trae `<is-format-date>` y `<is-format-bytes>`, y
+  // vivieron aquí. El kit trae `<iswc-format-date>` y `<iswc-format-bytes>`, y
   // entran con all.min.js: dos formatos que podían divergir en silencio.
   const src = readFileSync(join(SW, '_shared.ts'), 'utf8');
   assert.ok(!/Intl\.(DateTimeFormat|NumberFormat)/.test(src), '_shared.ts vuelve a formatear a mano');
@@ -118,7 +118,7 @@ test('_shared.ts no reimplementa formatos que ya trae el kit', () => {
 
 test('la deuda documentada frente al kit sigue siendo la que dice el MD', () => {
   // La tabla de `src/LLM.md` admite tres barras de pestañas a mano. Si aparece
-  // una cuarta, o si alguna se migra a `<is-tab-group>`, la tabla miente.
+  // una cuarta, o si alguna se migra a `<iswc-tab-group>`, la tabla miente.
   const conTablist = componentes.filter((c) =>
     /role="tablist"/.test(readFileSync(join(SW, `${c}.ts`), 'utf8')),
   );
@@ -129,7 +129,7 @@ test('la deuda documentada frente al kit sigue siendo la que dice el MD', () => 
   );
 
   const deuda = leer('src/LLM.md');
-  assert.match(deuda, /is-tab-group/, 'src/LLM.md ya no documenta la deuda de pestañas');
+  assert.match(deuda, /iswc-tab-group/, 'src/LLM.md ya no documenta la deuda de pestañas');
 });
 
 /* ── El inventario de tests se documenta solo ───────────────── */

@@ -106,9 +106,9 @@ test('los subgrupos del tag ordenan operaciones sin pintar divisores', () => {
 
 test('la base del servidor sale del primer `servers` de la spec', () => {
   const srv = $('sw-server').shadowRoot;
-  assert.equal(srv.querySelector<HTMLElement>('is-input').getAttribute('value'), 'https://httpbin.org');
+  assert.equal(srv.querySelector<HTMLElement>('iswc-input').getAttribute('value'), 'https://httpbin.org');
   // Ambos servidores del documento entran en el menú de conocidos.
-  assert.ok(srv.querySelector<HTMLElement>('is-dropdown'), 'con dos servidores debe haber menú');
+  assert.ok(srv.querySelector<HTMLElement>('iswc-dropdown'), 'con dos servidores debe haber menú');
 });
 
 test('la operación obsoleta se marca y la protegida lleva candado', () => {
@@ -129,7 +129,7 @@ test('la búsqueda filtra y actualiza el contador', () => {
 
   nav.dispatchEvent(new dom.window.CustomEvent('sw-search', { detail: { query: 'zzz-no-existe' }, bubbles: true }));
   assert.equal(root.querySelectorAll<HTMLElement>('sw-tag-group').length, 0);
-  assert.ok($('is-callout'), 'sin resultados debe salir el estado vacío');
+  assert.ok($('iswc-callout'), 'sin resultados debe salir el estado vacío');
 
   nav.dispatchEvent(new dom.window.CustomEvent('sw-search', { detail: { query: '' }, bubbles: true }));
   assert.match($('.resumen-total').textContent, /^7 operaciones$/);
@@ -178,7 +178,7 @@ test('index.html carga el kit vía SW_KIT_TAGS (kit-tags.js)', () => {
   assert.match(html, /SW_KIT_TAGS/, 'index.html debe usar SW_KIT_TAGS del CDN');
   assert.match(html, /kit-tags\.js/, 'index.html debe importar dist/cdn/js/kit-tags.js');
   const kit = readFileSync(join(ROOT, 'src', 'js', 'kit-tags.ts'), 'utf8');
-  for (const tag of ['is-code', 'is-md-render', 'is-flowchart', 'is-sequence-diagram', 'is-er-diagram', 'is-diagram-lightbox']) {
+  for (const tag of ['iswc-code', 'iswc-md-render', 'iswc-flowchart', 'iswc-sequence-diagram', 'iswc-er-diagram', 'iswc-diagram-lightbox']) {
     assert.match(kit, new RegExp(`['"]${tag}['"]`), `falta ${tag} en src/js/kit-tags.ts`);
   }
   assert.ok(

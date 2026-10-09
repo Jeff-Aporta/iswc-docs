@@ -198,7 +198,7 @@ dist/cdn/sw-operation.css</code></pre>
         </article>
         <article class="tarjeta">
           <iswc-icon class="tarjeta__icono" icon="mdi:test-tube"></iswc-icon>
-          <h3 class="tarjeta__titulo"><code>node --test</code></h3>
+          <h3 class="tarjeta__titulo"><code>deno test</code></h3>
           <p>
             Sin runner externo. Las pruebas corren contra
             <code>dist/cdn/</code>: lo que rompe en producción es el artefacto.
@@ -217,11 +217,11 @@ dist/cdn/sw-operation.css</code></pre>
 
     <section class="seccion">
       <h2>Lo que se ejecuta</h2>
-      <pre><code>npm install
-npm run build      # src/**.ts → dist/cdn/*.js (+ *.css copiados)
-npm run dev        # el mismo build en watch
-npm run typecheck  # tsc --noEmit
-npm test           # build + node --test tests/*.test.ts</code></pre>
+      <pre><code>deno install
+deno task build      # src/**.ts → dist/cdn/*.js (+ *.css copiados)
+deno task dev        # el mismo build en watch
+deno task check  # tsc --noEmit
+deno task test           # build + deno test tests/</code></pre>
       <p>
         Dos archivos quedan fuera del pipeline de TypeScript a propósito:
         <code>src/js/boot.ts</code> y <code>src/js/hojas.ts</code>. Corren

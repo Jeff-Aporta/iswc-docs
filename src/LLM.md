@@ -103,7 +103,7 @@ sí vienen del kit. Todo el detalle en [components/LLM.md](components/LLM.md).
 - Toda entrada del documento pasa por `esc()` o por la plantilla `` html`` ``.
 - Un componente nuevo se registra en **cuatro** sitios: `index.html`,
   `components/sw/all.ts`, `../docs/manifest.js` y su página.
-- `npm test` antes de dar nada por hecho.
+- `deno task test` antes de dar nada por hecho.
 
 ## Qué no hacer
 

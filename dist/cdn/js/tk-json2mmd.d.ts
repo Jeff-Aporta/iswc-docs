@@ -8,7 +8,7 @@
  *      que traducir; solo se limpia.
  *   2. `kind: "sequence"` — trae `payload.sequence` como objeto
  *      (`actors` / `groups` / `messages`), que es lo que dibuja el componente
- *      `<is-sequence-diagram>` del kit. Ese objeto NO es Mermaid, así que en
+ *      `<iswc-sequence-diagram>` del kit. Ese objeto NO es Mermaid, así que en
  *      un `.md` no se puede pintar: hay que traducirlo. De eso va este módulo.
  *
  * Decisiones de traducción, y por qué:
@@ -27,7 +27,7 @@
  *   en Mermaid a las bandas de color del componente original.
  */
 /**
- * `payload.sequence` (objeto de `<is-sequence-diagram>`) -> `sequenceDiagram`.
+ * `payload.sequence` (objeto de `<iswc-sequence-diagram>`) -> `sequenceDiagram`.
  * Devuelve '' si el objeto no tiene lo mínimo para dibujar algo.
  */
 export declare function sequence2mmd(seq: any): string;

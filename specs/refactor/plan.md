@@ -220,6 +220,21 @@ Medios en markdown: `![alt](media:logo)` → `iswc-theme-img`/`img` con data URL
 
 ## 6. Testing orientado a WHAT
 
+Reglas de Jeff (2026-10-09):
+
+- **Specs**: el WHAT primero y ante todo. HOW lo más débil posible; HOW fuerte solo para contratos preexistentes
+  (formato InSoft `kind:"config"`, piezas `docs__*.json`, OpenAPI 3, `?s=`/`?conn=`, CDN publicado).
+- **Caja negra**: los tests saben QUÉ hace la app y QUÉ responde, nunca CÓMO (nada de leer texto fuente para
+  afirmar comportamiento; los guardianes de estructura son la excepción explícita y se marcan como tales).
+- **E2E sin UI → controladores de cliente**: la fachada pública `crearClienteDocs()` (publicada en `dist/cdn`)
+  expone `documento.{cargar,validar,normalizar}`, `operacion.{ejecutar,curl}`, `sesion.{login,cerrar}`,
+  `exportar.{openapi,postman,markdown,docs}`. Los e2e de dominio usan solo esa fachada, contra un mock de API.
+- **E2E con UI → Stagehand** (determinista en el gate).
+- **Cobertura → método deep-test-proposals**: `.audit/discovery.json` (inventario de testables) →
+  `.audit/groups.json` → `.audit/proposals/g*.md` (propuestas WHAT por grupo) → matriz en `specs/testing.md`
+  que liga cada testable a su `S-*` y a su test. Nada testeable queda sin fila.
+- **Gate**: `deno task test:all` completo y en verde; nada en rojo al cerrar cada fase.
+
 - Cada `specs/<dominio>/spec.md` sigue la plantilla iswc: requerimientos `S-<DOM><n>` en presente, tabla de
   contratos, tabla de aceptación que cita el test.
 - Cada test se llama por su requerimiento: `test('DOC2 — op sin summary es error con ruta paths./x.get.summary', …)`.

@@ -26,13 +26,13 @@ import{adoptCss as d,precargarCss as g,define as v,html as s,emitir as $}from"./
       <div class="endpoint">
         ${r}
         ${p}
-        <is-dropdown class="probar-pop" placement="bottom-end" distance="6">
-          <is-button slot="trigger" class="probar" variant="solid" color="success">
+        <iswc-dropdown class="probar-pop" placement="bottom-end" distance="6">
+          <iswc-button slot="trigger" class="probar" variant="solid" color="success">
             Probar
-            <is-icon slot="end" icon="mdi:play"></is-icon>
-          </is-button>
+            <iswc-icon slot="end" icon="mdi:play"></iswc-icon>
+          </iswc-button>
           ${c}
-        </is-dropdown>
+        </iswc-dropdown>
       </div>
 
       ${w?s`

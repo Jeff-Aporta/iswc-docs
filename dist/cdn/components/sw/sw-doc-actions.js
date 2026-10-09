@@ -1,37 +1,37 @@
-import{crearComponente as u,define as p,emitir as g,html as n,avisar as a}from"./_shared.js";import{buildExportFormats as b,descargarTexto as f}from"../../js/export.js";const r=u(import.meta.url,(s,{spec:c,config:l},d)=>{const t=b(c,l??{});s.append(n`
-      <is-button-group class="grupo" pill label="Documento" aria-label="Documento">
-        ${t.length?n`
-              <is-dropdown
+import{crearComponente as u,define as w,emitir as p,html as c,avisar as n}from"./_shared.js";import{buildExportFormats as g,descargarTexto as b}from"../../js/export.js";const a=u(import.meta.url,(r,{spec:s,config:l},d)=>{const t=g(s,l??{});r.append(c`
+      <iswc-button-group class="grupo" pill label="Documento" aria-label="Documento">
+        ${t.length?c`
+              <iswc-dropdown
                 class="dl"
                 placement="bottom-end"
-                onis-select=${i=>{const m=i.detail?.item?.getAttribute("value"),e=t.find(o=>o.id===m);e&&(async()=>{try{e.id==="postman"&&a("Generando Postman (diagramas \u2192 PNG)\u2026","brand");const o=await Promise.resolve(e.build());f(e.filename,o),a(`Descargado: ${e.filename}`,"success")}catch(o){a(`No se pudo generar el archivo: ${o?.message??o}`,"danger")}})()}}
+                oniswc-select=${i=>{const m=i.detail?.item?.getAttribute("value"),e=t.find(o=>o.id===m);e&&(async()=>{try{e.id==="postman"&&n("Generando Postman (diagramas \u2192 PNG)\u2026","brand");const o=await Promise.resolve(e.build());b(e.filename,o),n(`Descargado: ${e.filename}`,"success")}catch(o){n(`No se pudo generar el archivo: ${o?.message??o}`,"danger")}})()}}
               >
-                <is-button
+                <iswc-button
                   slot="trigger"
                   variant="outlined"
                   color="neutral"
                   aria-label="Descargar documento"
                   title="Descargar documento"
                 >
-                  <is-icon icon="mdi:download-outline"></is-icon>
-                </is-button>
-                ${t.map(i=>n`
-                    <is-dropdown-item value="${i.id}">
-                      <is-icon slot="icon" icon="${i.icon}"></is-icon>
+                  <iswc-icon icon="mdi:download-outline"></iswc-icon>
+                </iswc-button>
+                ${t.map(i=>c`
+                    <iswc-dropdown-item value="${i.id}">
+                      <iswc-icon slot="icon" icon="${i.icon}"></iswc-icon>
                       ${i.label}
-                    </is-dropdown-item>
+                    </iswc-dropdown-item>
                   `)}
-              </is-dropdown>
+              </iswc-dropdown>
             `:null}
-        <is-button
+        <iswc-button
           class="rl"
           variant="outlined"
           color="neutral"
           aria-label="Actualizar documentación"
           title="Actualizar desde el servidor (ignora cache local de 24 h)"
-          onis-click=${()=>g(d,"sw-doc-reload",null)}
+          oniswc-click=${()=>p(d,"sw-doc-reload",null)}
         >
-          <is-icon icon="mdi:refresh"></is-icon>
-        </is-button>
-      </is-button-group>
-    `)},{spec:null,config:{}},"sw-doc-actions");p("sw-doc-actions",r);export{r as SwDocActions};
+          <iswc-icon icon="mdi:refresh"></iswc-icon>
+        </iswc-button>
+      </iswc-button-group>
+    `)},{spec:null,config:{}},"sw-doc-actions");w("sw-doc-actions",a);export{a as SwDocActions};

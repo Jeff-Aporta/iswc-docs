@@ -31,10 +31,10 @@ test('interfaces de piezas JSON viajan al CDN (js, d.ts, ts)', () => {
   assert.ok(existsSync(dts), 'iss-swagger-doc.d.ts');
   assert.ok(existsSync(ts), 'iss-swagger-doc.ts para Deno');
   const tipos = readFileSync(dts, 'utf8');
-  assert.match(tipos, /export interface IssSwaggerMetaFile/);
-  assert.match(tipos, /export interface IssSwaggerPathsFile/);
-  assert.match(tipos, /export interface IssSwaggerCatalogFile/);
-  assert.match(tipos, /export interface IssSwaggerGeneralFile/);
+  assert.match(tipos, /export (?:interface|type) IssSwaggerMetaFile/);
+  assert.match(tipos, /export (?:interface|type) IssSwaggerPathsFile/);
+  assert.match(tipos, /export (?:interface|type) IssSwaggerCatalogFile/);
+  assert.match(tipos, /export (?:interface|type) IssSwaggerGeneralFile/);
   assert.match(tipos, /export type IssSwaggerPiezas/);
   assert.match(tipos, /export declare function assertIssSwaggerPiezas/);
 });

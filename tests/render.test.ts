@@ -71,30 +71,30 @@ test('sw-path marca los {parámetros} en un span aparte', () => {
 
 test('sw-json monta is-code sin botón de copiar interno', () => {
   const root = montar('sw-json', { value: '{\n  "a": 1,\n  "b": "x"\n}', lang: 'json' });
-  const code = root.querySelector<HTMLElement>('is-code')!;
+  const code = root.querySelector<HTMLElement>('iswc-code')!;
   assert.ok(code, 'falta is-code');
   assert.equal(code.getAttribute('lang'), 'json');
   assert.equal(code.getAttribute('readonly'), '');
-  assert.equal(root.querySelector<HTMLElement>('is-copy-button'), null);
+  assert.equal(root.querySelector<HTMLElement>('iswc-copy-button'), null);
   assert.equal(code.value ?? code.getAttribute('value'), '{\n  "a": 1,\n  "b": "x"\n}');
 });
 
 test('sw-json no ejecuta HTML que venga en el cuerpo', () => {
   const root = montar('sw-json', { value: '<img src=x onerror=alert(1)>', lang: 'plaintext' });
   assert.equal(root.querySelector<HTMLImageElement>('img'), null);
-  const code = root.querySelector<HTMLElement>('is-code')!;
+  const code = root.querySelector<HTMLElement>('iswc-code')!;
   assert.equal(code?.value ?? code?.getAttribute('value'), '<img src=x onerror=alert(1)>');
 });
 
 test('sw-json acepta lang shell para cURL', () => {
   const curl = 'curl -X PUT \'https://x/api\' \\\n  -H \'Content-Type: application/json\'';
   const root = montar('sw-json', { value: curl, lang: 'shell' });
-  assert.equal(root.querySelector<HTMLElement>('is-code')?.getAttribute('lang'), 'shell');
+  assert.equal(root.querySelector<HTMLElement>('iswc-code')?.getAttribute('lang'), 'shell');
 });
 
 test('sw-doc monta is-md-render con el markdown', () => {
   const root = montar('sw-doc', { markdown: '# Hola\n\nUn **párrafo**.' });
-  const md = root.querySelector<HTMLElement>('is-md-render.md')!;
+  const md = root.querySelector<HTMLElement>('iswc-md-render.md')!;
   assert.ok(md);
   assert.ok(md.hasAttribute('readonly'));
   const source = md.querySelector<HTMLElement>('script[type="text/markdown"]')!;
@@ -113,8 +113,8 @@ test('sw-params pinta un campo por parámetro y ninguno si la lista está vacía
   });
   assert.equal(con.querySelectorAll<HTMLElement>('.fila').length, 2);
   // El enum va a is-select; el resto a is-input.
-  assert.ok(con.querySelector<HTMLElement>('is-select'));
-  assert.ok(con.querySelector<HTMLElement>('is-input'));
+  assert.ok(con.querySelector<HTMLElement>('iswc-select'));
+  assert.ok(con.querySelector<HTMLElement>('iswc-input'));
 
   const sin = montar('sw-params', { params: [], values: {}, titulo: 'Query' });
   assert.equal(sin.querySelector<HTMLElement>('.bloque'), null);
@@ -128,9 +128,9 @@ test('sw-params emite sw-param-change al escribir', () => {
   const visto = [];
   node.addEventListener('sw-param-change', (e) => visto.push(e.detail));
 
-  const input = node.shadowRoot!.querySelector<HTMLElement>('is-input');
+  const input = node.shadowRoot!.querySelector<HTMLElement>('iswc-input');
   input.value = 'hola';
-  input.dispatchEvent(new dom.window.Event('is-input', { bubbles: true }));
+  input.dispatchEvent(new dom.window.Event('iswc-input', { bubbles: true }));
 
   assert.deepEqual(visto, [{ name: 'a', value: 'hola' }]);
 });

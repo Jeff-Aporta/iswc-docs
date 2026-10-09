@@ -10,24 +10,24 @@ import{adoptCss as u,precargarCss as h,define as b,html as a,emitir as c}from"./
           </section>
         </div>
       `}const r=document.createElement("sw-try");return r.props={op:e,spec:t,serverBase:o,authEnabled:i},r.addEventListener("sw-need-login",s=>c(this,"sw-need-login",s.detail)),r}#n(){const e=this.#s;if(!e)return;const{tab:t}=this.#e;for(const i of e.parentElement?.querySelectorAll(".pestana")??[])i.toggleAttribute("selected",i.dataset.tab===t);e.replaceChildren();const o=this.#i();o&&e.append(o),this.#o=!0}#a(){const{op:e,spec:t,abierto:o,authEnabled:i,tab:l}=this.#e;if(this.#t.replaceChildren(),this.#s=null,!e){u(this.#t,import.meta.url,"sw-operation");return}const p=i&&w(e,t),r=document.createElement("sw-method");r.props={method:e.method};const s=document.createElement("sw-path");s.props={path:e.path},this.#t.append(a`
-      <is-details
+      <iswc-details
         class="tarjeta"
         variant="outlined"
         data-method="${e.method}"
         ${o?"open":""}
-        onis-show=${()=>c(this,"sw-op-toggle",{operationId:e.operationId,abierto:!0})}
-        onis-hide=${()=>c(this,"sw-op-toggle",{operationId:e.operationId,abierto:!1})}
+        oniswc-show=${()=>c(this,"sw-op-toggle",{operationId:e.operationId,abierto:!0})}
+        oniswc-hide=${()=>c(this,"sw-op-toggle",{operationId:e.operationId,abierto:!1})}
       >
         <div slot="summary" class="resumen">
           ${r}
           ${p?a`
                 <span class="candado" title="Requiere Authorization: Bearer &lt;JWT&gt;" aria-label="Requiere sesión">
-                  <is-icon icon="mdi:lock-outline"></is-icon>
+                  <iswc-icon icon="mdi:lock-outline"></iswc-icon>
                 </span>
               `:null}
           ${s}
           <span class="sumario">${e.summary??""}</span>
-          ${e.deprecated?a`<is-tag color="warning" variant="outlined" class="obsoleta">obsoleta</is-tag>`:null}
+          ${e.deprecated?a`<iswc-tag color="warning" variant="outlined" class="obsoleta">obsoleta</iswc-tag>`:null}
         </div>
 
         ${o?a`
@@ -45,7 +45,7 @@ import{adoptCss as u,precargarCss as h,define as b,html as a,emitir as c}from"./
                         aria-selected="${n.id===l?"true":"false"}"
                         onclick=${()=>c(this,"sw-op-tab",{operationId:e.operationId,tab:n.id})}
                       >
-                        <is-icon icon="${n.icon}"></is-icon>
+                        <iswc-icon icon="${n.icon}"></iswc-icon>
                         ${n.label}
                       </button>
                     `)}
@@ -54,5 +54,5 @@ import{adoptCss as u,precargarCss as h,define as b,html as a,emitir as c}from"./
                 <div class="zona-pestana"></div>
               </div>
             `:null}
-      </is-details>
+      </iswc-details>
     `),this.#s=this.#t.querySelector(".zona-pestana"),o&&!this.#o&&this.#n(),u(this.#t,import.meta.url,"sw-operation")}}h(import.meta.url,"sw-operation"),b("sw-operation",m);export{m as SwOperation};

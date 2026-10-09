@@ -1,5 +1,5 @@
 /**
- * build.mjs — compila `src/**` a JavaScript plano en `dist/cdn/`.
+ * build.ts — compila `src/**` a JavaScript plano en `dist/cdn/`.
  *
  * Sin bundler y sin Babel: cada `.ts` se transpila por separado (esbuild solo le quita los
  * tipos y minifica) y **se conserva la estructura de carpetas de `src/`**. Antes se aplanaba
@@ -26,7 +26,6 @@
  *     types/swagger.d.ts      tipos ambiente del visor
  */
 import { readdirSync, mkdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, existsSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import { join, basename, dirname, relative } from 'node:path';
 import esbuild from 'esbuild';
 
@@ -158,8 +157,14 @@ async function compilar() {
   copyFileSync(join(SRC, 'types', 'swagger.d.ts'), join(OUT, 'types', 'swagger.d.ts'));
   copyFileSync(join(SRC, 'js', 'iss-swagger-doc.ts'), join(OUT, 'js', 'iss-swagger-doc.ts'));
 
-  const tsc = join(ROOT, 'node_modules', 'typescript', 'bin', 'tsc');
-  execFileSync(process.execPath, [tsc, '-p', 'tsconfig.cdn.json'], { cwd: ROOT, stdio: 'inherit' });
+  // Declaraciones `.d.ts` de todo lo publicado: tsc por especificador npm (sin node_modules a mano).
+  const tsc = await new Deno.Command(Deno.execPath(), {
+    args: ['run', '-A', 'npm:typescript@5.9.3/tsc', '-p', 'tsconfig.cdn.json'],
+    cwd: ROOT,
+    stdout: 'inherit',
+    stderr: 'inherit',
+  }).output();
+  if (!tsc.success) throw new Error('tsc -p tsconfig.cdn.json falló');
 
   const mdBundle = await esbuild.build({
     entryPoints: [join(SRC, 'js', 'iss-swagger-md.ts')],
@@ -216,9 +221,10 @@ console.log(
   + ` · docs: ${docs} scripts · build ${SELLO}`,
 );
 
-if (process.argv.includes('--watch')) {
+if (!Deno.args.includes('--watch')) await esbuild.stop();
+else {
   const { watch } = await import('node:fs');
-  let pendiente: NodeJS.Timeout | undefined;
+  let pendiente: ReturnType<typeof setTimeout> | undefined;
   watch(SRC, { recursive: true }, (_e, archivo) => {
     if (!archivo || !/\.(ts|css|js|md)$/.test(archivo)) return;
     clearTimeout(pendiente);

@@ -17,7 +17,7 @@
  */
 import { SW_VERSION } from './version.js';
 declare const CLAVE_VERSION = "sw:build";
-/** Almacén del kit `is-*`, donde `is-split-panel` guarda su posición. */
+/** Almacén del kit `is-*`, donde `iswc-split-panel` guarda su posición. */
 declare const CLAVE_KIT = "is-components";
 /** Geometría que se descarta al cambiar de build. Es lo que un layout nuevo invalida. */
 declare const GEOMETRIA: Array<{
@@ -27,7 +27,7 @@ declare const GEOMETRIA: Array<{
 /**
  * Descarta la geometría guardada si la escribió otra versión del componente.
  *
- * Se llama al cargar el módulo del layout, antes de que ningún `is-split-panel` se monte: su
+ * Se llama al cargar el módulo del layout, antes de que ningún `iswc-split-panel` se monte: su
  * `connectedCallback` restaura de `localStorage`, así que purgar después no serviría de nada.
  *
  * Devuelve `true` si purgó, para poder afirmarlo en una prueba.

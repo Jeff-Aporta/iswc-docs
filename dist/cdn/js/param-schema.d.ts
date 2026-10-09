@@ -2,7 +2,7 @@
  * param-schema.ts — del `schema` de un parámetro a cómo se edita en pantalla.
  *
  * El saneado es por tipo declarado, no por `type="number"` del input nativo:
- * el kit usa `is-input`, y dejar que el navegador decida da comportamientos
+ * el kit usa `iswc-input`, y dejar que el navegador decida da comportamientos
  * distintos por locale (coma vs punto decimal).
  */
 export declare const paramSchemaType: (schema: SwSchema | undefined) => string;
@@ -10,7 +10,7 @@ export declare const paramSchemaType: (schema: SwSchema | undefined) => string;
 export declare function sanitizeParamInputValue(schema: SwSchema | undefined, raw: unknown): string;
 /** `inputmode` del teclado móvil. */
 export declare function paramInputMode(schema: SwSchema | undefined): 'numeric' | 'decimal' | 'text';
-/** Valores cerrados del parámetro, si los declara (pinta un `is-select`). */
+/** Valores cerrados del parámetro, si los declara (pinta un `iswc-select`). */
 export declare function paramEnum(schema: SwSchema | undefined): string[];
 /** Etiqueta corta del tipo: `array<string>`, `string(date-time)`, `integer`. */
 export declare function paramTypeLabel(schema: SwSchema | undefined): string;

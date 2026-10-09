@@ -25,12 +25,12 @@ Aquí el único runtime es el navegador:
 ## Arranque
 
 ```bash
-npm install
-npm run build     # src/**.ts -> dist/cdn/*.js (+ *.css copiados)
-npm run serve     # http://localhost:4190
+deno install
+deno task build     # src/**.ts -> dist/cdn/*.js (+ *.css copiados)
+deno task serve     # http://localhost:4190
 ```
 
-`npm run dev` deja el build en watch. `npm test` compila y corre `node --test`.
+`deno task dev` deja el build en watch. `deno task test` compila y corre `deno test`.
 
 CDN (cuando `dist/` está en GitHub): `https://cdn.jsdelivr.net/gh/Jeff-Aporta/isc-swagger@main/dist/cdn/`.
 Agentes: [`dist/cdn/LLM.md`](src/cdn/LLM.md). Tests Deno de piezas JSON: `dist/cdn/js/iss-swagger-doc.ts`.
@@ -85,7 +85,7 @@ docs/                         sitio documental (no se compila)
   video/                      (reservado; hero → YouTube unlisted)
 dist/cdn/                     artefacto publicado: todo plano y hermano
   LLM.md, js/*.d.ts, types/     contrato para agentes y tests Deno
-tests/                        node --test contra dist/cdn
+tests/                        deno test contra dist/cdn
 ```
 
 Las carpetas están separadas a propósito, igual que en

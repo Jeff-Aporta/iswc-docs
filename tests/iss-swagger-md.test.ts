@@ -10,10 +10,10 @@ const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '
 const { issSwaggerToMarkdown, issDocToLlmMarkdown, buildIssSwaggerLlmViewHtml } = await import('../dist/cdn/js/iss-swagger-md.js');
 
 test('issDocToLlmMarkdown quita flowchart y deja fence de is-code', () => {
-  const md = issDocToLlmMarkdown('Hola <is-flowchart>x</is-flowchart> y <is-code lang="http" value="GET /x"></is-code>');
+  const md = issDocToLlmMarkdown('Hola <iswc-flowchart>x</iswc-flowchart> y <iswc-code lang="http" value="GET /x"></iswc-code>');
   assert.match(md, /visor HTML/);
   assert.match(md, /```http/);
-  assert.doesNotMatch(md, /is-flowchart/);
+  assert.doesNotMatch(md, /iswc-flowchart/);
 });
 
 test('issSwaggerToMarkdown lista método y ruta', () => {
@@ -37,7 +37,7 @@ test('buildIssSwaggerLlmViewHtml carga is-md-render y fetch LLM.md', () => {
     llmMdHref: '/api/LLM.md',
     title: 'Demo',
   });
-  assert.match(html, /is-md-render/);
+  assert.match(html, /iswc-md-render/);
   assert.match(html, /loader\.min\.js/);
   assert.match(html, /\/api\/LLM\.md/);
 });
