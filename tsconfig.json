@@ -20,8 +20,8 @@
   },
   "include": [
     "src/types/**/*.d.ts",
-    "src/components/**/*.ts",
     "src/js/**/*.ts",
+    "view/**/*.ts",
     "docs/**/*.ts",
     "tests/**/*.ts"
   ]

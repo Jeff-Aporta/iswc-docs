@@ -11,24 +11,24 @@ import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 
 const { filterGroupsByQuery, filterGroupsByNavTab, resolveVisibleNavTabs, resolveActiveNavTab, contarOperaciones } =
-  await import('../dist/cdn/js/nav.js');
-const { normalizeApiBase } = await import('../dist/cdn/js/config.js');
-const { normalizeServerBase, joinApiUrl, inferDefaultServerBase } = await import('../dist/cdn/js/server-base.js');
-const { formatHttpError, extractApiError } = await import('../dist/cdn/js/http-error.js');
+  await import('../dist/cdn/js/dominio/nav.js');
+const { normalizeApiBase } = await import('../dist/cdn/js/core/config.js');
+const { normalizeServerBase, joinApiUrl, inferDefaultServerBase } = await import('../dist/cdn/js/core/server-base.js');
+const { formatHttpError, extractApiError } = await import('../dist/cdn/js/dominio/http-error.js');
 const { validateBodyJson, opUsesRequestBody, resolveTryItBodyExamples, defaultTryItBodyText, formatBodyExample } =
-  await import('../dist/cdn/js/tryit-body.js');
-const { opAllowsAttachments, packTryItBody, attachmentFieldNames } = await import('../dist/cdn/js/tryit-attach.js');
+  await import('../dist/cdn/js/dominio/tryit-body.js');
+const { opAllowsAttachments, packTryItBody, attachmentFieldNames } = await import('../dist/cdn/js/dominio/tryit-attach.js');
 const { sanitizeParamInputValue, paramTypeLabel, paramInitialValue, paramEnum } =
-  await import('../dist/cdn/js/param-schema.js');
-const { renderMarkdown } = await import('../dist/cdn/js/markdown.js');
-const { toPostmanCollection } = await import('../dist/cdn/js/export.js');
-const { parseIsDocument, buildIsDocument, IS_DOCUMENT_KIND } = await import('../dist/cdn/js/is-document.js');
-const { normalizeJwt, formatSessionChipLabel, stripContapymeEmail } = await import('../dist/cdn/js/auth.js');
+  await import('../dist/cdn/js/dominio/param-schema.js');
+const { renderMarkdown } = await import('../dist/cdn/js/dominio/markdown.js');
+const { toPostmanCollection } = await import('../dist/cdn/js/dominio/export.js');
+const { parseIsDocument, buildIsDocument, IS_DOCUMENT_KIND } = await import('../dist/cdn/js/dominio/is-document.js');
+const { normalizeJwt, formatSessionChipLabel, stripContapymeEmail } = await import('../dist/cdn/js/core/auth.js');
 const { parseConnParam, encodeConnParam, resolveConnConfig, joinConnUrl, DEFAULT_CONN_PATHS } =
-  await import('../dist/cdn/js/conn.js');
+  await import('../dist/cdn/js/core/conn.js');
 const { getQuery, setQuery, readSState, writeSState, clearSState, migrateLegacyNavToS } =
-  await import('../dist/cdn/js/search-state.js');
-const { mergeUrlState, readUrlState } = await import('../dist/cdn/js/url-state.js');
+  await import('../dist/cdn/js/core/search-state.js');
+const { mergeUrlState, readUrlState } = await import('../dist/cdn/js/core/url-state.js');
 
 /* ── nav ────────────────────────────────────────────────────── */
 

@@ -24,9 +24,9 @@ test('dist/cdn/LLM.md es el contrato público de agentes', () => {
 });
 
 test('interfaces de piezas JSON viajan al CDN (js, d.ts, ts)', () => {
-  const js = join(CDN, 'js', 'iss-docs-piezas.js');
-  const dts = join(CDN, 'js', 'iss-docs-piezas.d.ts');
-  const ts = join(CDN, 'js', 'iss-docs-piezas.ts');
+  const js = join(CDN, 'js', 'dominio', 'iss-docs-piezas.js');
+  const dts = join(CDN, 'js', 'dominio', 'iss-docs-piezas.d.ts');
+  const ts = join(CDN, 'js', 'dominio', 'iss-docs-piezas.ts');
   assert.ok(existsSync(js), 'iss-docs-piezas.js');
   assert.ok(existsSync(dts), 'iss-docs-piezas.d.ts');
   assert.ok(existsSync(ts), 'iss-docs-piezas.ts para Deno');
@@ -47,7 +47,7 @@ test('tipos ambiente del visor y kit-tags en el CDN', () => {
 });
 
 test('iss-docs-md.min.js es un ESM autónomo', async () => {
-  const min = join(CDN, 'js', 'iss-docs-md.min.js');
+  const min = join(CDN, 'js', 'dominio', 'iss-docs-md.min.js');
   assert.ok(existsSync(min));
   const src = readFileSync(min, 'utf8');
   assert.doesNotMatch(src, /from\s*['"]\.\//);

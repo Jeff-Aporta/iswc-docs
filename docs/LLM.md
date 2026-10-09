@@ -138,5 +138,5 @@ mirar: un diagrama sin pie obliga a adivinar qué se estaba señalando.
 
 - Índice y leyes del proyecto: [`../LLM.md`](../LLM.md)
 - Índice de `src`: [`../src/LLM.md`](../src/LLM.md)
-- Capa de pintado: [`../src/components/LLM.md`](../src/components/LLM.md)
-- Catálogo `docs-*`: [`../src/components/docs/LLM.md`](../src/components/docs/LLM.md)
+- Capa de pintado: [`../src/js/components/LLM.md`](../src/js/components/LLM.md)
+- Catálogo `docs-*`: [`../src/js/components/docs/LLM.md`](../src/js/components/docs/LLM.md)

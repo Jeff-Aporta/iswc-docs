@@ -11,3 +11,7 @@ Thumbs.db
 tests/*.tmp
 tests/coverage/
 tests/.cache/
+
+# Staging de build (SCSS y declaraciones)
+.tmp-scss/
+.tmp-dts/

@@ -12,6 +12,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
+import { fuente } from './_lib/rutas.ts';
 
 const dom = new JSDOM('<!doctype html><html><body></body></html>', {
   url: 'http://localhost/',
@@ -24,16 +25,16 @@ for (const k of ['window', 'document', 'HTMLElement', 'customElements', 'CustomE
 globalThis.performance = dom.window.performance;
 globalThis.location = dom.window.location;
 
-await import('../dist/cdn/components/docs/docs-minidoc-view.js');
-await import('../dist/cdn/components/docs/docs-minidoc-code.js');
-await import('../dist/cdn/components/docs/docs-home.js');
-await import('../dist/cdn/components/docs/docs-app.js');
-await import('../dist/cdn/components/docs/docs-minidoc.js');
-await import('../dist/cdn/components/docs/docs-driver-switch.js');
-await import('../dist/cdn/components/docs/docs-layout.js');
-await import('../dist/cdn/components/docs/docs-viewer.js');
-const { buildCurl, ejemploDeParam } = await import('../dist/cdn/js/curl.js');
-const { readDriver, writeDriver, esDriver, DRIVERS, DRIVER_DEFAULT } = await import('../dist/cdn/js/driver.js');
+await import('../dist/cdn/view/minidoc/components/docs-minidoc-view.js');
+await import('../dist/cdn/view/minidoc/components/docs-minidoc-code.js');
+await import('../dist/cdn/js/components/docs/docs-home.js');
+await import('../dist/cdn/view/app/components/docs-app.js');
+await import('../dist/cdn/view/minidoc/components/docs-minidoc.js');
+await import('../dist/cdn/js/components/docs/docs-driver-switch.js');
+await import('../dist/cdn/js/components/docs/docs-layout.js');
+await import('../dist/cdn/js/components/docs/docs-viewer.js');
+const { buildCurl, ejemploDeParam } = await import('../dist/cdn/js/dominio/curl.js');
+const { readDriver, writeDriver, esDriver, DRIVERS, DRIVER_DEFAULT } = await import('../dist/cdn/js/core/driver.js');
 
 /**
  * Monta un componente en el DOM de jsdom y devuelve su shadow root.
@@ -266,8 +267,8 @@ test('el índice de minidoc expone el path en title y caption', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-minidoc.ts'), 'utf8');
-  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-minidoc.css'), 'utf8');
+  const ts = readFileSync(fuente('docs-minidoc', 'ts'), 'utf8');
+  const css = readFileSync(fuente('docs-minidoc', 'scss'), 'utf8');
   assert.match(ts, /title="\$\{ruta\}"/, 'falta title con el endpoint');
   assert.match(ts, /class="op-texto"/, 'falta columna título+path');
   assert.match(ts, /class="op-path"/, 'falta caption del path');
@@ -408,8 +409,8 @@ test('los umbrales del CSS y los del JS son los mismos', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.ts'), 'utf8');
-  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.css'), 'utf8');
+  const ts = readFileSync(fuente('docs-layout', 'ts'), 'utf8');
+  const css = readFileSync(fuente('docs-layout', 'scss'), 'utf8');
   for (const umbral of ['87.5rem', '60rem']) {
     assert.ok(ts.includes(umbral), `docs-layout.ts perdió el umbral ${umbral}`);
     assert.ok(css.includes(umbral), `docs-layout.css perdió el umbral ${umbral}`);
@@ -419,7 +420,7 @@ test('los umbrales del CSS y los del JS son los mismos', async () => {
 /* ── Método QUERY ───────────────────────────────────────────── */
 
 test('QUERY tiene color propio: el API lo usa para filtrar', async () => {
-  const { METHOD_COLOR } = await import('../dist/cdn/js/openapi.js');
+  const { METHOD_COLOR } = await import('../dist/cdn/js/dominio/openapi.js');
   assert.ok(METHOD_COLOR.query, 'QUERY sin entrada: saldría gris como un OPTIONS');
   assert.notEqual(METHOD_COLOR.query, METHOD_COLOR.get, 'QUERY no debe compartir color con GET');
   assert.notEqual(METHOD_COLOR.query, 'info');
@@ -427,7 +428,7 @@ test('QUERY tiene color propio: el API lo usa para filtrar', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-method.css'), 'utf8');
+  const css = readFileSync(fuente('docs-method', 'scss'), 'utf8');
   assert.match(css, /data-method=["']query["']/, 'docs-method.css pinta QUERY con teal propio');
 });
 
@@ -439,7 +440,7 @@ test('todos los chips de método miden lo mismo', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-method.css'), 'utf8');
+  const css = readFileSync(fuente('docs-method', 'scss'), 'utf8');
   const host = css.slice(css.indexOf(':host'), css.indexOf('.metodo'));
   assert.match(host, /width:\s*calc\(6ch/, 'el ancho debe basarse en DELETE (6ch) + padding');
   assert.match(css, /\.metodo::part\(tag\)/, 'el pill de is-tag debe estirarse al ancho del host');
@@ -473,7 +474,7 @@ test('docs-layout corrige un reparto degenerado de los splits', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.ts'), 'utf8');
+  const ts = readFileSync(fuente('docs-layout', 'ts'), 'utf8');
   assert.match(ts, /positionInPixels\s*=/, 'debe fijar píxeles: el porcentaje lo pisa el píxel canónico');
   assert.match(ts, /requestAnimationFrame/, 'debe esperar a que el layout tenga ancho real');
   assert.match(ts, /MINIMO_PANEL_PX/, 'debe respetar el ancho que el usuario haya arrastrado');
@@ -483,7 +484,7 @@ test('docs-layout corrige un reparto degenerado de los splits', async () => {
 
 test('la geometría guardada caduca al cambiar de build', async () => {
   const { caducarPrefsSiCambioBuild, CLAVE_VERSION, CLAVE_KIT, DOCS_VERSION } =
-    await import('../dist/cdn/js/prefs.js?bust=' + Math.random());
+    await import('../dist/cdn/js/core/prefs.js?bust=' + Math.random());
 
   // Estado escrito por una versión anterior, con el cero que rompía el layout.
   globalThis.localStorage.setItem(CLAVE_KIT, JSON.stringify({
@@ -512,7 +513,7 @@ test('la geometría guardada caduca al cambiar de build', async () => {
 
 test('con el mismo build no se toca nada', async () => {
   const { caducarPrefsSiCambioBuild, CLAVE_VERSION, CLAVE_KIT, DOCS_VERSION } =
-    await import('../dist/cdn/js/prefs.js?bust=' + Math.random());
+    await import('../dist/cdn/js/core/prefs.js?bust=' + Math.random());
 
   globalThis.localStorage.setItem(CLAVE_VERSION, DOCS_VERSION);
   const guardado = JSON.stringify({ 'iswc-split-panel': { 'docs:split:inicio': { positionInPixels: 320 } } });
@@ -526,7 +527,7 @@ test('docs-layout caduca las prefs antes de montar los splits', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.ts'), 'utf8');
+  const ts = readFileSync(fuente('docs-layout', 'ts'), 'utf8');
   const llamada = ts.indexOf('caducarPrefsSiCambioBuild()');
   const clase = ts.indexOf('class DocsLayout');
   assert.ok(llamada > 0, 'docs-layout no caduca las prefs');
@@ -536,7 +537,7 @@ test('docs-layout caduca las prefs antes de montar los splits', async () => {
 /* ── Método QUERY ───────────────────────────────────────────── */
 
 test('el visor lista las operaciones QUERY en vez de descartarlas', async () => {
-  const { listOperations } = await import('../dist/cdn/js/openapi.js');
+  const { listOperations } = await import('../dist/cdn/js/dominio/openapi.js');
   const spec = {
     paths: {
       '/file/query': { query: { summary: 'Buscar archivos', responses: {} } },
@@ -550,7 +551,7 @@ test('el visor lista las operaciones QUERY en vez de descartarlas', async () => 
 });
 
 test('QUERY ofrece editor de cuerpo: es su razón de ser frente a GET', async () => {
-  const { opUsesRequestBody } = await import('../dist/cdn/js/tryit-body.js');
+  const { opUsesRequestBody } = await import('../dist/cdn/js/dominio/tryit-body.js');
   assert.equal(opUsesRequestBody('query'), true);
   assert.equal(opUsesRequestBody('get'), false);
 });

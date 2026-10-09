@@ -18,7 +18,7 @@ import { JSDOM } from 'jsdom';
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const SAMPLE = JSON.parse(readFileSync(join(ROOT, 'tests', 'fixtures', 'insoft-config.sample.json'), 'utf8'));
 
-const { parseInsoftConfig, isInsoftConfig } = await import('../dist/cdn/js/insoft-config.js');
+const { parseInsoftConfig, isInsoftConfig } = await import('../dist/cdn/js/dominio/insoft-config.js');
 
 test('isInsoftConfig detecta el documento del ISS por kind+paths', () => {
   assert.equal(isInsoftConfig({ kind: 'config', version: 1, paths: {} }), true);
@@ -149,7 +149,7 @@ test('el viewer del ISS se traduce a DocsConfig del visor', () => {
 
 test('la spec sintetizada es válida para los módulos puros del visor', async () => {
   const { config, spec } = parseInsoftConfig(SAMPLE, 'https://h/api');
-  const { groupOperationsByTag } = await import('../dist/cdn/js/openapi.js');
+  const { groupOperationsByTag } = await import('../dist/cdn/js/dominio/openapi.js');
   const grupos = groupOperationsByTag(spec);
   // El fixture real tiene ~30 paths; el cálculo real varía, pero los grupos
   // deben existir y contener operaciones.
@@ -168,7 +168,7 @@ test('la spec sintetizada es válida para los módulos puros del visor', async (
 test('conn.spec InSoft del fixture termina con un spec listo (sin red a config.json)', async () => {
   const { readFileSync } = await import('node:fs');
   const sample = JSON.parse(readFileSync(new URL('./fixtures/insoft-config.sample.json', import.meta.url), 'utf8'));
-  const cfgMod = await import('../dist/cdn/js/config.js');
+  const cfgMod = await import('../dist/cdn/js/core/config.js');
 
   globalThis.fetch = async () => {
     throw new Error('no debe haber fetch a /system/swagger/config.json');

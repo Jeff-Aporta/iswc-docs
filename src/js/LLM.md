@@ -3,7 +3,7 @@
 ## Propósito
 
 Dominio del visor. **Sin DOM.** Es lo que se prueba sin navegador y lo que
-decide *qué* se ve; el *cómo* vive en [`../components/`](../components/LLM.md).
+decide *qué* se ve; el *cómo* vive en [`./components/`](./components/LLM.md).
 
 La única excepción son los dos archivos en JavaScript plano (`boot.js`,
 `hojas.js`), que sí tocan el documento porque corren antes de que exista ningún
@@ -108,5 +108,5 @@ Guardián: `tests/hojas.test.ts`.
 ## Navegación
 
 - Índice de `src`: [`../LLM.md`](../LLM.md)
-- Pintado: [`../components/LLM.md`](../components/LLM.md)
+- Pintado: [`./components/LLM.md`](./components/LLM.md)
 - Leyes del repo: [`../../LLM.md`](../../LLM.md)

@@ -10,8 +10,8 @@ Esta página son las leyes y la historia de errores. El detalle por capa vive en
 | [`src/LLM.md`](src/LLM.md) | Siempre. Índice, regla de reuso del kit, deuda conocida |
 | [`src/cdn/LLM.md`](src/cdn/LLM.md) | Contrato **público** (se copia a `dist/cdn/LLM.md` para el CDN) |
 | [`src/js/LLM.md`](src/js/LLM.md) | Vas a tocar dominio, parsers, URL o auth |
-| [`src/components/LLM.md`](src/components/LLM.md) | Vas a tocar pintado, CSS o repintado |
-| [`src/components/docs/LLM.md`](src/components/docs/LLM.md) | Necesitas props/eventos de un `docs-*` |
+| [`src/js/components/LLM.md`](src/js/components/LLM.md) | Vas a tocar pintado, CSS o repintado |
+| [`src/js/components/docs/LLM.md`](src/js/components/docs/LLM.md) | Necesitas props/eventos de un `docs-*` |
 | [`docs/LLM.md`](docs/LLM.md) | Vas a tocar el sitio documental |
 
 Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
@@ -124,7 +124,7 @@ Al tocar el layout, añadir aquí la clave nueva. Guardián: `tests/minidoc.test
 
 1. `src/js/` es puro: sin DOM, sin red salvo `fetch` explícito. Es lo que se
    prueba sin navegador y lo que decide qué se ve.
-2. `src/components/docs/` traduce esos datos a `is-*`. Cada componente es un
+2. `src/js/components/docs/` traduce esos datos a `is-*`. Cada componente es un
    `.ts` + un `.css` hermano y nada más.
 3. `scripts/build.ts` transpila (no empaqueta) a `dist/cdn/`, un directorio
    **plano** donde todo módulo es hermano de todos. Los imports relativos se
@@ -508,10 +508,10 @@ parte del contrato.
 
 ## Añadir un componente `docs-*`
 
-1. `src/components/docs/docs-x.ts` + `src/components/docs/docs-x.css`.
+1. `src/js/components/docs/docs-x.ts` + `src/js/components/docs/docs-x.css`.
 2. `<script type="module">` en `index.html` (orden importa: el shell
    `docs-app` y los componentes que usa van al final del grupo de scripts).
-3. Import en `src/components/docs/all.ts` (el build genera `sw.all.js`).
+3. Import en `src/js/components/docs/all.ts` (el build genera `sw.all.js`).
 4. Entrada en `docs/manifest.js` + `docs/previews/docs-x.html` (la galería
    nueva vive en `docs/`, no en `src/components/demo/`).
 5. Si `#render()` es manual: `adoptCss(this.#root, import.meta.url)` al final

@@ -16,7 +16,7 @@ const {
   readJsonCache,
   writeJsonCache,
   isJsonCacheFresh,
-} = await import('../dist/cdn/js/json-cache.js');
+} = await import('../dist/cdn/js/core/json-cache.js');
 
 const URL = 'https://api.example.test/system/swagger/config.json';
 const DAY = JSON_CACHE_TTL_MS;
@@ -97,7 +97,7 @@ test('force: true ignora cache fresco y pide red', async () => {
 });
 
 test('clearJsonCache borra una URL o todo el prefijo', async () => {
-  const { clearJsonCache } = await import('../dist/cdn/js/json-cache.js');
+  const { clearJsonCache } = await import('../dist/cdn/js/core/json-cache.js');
   localStorage.clear();
   writeJsonCache(URL, { a: 1 }, 1);
   writeJsonCache(`${URL}?b=1`, { b: 1 }, 1);

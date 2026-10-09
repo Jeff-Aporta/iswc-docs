@@ -8,10 +8,10 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const src = readFileSync(join(root, 'src/js/postman-md.ts'), 'utf8');
+const src = readFileSync(join(root, 'src/js/dominio/postman-md.ts'), 'utf8');
 
 // Caja negra: se prueba el convertidor publicado, no una copia de su lógica.
-const { convertIsCodeToFences } = await import('../dist/cdn/js/postman-md.js');
+const { convertIsCodeToFences } = await import('../dist/cdn/js/dominio/postman-md.js');
 
 test('postman-md.ts exporta el pipeline de conversión', () => {
   assert.match(src, /export async function issDocMdForPostman/);

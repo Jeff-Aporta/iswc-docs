@@ -48,7 +48,7 @@ globalThis.fetch = async (url: string) => {
   return { ok: true, status: 200, text: async () => '.x{color:red}' };
 };
 
-const { adoptCss } = await import('../dist/cdn/components/docs/_shared.js');
+const { adoptCss } = await import('../dist/cdn/js/base/componente.js');
 
 const MODULO = 'http://localhost/dist/cdn/components/docs/docs-falso.js';
 const HOJA = 'http://localhost/dist/cdn/components/docs/docs-falso.css';

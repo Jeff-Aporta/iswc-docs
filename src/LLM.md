@@ -19,8 +19,8 @@ No hay React, ni MUI, ni Babel, ni bundler. TypeScript → módulos ES planos.
 | Carpeta | Documento | Qué vive ahí |
 | --- | --- | --- |
 | `js/` | [js/LLM.md](js/LLM.md) | Dominio puro: sin DOM. Lo que decide **qué** se ve |
-| `components/` | [components/LLM.md](components/LLM.md) | Pintado: traduce esos datos a `is-*`. El **cómo** se ve |
-| `components/docs/` | [components/docs/LLM.md](components/docs/LLM.md) | Catálogo de los tags `docs-*` |
+| `js/components/` | [components/LLM.md](js/components/LLM.md) | Pintado: traduce esos datos a `is-*`. El **cómo** se ve |
+| `js/components/docs/` | [components/docs/LLM.md](js/components/docs/LLM.md) | Catálogo de los tags `docs-*` |
 | `../docs/` | [../docs/LLM.md](../docs/LLM.md) | Sitio documental: prosa + una página por `docs-*` |
 | `cdn/` | [cdn/LLM.md](cdn/LLM.md) | Contrato **público** que el build copia a `dist/cdn/LLM.md` |
 | `css/` | — | `app.css`: solo lo que vive en **light DOM** (el diálogo de confirmación) |
@@ -84,7 +84,7 @@ fila de esta tabla y del test que la vigila.
 Esto es una mejora sobre el kit, no una divergencia por comodidad. **Lo correcto
 a medio plazo es subirla a `helpers/ui` del kit** y dejar aquí solo la copia sin
 dependencia del CDN. Mientras tanto, `js/hojas.js` parchea los shadow roots que
-sí vienen del kit. Todo el detalle en [components/LLM.md](components/LLM.md).
+sí vienen del kit. Todo el detalle en [components/LLM.md](js/components/LLM.md).
 
 ## Flujo de datos, en una frase por capa
 

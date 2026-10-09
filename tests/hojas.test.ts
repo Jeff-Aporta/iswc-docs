@@ -47,7 +47,7 @@ globalThis.fetch = async (url: string) => {
 
 // Orden real: `hojas.js` corre en <head>, los módulos `docs-*` después.
 await import('../dist/cdn/hojas.js');
-const { adoptCss } = await import('../dist/cdn/components/docs/_shared.js');
+const { adoptCss } = await import('../dist/cdn/js/base/componente.js');
 
 const nuevoShadow = () => {
   const host = dom.window.document.createElement('div');

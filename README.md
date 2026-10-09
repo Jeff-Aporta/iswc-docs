@@ -97,8 +97,8 @@ Las carpetas están separadas a propósito, igual que en
 Cada componente tiene su `.css` **hermano**, nunca CSS dentro del `.ts`:
 
 ```
-src/components/docs/docs-operation.ts
-src/components/docs/docs-operation.css
+src/js/components/docs/docs-operation.ts
+src/js/components/docs/docs-operation.css
         ↓ build
 dist/cdn/docs-operation.js
 dist/cdn/docs-operation.css

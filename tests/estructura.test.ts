@@ -9,28 +9,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, basename, dirname, relative } from 'node:path';
+import { BARRIL, BASE_COMPONENTE, COMPONENTES, fuente, publicado } from './_lib/rutas.ts';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-const SW = join(ROOT, 'src', 'components', 'docs');
 const DIST = join(ROOT, 'dist', 'cdn');
-const DIST_SW = join(DIST, 'components', 'docs');
 const DOCS = join(ROOT, 'docs');
+const componentes = COMPONENTES;
 
-const componentes = readdirSync(SW)
-  .filter((f) => f.endsWith('.ts') && f !== '_shared.ts' && f !== 'all.ts')
-  .map((f) => basename(f, '.ts'));
-
-test('cada componente tiene su .css hermano', () => {
+test('cada componente tiene su .scss hermano', () => {
   // El error que este proyecto no repite: CSS embebido en el .ts. Sin el
   // hermano, `adoptCss` pide un 404 y el componente se pinta sin estilos.
   for (const c of componentes) {
-    assert.ok(existsSync(join(SW, `${c}.css`)), `falta src/components/docs/${c}.css`);
+    assert.ok(existsSync(fuente(c, 'scss')), `falta la hoja hermana ${c}.scss`);
   }
 });
 
 test('ningún .ts lleva CSS embebido', () => {
-  for (const c of [...componentes, '_shared']) {
-    const src = readFileSync(join(SW, `${c}.ts`), 'utf8');
+  for (const archivo of [...componentes.map((c) => fuente(c, 'ts')), BASE_COMPONENTE]) {
+    const c = basename(archivo, '.ts');
+    const src = readFileSync(archivo, 'utf8');
     assert.ok(
       !/\/\*\s*css\s*\*\/\s*`/.test(src),
       `${c}.ts tiene un bloque \`/* css */\`: el CSS va en el .css hermano`,
@@ -43,11 +40,11 @@ test('ningún .ts lleva CSS embebido', () => {
 });
 
 test('cada componente adopta su CSS y declara el nombre de su hoja', () => {
-  // El nombre explícito es lo que hace que el bundle `sw.all.js` funcione: sin
+  // El nombre explícito es lo que hace que el bundle `all.min.js` funcione: sin
   // él, `import.meta.url` vale lo mismo para todos los módulos del bundle y la
   // hoja derivada (`sw.all.css`) no existe. Componente sin estilos, sin error.
   for (const c of componentes) {
-    const src = readFileSync(join(SW, `${c}.ts`), 'utf8');
+    const src = readFileSync(fuente(c, 'ts'), 'utf8');
     const esManual = !src.includes('crearComponente<');
 
     if (esManual) {
@@ -64,10 +61,10 @@ test('cada componente adopta su CSS y declara el nombre de su hoja', () => {
   }
 });
 
-test('el build deja .js y .css hermanos en dist/cdn/components/sw', () => {
+test('el build deja .js y .css hermanos de cada componente en dist/cdn', () => {
   for (const c of componentes) {
-    assert.ok(existsSync(join(DIST_SW, `${c}.js`)), `falta dist/cdn/components/docs/${c}.js`);
-    assert.ok(existsSync(join(DIST_SW, `${c}.css`)), `falta dist/cdn/components/docs/${c}.css`);
+    assert.ok(existsSync(publicado(c, 'js')), `falta ${c}.js publicado`);
+    assert.ok(existsSync(publicado(c, 'css')), `falta ${c}.css publicado`);
   }
 });
 
@@ -105,9 +102,9 @@ test('index.html carga el bundle que trae todos los componentes del shell', () =
 });
 
 test('el barril all.ts incluye todos los componentes', () => {
-  const src = readFileSync(join(SW, 'all.ts'), 'utf8');
+  const src = readFileSync(BARRIL, 'utf8');
   for (const c of componentes) {
-    assert.ok(src.includes(`./${c}.js`), `all.ts no importa ${c}.js`);
+    assert.ok(src.includes(`/${c}.js'`), `all.ts no importa ${c}.js`);
   }
 });
 

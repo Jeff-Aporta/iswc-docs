@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { encodeConnParam } from '../dist/cdn/js/conn.js';
+import { encodeConnParam } from '../dist/cdn/js/core/conn.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const sample = JSON.parse(readFileSync(join(root, 'tests/fixtures/insoft-config.sample.json'), 'utf8'));
@@ -34,7 +34,7 @@ test('si llega doc, conn se ignora por completo', async () => {
   let fetches = 0;
   globalThis.fetch = async () => { fetches += 1; throw new Error('no fetch'); };
 
-  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const boot = resolveBootConfig(
     {
       apiBase: 'https://evil.example/api',
@@ -61,7 +61,7 @@ test('atributo doc= materializa sin fetch ni conn', async () => {
   let fetches = 0;
   globalThis.fetch = async () => { fetches += 1; throw new Error('no fetch'); };
 
-  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const boot = resolveBootConfig(null, sample);
   assert.equal(boot.specUrl, undefined);
   assert.equal(boot.apiBase, 'http://localhost:8802/api');
@@ -81,7 +81,7 @@ test('?conn= con spec quemado no hace fetch', async () => {
   let fetches = 0;
   globalThis.fetch = async () => { fetches += 1; throw new Error('no fetch'); };
 
-  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const boot = resolveBootConfig();
   assert.equal(boot.specUrl, undefined);
   const { spec } = await loadViewerDocument(boot);
@@ -97,7 +97,7 @@ test('sin spec quemado cae a default /docs?v=json', async () => {
     return new Response(JSON.stringify(sample), { status: 200 });
   };
 
-  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const cfg = resolveBootConfig();
   assert.equal(cfg.specUrl, 'https://h/api/docs?v=json');
   await loadViewerDocument(cfg);
@@ -115,7 +115,7 @@ test('paths.docs personalizado se respeta', async () => {
     return new Response(JSON.stringify({ openapi: '3.0.3', paths: {} }), { status: 200 });
   };
 
-  const cfgMod = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const cfgMod = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   await cfgMod.loadViewerDocument(cfgMod.resolveBootConfig());
   assert.equal(fetched, 'https://h/api/mi/doc.json');
 });
@@ -125,7 +125,7 @@ test('paths.docs vacío desactiva el fetch (hace falta spec)', async () => {
     apiBase: 'https://h/api',
     paths: { docs: '' },
   }));
-  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const cfg = resolveBootConfig();
   assert.equal(cfg.specUrl, undefined);
   await assert.rejects(() => loadViewerDocument(cfg), /conn\.spec|paths\.docs|\/docs\?v=json/);
@@ -148,7 +148,7 @@ test('spec quemado gana sobre specUrl del script (no pide config.json legacy)', 
   let fetched = '';
   globalThis.fetch = async (req: string) => { fetched = String(req); return new Response('{}', { status: 404 }); };
 
-  const cfgMod = await import('../dist/cdn/js/config.js?bust=' + Math.random());
+  const cfgMod = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const cfg = cfgMod.resolveBootConfig();
   assert.equal(cfg.brand.title, 'Del Conn');
   assert.equal(cfg.specUrl, undefined);

@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-const { issDocsToMarkdown, issDocToLlmMarkdown, buildIssDocsLlmViewHtml } = await import('../dist/cdn/js/iss-docs-md.js');
+const { issDocsToMarkdown, issDocToLlmMarkdown, buildIssDocsLlmViewHtml } = await import('../dist/cdn/js/dominio/iss-docs-md.js');
 
 test('issDocToLlmMarkdown quita flowchart y deja fence de is-code', () => {
   const md = issDocToLlmMarkdown('Hola <iswc-flowchart>x</iswc-flowchart> y <iswc-code lang="http" value="GET /x"></iswc-code>');

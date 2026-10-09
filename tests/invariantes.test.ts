@@ -9,6 +9,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { BASE_COMPONENTE, COMPONENTES, fuente, publicado } from './_lib/rutas.ts';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const DIST = join(ROOT, 'dist', 'cdn');
@@ -44,7 +45,7 @@ test('el shell de docs no se anuncia como visor de OpenAPI', () => {
 });
 
 test('la spec del InSoft no expone `openapi:` en el spec sintetizado', async () => {
-  const { parseInsoftConfig } = await import('../dist/cdn/js/insoft-config.js');
+  const { parseInsoftConfig } = await import('../dist/cdn/js/dominio/insoft-config.js');
   const fixture = JSON.parse(readFileSync(join(ROOT, 'tests', 'fixtures', 'insoft-config.sample.json'), 'utf8'));
   const { spec } = parseInsoftConfig(fixture, 'https://h/api');
   assert.equal(spec.openapi, undefined, 'el spec interno del visor no lleva campo openapi');
@@ -52,10 +53,8 @@ test('la spec del InSoft no expone `openapi:` en el spec sintetizado', async () 
 
 /* ── CSS adoptado: clave contra el flicker ──────────────────── */
 
-const manuales = () =>
-  readdirSync(join(ROOT, 'src', 'components', 'docs'))
-    .filter((f) => f.endsWith('.ts') && f !== '_shared.ts' && f !== 'all.ts')
-    .filter((f) => !/crearComponente</.test(textoUsuario(`src/components/docs/${f}`)));
+const leerTs = (tag) => readFileSync(fuente(tag, 'ts'), 'utf8');
+const manuales = () => COMPONENTES.filter((tag) => !/crearComponente</.test(leerTs(tag)));
 
 test('adoptCss aplica hojas construidas cacheadas, no un <link> por shadow', () => {
   // El flicker al cambiar de sección venía de que un `<link>` dentro de un
@@ -63,7 +62,7 @@ test('adoptCss aplica hojas construidas cacheadas, no un <link> por shadow', () 
   // shadow roots que se recrean se pintaba sin estilos durante un frame.
   // `adoptedStyleSheets` con una hoja ya construida se aplica síncrono y
   // sobrevive a `replaceChildren()`. Si esto se revierte, el flicker vuelve.
-  const src = textoUsuario('src/components/docs/_shared.ts');
+  const src = readFileSync(BASE_COMPONENTE, 'utf8');
   assert.match(src, /adoptedStyleSheets/, '_shared.ts ya no adopta hojas construidas');
   assert.match(src, /Map<string, CSSStyleSheet>/, 'falta el caché de hojas por href');
   assert.match(src, /new CSSStyleSheet\(\)[\s\S]{0,200}replaceSync/, 'la hoja no se construye desde el texto del .css');
@@ -72,9 +71,8 @@ test('adoptCss aplica hojas construidas cacheadas, no un <link> por shadow', () 
 test('ningún componente fabrica su propio <link rel="stylesheet">', () => {
   // El único `<link>` lo pone `adoptCss` como respaldo. Un componente que se
   // enlace la hoja a mano se salta el caché y vuelve a parpadear al repintar.
-  const offenders = readdirSync(join(ROOT, 'src', 'components', 'docs'))
-    .filter((f) => f.endsWith('.ts') && f !== '_shared.ts')
-    .filter((f) => /rel\s*=\s*['"]stylesheet['"]/.test(textoUsuario(`src/components/docs/${f}`)));
+  const offenders = COMPONENTES
+    .filter((tag) => /rel\s*=\s*['"]stylesheet['"]/.test(leerTs(tag)));
   assert.deepEqual(offenders, [], `componentes que enlazan CSS a mano: ${offenders.join(', ')}`);
 });
 
@@ -85,21 +83,19 @@ test('cada render manual adopta y precarga su hoja, y la nombra', () => {
   // parpadee esperando la descarga.
   //
   // El tercer argumento (el nombre de la hoja) **no es opcional en la
-  // práctica**: sin él, dentro de `sw.all.js` todos los módulos comparten
+  // práctica**: sin él, dentro de `all.min.js` todos los módulos comparten
   // `import.meta.url` y la hoja derivada es `sw.all.css`, que no existe. El
   // componente se pinta sin estilos y nada falla.
   // Comparación literal a propósito: una regex armada con template literal se
   // come los `\s` (en un template, `\s` es `s`) y el guardián pasa siempre.
-  const sinAdopcion = manuales().filter((f) => {
-    const tag = f.replace(/\.ts$/, '');
-    return !textoUsuario(`src/components/docs/${f}`)
+  const sinAdopcion = manuales().filter((tag) => {
+    return !leerTs(tag)
       .includes(`adoptCss(this.#root, import.meta.url, '${tag}')`);
   });
   assert.deepEqual(sinAdopcion, [], `renders manuales sin adoptCss nombrado: ${sinAdopcion.join(', ')}`);
 
-  const sinPrecarga = manuales().filter((f) => {
-    const tag = f.replace(/\.ts$/, '');
-    return !textoUsuario(`src/components/docs/${f}`)
+  const sinPrecarga = manuales().filter((tag) => {
+    return !leerTs(tag)
       .includes(`precargarCss(import.meta.url, '${tag}')`);
   });
   assert.deepEqual(sinPrecarga, [], `renders manuales sin precargarCss nombrado: ${sinPrecarga.join(', ')}`);
@@ -122,7 +118,7 @@ test('resolveBootConfig con conn.spec no hereda specUrl del script ni inventa co
   );
   for (const k of ['window', 'document', 'URL', 'URLSearchParams']) globalThis[k] = dom.window[k];
   globalThis.location = dom.window.location;
-  const { resolveBootConfig } = await import('../dist/cdn/js/config.js');
+  const { resolveBootConfig } = await import('../dist/cdn/js/core/config.js');
   const cfg = resolveBootConfig();
   assert.equal(cfg.specUrl, undefined, 'spec quemado: sin specUrl ni config.json');
   assert.equal(cfg.apiBase, 'https://x/api');
@@ -132,7 +128,7 @@ test('resolveBootConfig con conn.spec no hereda specUrl del script ni inventa co
 /* ── La búsqueda debe ser cross-tab ──────────────────────────── */
 
 test('filterGroupsByQuery no exige tab activa cuando hay query', async () => {
-  const { filterGroupsByQuery } = await import('../dist/cdn/js/nav.js');
+  const { filterGroupsByQuery } = await import('../dist/cdn/js/dominio/nav.js');
   const grupos = [
     {
       name: 'Terceros',
@@ -148,7 +144,7 @@ test('filterGroupsByQuery no exige tab activa cuando hay query', async () => {
 /* ── Insoft: el visor no debe quedarse sin auth por defecto ──── */
 
 test('parseInsoftConfig fija loginUrl por defecto para que auth no quede off', async () => {
-  const { parseInsoftConfig } = await import('../dist/cdn/js/insoft-config.js');
+  const { parseInsoftConfig } = await import('../dist/cdn/js/dominio/insoft-config.js');
   const fixture = JSON.parse(readFileSync(join(ROOT, 'tests', 'fixtures', 'insoft-config.sample.json'), 'utf8'));
   const { config } = parseInsoftConfig(fixture, 'https://h/api');
   assert.ok(typeof config.auth?.loginUrl === 'string' && config.auth.loginUrl.length > 0);
@@ -171,12 +167,8 @@ test('index.html no apunta a un demo local como specUrl por defecto', () => {
 /* ── Dist artifacts coinciden con el inventario de componentes ─ */
 
 test('dist/cdn contiene exactamente un .js + un .css por cada componente', () => {
-  const srcComponents = readdirSync(join(ROOT, 'src', 'components', 'docs'))
-    .filter((f) => f.endsWith('.ts') && f !== '_shared.ts' && f !== 'all.ts')
-    .map((f) => f.replace(/\.ts$/, ''));
-  const dist = new Set(readdirSync(join(DIST, 'components', 'docs')));
-  for (const c of srcComponents) {
-    assert.ok(dist.has(`${c}.js`), `falta dist/cdn/components/docs/${c}.js`);
-    assert.ok(dist.has(`${c}.css`), `falta dist/cdn/components/docs/${c}.css`);
+  for (const c of COMPONENTES) {
+    assert.ok(existsSync(publicado(c, 'js')), `falta ${c}.js publicado`);
+    assert.ok(existsSync(publicado(c, 'css')), `falta ${c}.css publicado`);
   }
 });

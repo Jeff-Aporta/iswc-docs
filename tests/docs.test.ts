@@ -13,16 +13,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { BASE_COMPONENTE, COMPONENTES, fuente } from './_lib/rutas.ts';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const SRC = join(ROOT, 'src');
-const SW = join(SRC, 'components', 'docs');
+const SW = join(SRC, 'js', 'components', 'docs');
 
 const leer = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 
-const componentes = readdirSync(SW)
-  .filter((f) => f.endsWith('.ts') && f !== '_shared.ts' && f !== 'all.ts')
-  .map((f) => f.replace(/\.ts$/, ''));
+const componentes = COMPONENTES;
+const leerTs = (c) => readFileSync(fuente(c, 'ts'), 'utf8');
 
 /* ── Existencia y enlaces ───────────────────────────────────── */
 
@@ -30,8 +30,8 @@ const PAGINAS = [
   'LLM.md',
   'src/LLM.md',
   'src/js/LLM.md',
-  'src/components/LLM.md',
-  'src/components/docs/LLM.md',
+  'src/js/components/LLM.md',
+  'src/js/components/docs/LLM.md',
   'src/cdn/LLM.md',
   'docs/LLM.md',
 ];
@@ -58,7 +58,7 @@ test('los enlaces relativos entre LLM.md resuelven a un archivo real', () => {
 /* ── El catálogo refleja el código ──────────────────────────── */
 
 test('el catálogo sw/LLM.md lista todos los componentes y ninguno de más', () => {
-  const catalogo = leer('src/components/docs/LLM.md');
+  const catalogo = leer('src/js/components/docs/LLM.md');
   const documentados = new Set(
     [...catalogo.matchAll(/^\| `<(docs-[a-z-]+)>`/gm)].map((m) => m[1]),
   );
@@ -75,10 +75,10 @@ test('la lista de componentes con #render() manual es exacta', () => {
   // a mano. Si se queda corta, alguien se queda sin estilos; si sobra, la doc
   // manda hacer trabajo que la fábrica ya hace.
   const manualesReales = componentes
-    .filter((c) => !/crearComponente</.test(readFileSync(join(SW, `${c}.ts`), 'utf8')))
+    .filter((c) => !/crearComponente</.test(leerTs(c)))
     .sort();
 
-  for (const pagina of ['src/components/LLM.md', 'src/components/docs/LLM.md']) {
+  for (const pagina of ['src/js/components/LLM.md', 'src/js/components/docs/LLM.md']) {
     const texto = leer(pagina);
     const declarados = manualesReales.filter((c) => texto.includes(`\`${c}\``));
     assert.deepEqual(
@@ -96,9 +96,9 @@ test('el patrón de flicker ya descartado no vuelve al código', () => {
   // no bastaba: aplicar un `<link>` nunca es síncrono. Si reaparece, es una
   // regresión, y además contradice lo que dicen los MD.
   const ofensores = [];
-  for (const f of readdirSync(SW).filter((f) => f.endsWith('.ts'))) {
-    const src = readFileSync(join(SW, f), 'utf8');
-    if (/querySelector\(\s*['"]link\[rel="stylesheet"\]['"]\s*\)/.test(src) && f !== '_shared.ts') {
+  for (const f of componentes) {
+    const src = leerTs(f);
+    if (/querySelector\(\s*['"]link\[rel="stylesheet"\]['"]\s*\)/.test(src)) {
       ofensores.push(f);
     }
     if (/replaceChildrenKeepCss/.test(src)) ofensores.push(`${f} (replaceChildrenKeepCss)`);
@@ -106,11 +106,11 @@ test('el patrón de flicker ya descartado no vuelve al código', () => {
   assert.deepEqual(ofensores, [], `vuelve el patrón de <link> preservado: ${ofensores.join(', ')}`);
 });
 
-test('_shared.ts no reimplementa formatos que ya trae el kit', () => {
+test('base/componente.ts no reimplementa formatos que ya trae el kit', () => {
   // `fecha()` con su propio Intl y `formatBytes()` con su tabla de unidades
   // vivieron aquí. El kit trae `<iswc-format-date>` y `<iswc-format-bytes>`, y
   // entran con all.min.js: dos formatos que podían divergir en silencio.
-  const src = readFileSync(join(SW, '_shared.ts'), 'utf8');
+  const src = readFileSync(BASE_COMPONENTE, 'utf8');
   assert.ok(!/Intl\.(DateTimeFormat|NumberFormat)/.test(src), '_shared.ts vuelve a formatear a mano');
   assert.ok(!/export\s+(const|function)\s+(fecha|formatBytes|formatNumber)\b/.test(src),
     '_shared.ts vuelve a exportar un formateador propio');
@@ -120,7 +120,7 @@ test('la deuda documentada frente al kit sigue siendo la que dice el MD', () => 
   // La tabla de `src/LLM.md` admite tres barras de pestañas a mano. Si aparece
   // una cuarta, o si alguna se migra a `<iswc-tab-group>`, la tabla miente.
   const conTablist = componentes.filter((c) =>
-    /role="tablist"/.test(readFileSync(join(SW, `${c}.ts`), 'utf8')),
+    /role="tablist"/.test(leerTs(c)),
   );
   assert.deepEqual(
     conTablist.sort(),

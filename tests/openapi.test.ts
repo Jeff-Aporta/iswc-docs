@@ -19,7 +19,7 @@ const {
   extractJsonExample,
   opIdFromOperation,
   buildDocIndex,
-} = await import('../dist/cdn/js/openapi.js');
+} = await import('../dist/cdn/js/dominio/openapi.js');
 
 const spec = {
   openapi: '3.0.3',

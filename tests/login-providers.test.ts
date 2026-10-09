@@ -12,7 +12,7 @@ import {
   proveedorOrquestador,
   proveedorPatyiaPortal,
   resolveLoginProvider,
-} from '../dist/cdn/js/login-providers.js';
+} from '../dist/cdn/js/core/login-providers.js';
 
 const base = 'http://127.0.0.1:8802/api';
 const creds = { username: 'jagudeloe@contapyme.com', password: 'secreto' };

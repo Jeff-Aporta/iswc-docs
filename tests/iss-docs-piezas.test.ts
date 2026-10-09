@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-const { assertIssDocsPiezas } = await import('../dist/cdn/js/iss-docs-piezas.js');
+const { assertIssDocsPiezas } = await import('../dist/cdn/js/dominio/iss-docs-piezas.js');
 
 const ISS = process.env.ISS_DOCS_DIR
   || join(ROOT, '..', '..', '..', 'PatyIA', 'api', 'src', 'utils', 'system', 'is-swagger');

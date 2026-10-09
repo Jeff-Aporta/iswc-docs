@@ -1,20 +1,21 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ES2022",
     "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "dist/cdn",
-    "rootDir": "src"
+    "outDir": ".tmp-dts",
+    "rootDir": "."
   },
-  "//": "Emite un .d.ts junto a cada .js publicado. Antes solo cubria los dos entry points que el kit expone; se amplio a todo src/ para que los tests, que prueban dist/cdn como caja negra, no vean `any` en lo que importan.",
+  "//": "Emite un .d.ts por cada .js publicado (src/js y view). El build los espeja a dist/cdn como los .js, para que los tests —que prueban dist/cdn como caja negra— no vean `any`.",
   "include": [
     "src/js/**/*.ts",
-    "src/components/**/*.ts",
+    "view/*/components/**/*.ts",
+    "view/*/utils/**/*.ts",
     "src/types/**/*.d.ts"
   ]
 }

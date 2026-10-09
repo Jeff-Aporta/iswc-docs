@@ -24,15 +24,15 @@ globalThis.performance = dom.window.performance;
 
 const {
   DocsMethod: _m,
-} = await import('../dist/cdn/components/docs/docs-method.js');
-await import('../dist/cdn/components/docs/docs-path.js');
-await import('../dist/cdn/components/docs/docs-json.js');
-await import('../dist/cdn/components/docs/docs-doc.js');
-await import('../dist/cdn/components/docs/docs-params.js');
-await import('../dist/cdn/components/docs/docs-responses.js');
-await import('../dist/cdn/components/docs/docs-operation.js');
-await import('../dist/cdn/components/docs/docs-tag-group.js');
-await import('../dist/cdn/components/docs/docs-info.js');
+} = await import('../dist/cdn/js/components/docs/docs-method.js');
+await import('../dist/cdn/js/components/docs/docs-path.js');
+await import('../dist/cdn/js/components/docs/docs-json.js');
+await import('../dist/cdn/js/components/docs/docs-doc.js');
+await import('../dist/cdn/js/components/docs/docs-params.js');
+await import('../dist/cdn/view/app/components/docs-responses.js');
+await import('../dist/cdn/view/app/components/docs-operation.js');
+await import('../dist/cdn/view/app/components/docs-tag-group.js');
+await import('../dist/cdn/view/app/components/docs-info.js');
 
 /** Monta un componente con props y devuelve su shadowRoot ya pintado. */
 /**
