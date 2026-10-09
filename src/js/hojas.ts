@@ -32,8 +32,8 @@
  * sin estilos por culpa de esta capa, ni siquiera si el `fetch` falla. A
  * partir de la segunda —es decir, en todo repintado— ya se adopta la hoja.
  *
- * Los componentes `sw-*` usan `adoptCss` de `_shared.ts`, que comparte estos
- * mismos mapas por `window.__swHojas` para no descargar dos veces cada hoja.
+ * Los componentes `docs-*` usan `adoptCss` de `_shared.ts`, que comparte estos
+ * mismos mapas por `window.__docsHojas` para no descargar dos veces cada hoja.
  */
 (function () {
   var soporta = false;
@@ -50,10 +50,10 @@
   var cargas = new Map<string, Promise<CSSStyleSheet | null>>();
 
   // `_shared.ts` reusa estos mapas si existen. Un solo caché para el kit y
-  // para los `sw-*`: sin esto cada capa pediría por su cuenta la misma hoja.
+  // para los `docs-*`: sin esto cada capa pediría por su cuenta la misma hoja.
   // `globalThis` y no `window` porque es lo que lee `_shared.ts`; en el
   // navegador son el mismo objeto.
-  (globalThis as Record<string, unknown>).__swHojas = { hojas: hojas, cargas: cargas };
+  (globalThis as Record<string, unknown>).__docsHojas = { hojas: hojas, cargas: cargas };
 
   function descargar(href: string): Promise<CSSStyleSheet | null> {
     var enCurso = cargas.get(href);

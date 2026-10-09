@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>docs-json Â· preview</title>
+  <script src="../preview-boot.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
+  </script>
+  <link rel="stylesheet" href="../styles/preview.css">
+</head>
+<body>
+  <main class="preview"></main>
+  <iswc-toast placement="bottom-end"></iswc-toast>
+
+  <script type="module">
+    import '../../dist/cdn/components/docs/docs-json.js';
+    import { crear, caso, montar, registrarEventos } from '../preview-kit.js';
+
+    const payload = {
+      encabezado: { resultado: true, mensaje: 'OK', codigo: null },
+      datos: [
+        { itercero: 810000630, nombre: 'InSoft S.A.S.', activo: true, saldo: 1234567.89 },
+        { itercero: 900123456, nombre: 'ContaPyme Ltda.', activo: false, saldo: -42.5 },
+      ],
+      total: 2,
+    };
+
+    montar('docs-json', 'Bloque de JSON con resaltado y botÃ³n de copiar. El resaltado es una pasada de regex sobre el texto ya escapado: no hay parser, porque el valor puede no ser JSON vÃ¡lido.', [
+      caso('Respuesta tÃ­pica', 'Claves, cadenas, nÃºmeros, booleanos y null tienen color propio.',
+        crear('docs-json', { value: JSON.stringify(payload, null, 2), maxHeight: '20rem' })),
+      caso('No es JSON', 'Un 500 que devuelve HTML se enseÃ±a tal cual, sin romperse.',
+        crear('docs-json', { value: '<!doctype html>\n<html><body><h1>502 Bad Gateway</h1></body></html>', maxHeight: '10rem' })),
+      caso('Cuerpo largo', 'Con mÃ¡s contenido del que cabe, hace scroll interno en vez de estirar la pÃ¡gina.',
+        crear('docs-json', { value: JSON.stringify(Array.from({ length: 40 }, (_, i) => ({ i, nombre: `fila ${i}` })), null, 2), maxHeight: '14rem' })),
+    ]);
+  </script>
+</body>
+</html>

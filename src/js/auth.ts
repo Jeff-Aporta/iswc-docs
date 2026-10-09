@@ -12,14 +12,29 @@
 
 import { formatLoginError } from './http-error.js';
 import { resolveLoginProvider } from './login-providers.js';
+import { APP_LOGIN_ORQUESTADOR } from './legado.js';
 
-const STORAGE_KEY = 'jeffaporta:swagger-test-jwt';
-const CREDENTIALS_KEY = 'jeffaporta:swagger-login-creds';
+const STORAGE_KEY = 'jeffaporta:docs-test-jwt';
+const CREDENTIALS_KEY = 'jeffaporta:docs-login-creds';
+
+/** Claves de antes del renombre: se mueven una vez a las nuevas para no cerrar la sesión de nadie. */
+function migrarClave(almacen: Storage | undefined, vieja: string, nueva: string): void {
+  try {
+    const v = almacen?.getItem(vieja);
+    if (v == null) return;
+    if (almacen?.getItem(nueva) == null) almacen?.setItem(nueva, v);
+    almacen?.removeItem(vieja);
+  } catch {
+    /* almacenamiento bloqueado */
+  }
+}
+migrarClave(globalThis.sessionStorage, 'jeffaporta:swagger-test-jwt', STORAGE_KEY);
+migrarClave(globalThis.localStorage, 'jeffaporta:swagger-login-creds', CREDENTIALS_KEY);
 const PREFIX = 'abc123';
 const SUFFIX = 'xyz987';
 
 export const DEFAULT_AUTH_LOGIN_PATH = '/auth/login';
-export const DEFAULT_AUTH_APP_ID = 'swagger';
+export const DEFAULT_AUTH_APP_ID = APP_LOGIN_ORQUESTADOR;
 
 /* ── Ofuscación de contraseña (contrato del backend) ────────── */
 
@@ -68,9 +83,9 @@ const decodeStoredSecret = (enc: string): string => {
   return '';
 };
 
-export type SwCredenciales = { username: string; password: string; remember: boolean; };
+export type DocsCredenciales = { username: string; password: string; remember: boolean; };
 
-export function readCredentials(): SwCredenciales {
+export function readCredentials(): DocsCredenciales {
   try {
     const raw = localStorage.getItem(CREDENTIALS_KEY);
     if (!raw) return { username: '', password: '', remember: true };
@@ -103,11 +118,11 @@ export function saveCredentials(username: string, password: string, remember: bo
 /* ── Sesión ─────────────────────────────────────────────────── */
 
 /** `null` también cuando el token está guardado pero ya caducó (y lo limpia). */
-export function getStoredJwt(): SwSesion | null {
+export function getStoredJwt(): DocsSesion | null {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const saved = JSON.parse(raw) as SwSesion;
+    const saved = JSON.parse(raw) as DocsSesion;
     if (!saved.token) return null;
     if (saved.expiresAt && new Date(saved.expiresAt).getTime() <= Date.now()) {
       sessionStorage.removeItem(STORAGE_KEY);
@@ -119,7 +134,7 @@ export function getStoredJwt(): SwSesion | null {
   }
 }
 
-export function storeJwt(token: string, meta: Partial<SwSesion> = {}): void {
+export function storeJwt(token: string, meta: Partial<DocsSesion> = {}): void {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ token, ...meta }));
   } catch {
@@ -156,16 +171,16 @@ export function formatSessionChipLabel(value: unknown, fallback = 'JWT'): string
   return base.charAt(0).toUpperCase() + base.slice(1).toLowerCase();
 }
 
-export function sessionLabel(session: SwSesion | null): string {
+export function sessionLabel(session: DocsSesion | null): string {
   if (!session?.token) return '';
   return formatSessionChipLabel(session.nombre || session.username || '', 'JWT');
 }
 
 /* ── Login ──────────────────────────────────────────────────── */
 
-export type SwLoginOpts = { loginPath?: string; loginKind?: string; appId?: string; itercero?: string; provider?: string };
+export type DocsLoginOpts = { loginPath?: string; loginKind?: string; appId?: string; itercero?: string; provider?: string };
 
-const isPortalLogin = (opts: SwLoginOpts): boolean =>
+const isPortalLogin = (opts: DocsLoginOpts): boolean =>
   opts.loginKind === 'portal' || String(opts.loginPath ?? '').includes('portal-login');
 
 /**
@@ -184,9 +199,9 @@ function resolveLoginEndpoint(authBase: unknown, loginPath?: string): string {
 /** Preferido cuando el backend responde MULTI_EMPRESA sin elección del usuario. */
 export const DEFAULT_APP_ITERCERO = '810000630';
 
-export type SwLoginRespuesta = SwSesion & { ok?: boolean; };
+export type DocsLoginRespuesta = DocsSesion & { ok?: boolean; };
 
-export async function fetchTestJwt(authBase: unknown, username: string, password: string, opts: SwLoginOpts = {}): Promise<SwLoginRespuesta> {
+export async function fetchTestJwt(authBase: unknown, username: string, password: string, opts: DocsLoginOpts = {}): Promise<DocsLoginRespuesta> {
   // Proveedor por server (opcional): si el host configura `opts.provider`, la petición la arma el
   // proveedor (ej. 'patyia-portal' espera password en claro y /auth/portal-login). Sin provider se
   // conserva exactamente el flujo por defecto de abajo (orquestador/dsclientes, sin cambios).
@@ -229,11 +244,11 @@ export async function fetchTestJwt(authBase: unknown, username: string, password
   }
 
   if (!res.ok || !data.ok || !data.token) throw new Error(formatLoginError(res, data, endpoint));
-  return data as SwLoginRespuesta;
+  return data as DocsLoginRespuesta;
 }
 
 /** Login vía un proveedor por server (login-providers.ts). Sin cambios al flujo por defecto. */
-async function fetchConProvider(base: string, username: string, password: string, opts: SwLoginOpts): Promise<SwLoginRespuesta> {
+async function fetchConProvider(base: string, username: string, password: string, opts: DocsLoginOpts): Promise<DocsLoginRespuesta> {
   const prov = resolveLoginProvider(opts.provider);
   const req = prov({ base, username, password, opts });
   let res: Response;
@@ -256,11 +271,11 @@ async function fetchConProvider(base: string, username: string, password: string
     return fetchConProvider(base, username, password, { ...opts, itercero: DEFAULT_APP_ITERCERO });
   }
   if (!res.ok || !data.ok || !data.token) throw new Error(formatLoginError(res, data, req.endpoint));
-  return data as SwLoginRespuesta;
+  return data as DocsLoginRespuesta;
 }
 
 /** `auth` con los valores por defecto ya resueltos; `enabled:false` si no hay dónde loguearse. */
-export function resolveAuthConfig(config: SwConfig): SwAuthConfig {  const auth = { ...(config.auth ?? {}) };
+export function resolveAuthConfig(config: DocsConfig): DocsAuthConfig {  const auth = { ...(config.auth ?? {}) };
   if (auth.enabled === false) return { enabled: false };
   if (!auth.loginUrl) return { ...auth, enabled: false };
   return {

@@ -12,7 +12,7 @@ Dos clases de página, y la distinción importa:
 | Clase | Dónde | Para qué |
 | --- | --- | --- |
 | Prosa | `paginas/*.html` | Por qué existe, comparativa, stack, arquitectura, estrategias, empezar. Se **leen** en orden. |
-| Componente | `previews/*.html` | Un `sw-*` con sus casos en vivo. Se **consultan**. |
+| Componente | `previews/*.html` | Un `docs-*` con sus casos en vivo. Se **consultan**. |
 
 ## Anatomía
 
@@ -36,7 +36,7 @@ Todas las páginas viven a **dos niveles** de la raíz
 
 ```
 ../../dist/cdn/<módulo>.js     los componentes
-../../src/css/app.css          el canvas de la app (solo `sw-app.html`)
+../../src/css/app.css          el canvas de la app (solo `docs-app.html`)
 ../styles/doc.css              estilos del sitio
 ../preview-boot.js             tema
 ../doc-kit.js                  navegación de la prosa
@@ -77,12 +77,12 @@ Declara **datos**, no chrome:
 
 ```js
 import { crear, caso, montar } from '../preview-kit.js';
-import '../../dist/cdn/components/sw/sw-method.js';
+import '../../dist/cdn/components/docs/docs-method.js';
 
-montar('sw-method', 'Chip del método HTTP.', [
+montar('docs-method', 'Chip del método HTTP.', [
   caso('Verbos', 'Ancho fijo para que las rutas se alineen',
-    crear('sw-method', { method: 'get' }),
-    crear('sw-method', { method: 'delete' }),
+    crear('docs-method', { method: 'get' }),
+    crear('docs-method', { method: 'delete' }),
   ),
 ]);
 ```
@@ -126,9 +126,9 @@ mirar: un diagrama sin pie obliga a adivinar qué se estaba señalando.
    Guardián: `tests/estructura.test.ts`.
 3. **`sw.all.js` dejaba los componentes sin estilos** — dentro del bundle,
    `import.meta.url` vale lo mismo para todos los módulos, así que `adoptCss`
-   derivaba `sw.all.css`, que no existe. Afectaba justo a `previews/sw-app.html`,
+   derivaba `sw.all.css`, que no existe. Afectaba justo a `previews/docs-app.html`,
    la página estrella. Resuelto pasando el nombre de la hoja como tercer
-   argumento (`adoptCss(shadow, import.meta.url, 'sw-method')`): el *directorio*
+   argumento (`adoptCss(shadow, import.meta.url, 'docs-method')`): el *directorio*
    de `import.meta.url` sí es correcto en los dos casos. Guardianes:
    `tests/estructura.test.ts` e `tests/invariantes.test.ts`.
 4. **El vídeo del hero pesa** — va con `preload="metadata"` y sin `autoplay`.
@@ -139,4 +139,4 @@ mirar: un diagrama sin pie obliga a adivinar qué se estaba señalando.
 - Índice y leyes del proyecto: [`../LLM.md`](../LLM.md)
 - Índice de `src`: [`../src/LLM.md`](../src/LLM.md)
 - Capa de pintado: [`../src/components/LLM.md`](../src/components/LLM.md)
-- Catálogo `sw-*`: [`../src/components/sw/LLM.md`](../src/components/sw/LLM.md)
+- Catálogo `docs-*`: [`../src/components/docs/LLM.md`](../src/components/docs/LLM.md)

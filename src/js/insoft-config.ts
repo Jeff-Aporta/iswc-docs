@@ -2,7 +2,7 @@
  * insoft-config.ts — documento InSoft `kind:"config"` → spec del visor.
  *
  * El host entrega el JSON en bruto (quemado en la página / `conn.spec`).
- * Aquí se transforma en el `SwSpec` interno que el resto del visor entiende.
+ * Aquí se transforma en el `DocsSpec` interno que el resto del visor entiende.
  *
  * Mismo algoritmo que `iss-exports.browser.mjs::buildOpenApiFromConfig`, pero
  * recortado a lo que el visor consume: nada de `openapi: "3.0.3"` en la
@@ -20,7 +20,8 @@
  *     → x-iss-doc-md: catalog.docs["systemOpenai"]
  */
 
-import type { InsoftCatalog, InsoftConfig } from './iss-swagger-doc.js';
+import type { InsoftCatalog, InsoftConfig } from './iss-docs-piezas.js';
+import { APP_LOGIN_VISOR } from './legado.js';
 
 const ISS_DOC_MD = 'x-iss-doc-md';
 const ISS_SUBGROUP = 'x-isa-subgroup';
@@ -277,8 +278,8 @@ function buildTags(rawTags: unknown): Array<Record<string, unknown>> {
  *  `auth.loginUrl` propio, se cae al orquestador público de InSoft. */
 export const DEFAULT_AUTH_LOGIN_URL = 'https://main-orchestrator.jeffaporta.workers.dev';
 
-/** Construye el `SwConfig` del visor a partir de `viewer` + protocolo + auth. */
-function buildViewerConfig(raw: InsoftConfig, apiBase: string): SwConfig {
+/** Construye el `DocsConfig` del visor a partir de `viewer` + protocolo + auth. */
+function buildViewerConfig(raw: InsoftConfig, apiBase: string): DocsConfig {
   const v = (raw.viewer ?? {}) as Record<string, unknown>;
   const brand = (v.brand ?? {}) as Record<string, unknown>;
   const auth = (v.auth ?? {}) as Record<string, unknown>;
@@ -288,11 +289,11 @@ function buildViewerConfig(raw: InsoftConfig, apiBase: string): SwConfig {
   // se apunta al apiBase del visor (self-host), en vez del orquestador público.
   const loginUrlDefault = provider === 'patyia-portal' ? apiBase.replace(/\/+$/, '') : DEFAULT_AUTH_LOGIN_URL;
 
-  const config: SwConfig = {
+  const config: DocsConfig = {
     ns: typeof v.ns === 'string' ? v.ns : 'ISS',
     apiBase,
     brand: {
-      // `raw.info` esta tipado (`IssSwaggerInfo`), asi que no admite el casteo
+      // `raw.info` esta tipado (`IssDocsInfo`), asi que no admite el casteo
       // directo a `Record<string, unknown>`: se lee su campo tal cual.
       title: typeof brand.title === 'string' ? brand.title : (raw.info?.title ?? ''),
       icon: typeof brand.icon === 'string' ? brand.icon : 'mdi:api',
@@ -300,9 +301,9 @@ function buildViewerConfig(raw: InsoftConfig, apiBase: string): SwConfig {
     auth: {
       enabled: auth.enabled !== false,
       loginUrl: typeof auth.loginUrl === 'string' ? auth.loginUrl : loginUrlDefault,
-      loginKind: typeof auth.loginKind === 'string' ? (auth.loginKind as SwAuthConfig['loginKind']) : 'portal',
+      loginKind: typeof auth.loginKind === 'string' ? (auth.loginKind as DocsAuthConfig['loginKind']) : 'portal',
       loginPath: typeof auth.loginPath === 'string' ? auth.loginPath : '/api/auth/token',
-      app: typeof auth.app === 'string' ? auth.app : 'swagger-viewer',
+      app: typeof auth.app === 'string' ? auth.app : APP_LOGIN_VISOR,
       // Provider de login por server (login-providers.ts). Sin valor → default orquestador.
       ...(provider ? { provider } : {}),
     },
@@ -316,7 +317,7 @@ function buildViewerConfig(raw: InsoftConfig, apiBase: string): SwConfig {
       ...(exports.isDownloadName ? { isDownloadName: String(exports.isDownloadName) } : {}),
     };
   }
-  if (Array.isArray(v.nav) && v.nav.length) config.nav = v.nav as SwNavTab[];
+  if (Array.isArray(v.nav) && v.nav.length) config.nav = v.nav as DocsNavTab[];
 
   return config;
 }
@@ -332,7 +333,7 @@ export function isInsoftConfig(doc: unknown): doc is InsoftConfig {
 }
 
 /** Convierte un `InsoftConfig` en `{config, spec}` para `loadViewerDocument`. */
-export function parseInsoftConfig(raw: InsoftConfig, apiBase: string): { config: SwConfig; spec: SwSpec } {
+export function parseInsoftConfig(raw: InsoftConfig, apiBase: string): { config: DocsConfig; spec: DocsSpec } {
   const catalog = (raw.catalog ?? {}) as InsoftCatalog;
   const paths: Record<string, Record<string, unknown>> = {};
   for (const [path, methods] of Object.entries(raw.paths ?? {})) {
@@ -344,15 +345,15 @@ export function parseInsoftConfig(raw: InsoftConfig, apiBase: string): { config:
     paths[path] = item;
   }
 
-  const spec: SwSpec = {
+  const spec: DocsSpec = {
     info: {
       title: String(raw.info?.title ?? 'API'),
       version: String(raw.info?.version ?? '1.0.0'),
       description: raw.info?.description as string | undefined,
     },
     servers: buildServers(apiBase),
-    tags: buildTags(raw.tags) as SwTag[],
-    paths: paths as SwSpec['paths'],
+    tags: buildTags(raw.tags) as DocsTag[],
+    paths: paths as DocsSpec['paths'],
     components: {
       securitySchemes: {
         Bearer: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },

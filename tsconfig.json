@@ -23,7 +23,6 @@
     "src/components/**/*.ts",
     "src/js/**/*.ts",
     "docs/**/*.ts",
-    "scripts/**/*.ts",
     "tests/**/*.ts"
   ]
 }

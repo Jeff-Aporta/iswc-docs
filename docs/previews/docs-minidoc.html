@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>docs-minidoc · preview</title>
+  <script src="../preview-boot.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
+  </script>
+  <link rel="stylesheet" href="../styles/preview.css">
+</head>
+<body>
+  <main class="preview"></main>
+  <iswc-toast placement="bottom-end"></iswc-toast>
+
+  <script type="module">
+    import '../../dist/cdn/components/docs/docs-minidoc.js';
+    import { caso, montar } from '../preview-kit.js';
+
+    // El shell carga su documento por red, así que la preview lo apunta al demo del repo
+    // en vez de inyectarle una spec: es el mismo camino que recorre en producción.
+    const visor = document.createElement('docs-minidoc');
+    visor.conn = null;
+    visor.style.cssText = 'display:block;min-height:70vh;border:1px solid var(--is-color-border);border-radius:12px;overflow:hidden';
+    visor.setAttribute('conn', JSON.stringify({ apiBase: location.origin + '/api' }));
+
+    montar('docs-minidoc', 'Driver 2 del visor: índice a la izquierda, la operación elegida ocupando la página y la petición fija a la derecha. Alternativa completa a docs-app, no un modo suyo — leen el mismo documento y no comparten estado.', [
+      caso('Shell completo', 'Sin un servidor detrás enseña su estado de error, que es justo lo que debe hacer: decir qué URL falló en vez de quedarse en blanco.', visor),
+    ]);
+  </script>
+</body>
+</html>

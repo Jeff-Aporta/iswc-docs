@@ -6,10 +6,10 @@
  * distintos por locale (coma vs punto decimal).
  */
 
-export const paramSchemaType = (schema: SwSchema | undefined): string => schema?.type ?? '';
+export const paramSchemaType = (schema: DocsSchema | undefined): string => schema?.type ?? '';
 
 /** Recorta lo que el tipo no admite mientras se escribe (integer: solo dígitos). */
-export function sanitizeParamInputValue(schema: SwSchema | undefined, raw: unknown): string {
+export function sanitizeParamInputValue(schema: DocsSchema | undefined, raw: unknown): string {
   const t = paramSchemaType(schema);
   const s = String(raw ?? '');
   if (t === 'integer') return s.replace(/\D/g, '');
@@ -29,7 +29,7 @@ export function sanitizeParamInputValue(schema: SwSchema | undefined, raw: unkno
 }
 
 /** `inputmode` del teclado móvil. */
-export function paramInputMode(schema: SwSchema | undefined): 'numeric' | 'decimal' | 'text' {
+export function paramInputMode(schema: DocsSchema | undefined): 'numeric' | 'decimal' | 'text' {
   const t = paramSchemaType(schema);
   if (t === 'integer') return 'numeric';
   if (t === 'number') return 'decimal';
@@ -37,14 +37,14 @@ export function paramInputMode(schema: SwSchema | undefined): 'numeric' | 'decim
 }
 
 /** Valores cerrados del parámetro, si los declara (pinta un `iswc-select`). */
-export function paramEnum(schema: SwSchema | undefined): string[] {
+export function paramEnum(schema: DocsSchema | undefined): string[] {
   const raw = schema?.enum;
   if (!Array.isArray(raw) || !raw.length) return [];
   return raw.map((v) => String(v));
 }
 
 /** Etiqueta corta del tipo: `array<string>`, `string(date-time)`, `integer`. */
-export function paramTypeLabel(schema: SwSchema | undefined): string {
+export function paramTypeLabel(schema: DocsSchema | undefined): string {
   if (!schema) return '';
   const t = schema.type ?? '';
   if (t === 'array') return `array<${schema.items?.type ?? 'any'}>`;
@@ -52,7 +52,7 @@ export function paramTypeLabel(schema: SwSchema | undefined): string {
 }
 
 /** Valor inicial: `example` → `default` → primer `enum` → vacío. */
-export function paramInitialValue(param: SwParam): string {
+export function paramInitialValue(param: DocsParam): string {
   if (param.example != null) return String(param.example);
   const schema = param.schema;
   if (schema?.default != null) return String(schema.default);

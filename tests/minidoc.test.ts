@@ -1,5 +1,5 @@
 /**
- * minidoc.test.ts — el segundo driver (`sw-minidoc`) sobre el build.
+ * minidoc.test.ts — el segundo driver (`docs-minidoc`) sobre el build.
  *
  * Cubre dos cosas que los guardianes de documentación no miran: que las vistas pinten de verdad
  * lo que dicen pintar, y que los dos drivers **no se pisen**. Lo segundo es el riesgo real de
@@ -24,21 +24,21 @@ for (const k of ['window', 'document', 'HTMLElement', 'customElements', 'CustomE
 globalThis.performance = dom.window.performance;
 globalThis.location = dom.window.location;
 
-await import('../dist/cdn/components/sw/sw-minidoc-view.js');
-await import('../dist/cdn/components/sw/sw-minidoc-code.js');
-await import('../dist/cdn/components/sw/sw-home.js');
-await import('../dist/cdn/components/sw/sw-app.js');
-await import('../dist/cdn/components/sw/sw-minidoc.js');
-await import('../dist/cdn/components/sw/sw-driver-switch.js');
-await import('../dist/cdn/components/sw/sw-layout.js');
-await import('../dist/cdn/components/sw/sw-viewer.js');
+await import('../dist/cdn/components/docs/docs-minidoc-view.js');
+await import('../dist/cdn/components/docs/docs-minidoc-code.js');
+await import('../dist/cdn/components/docs/docs-home.js');
+await import('../dist/cdn/components/docs/docs-app.js');
+await import('../dist/cdn/components/docs/docs-minidoc.js');
+await import('../dist/cdn/components/docs/docs-driver-switch.js');
+await import('../dist/cdn/components/docs/docs-layout.js');
+await import('../dist/cdn/components/docs/docs-viewer.js');
 const { buildCurl, ejemploDeParam } = await import('../dist/cdn/js/curl.js');
 const { readDriver, writeDriver, esDriver, DRIVERS, DRIVER_DEFAULT } = await import('../dist/cdn/js/driver.js');
 
 /**
  * Monta un componente en el DOM de jsdom y devuelve su shadow root.
  *
- * El `shadowRoot` no es opcional aqui: todos los `sw-*` lo abren en su
+ * El `shadowRoot` no es opcional aqui: todos los `docs-*` lo abren en su
  * constructor, asi que si faltara el componente estaria roto y el test debe
  * fallar en la linea siguiente, no arrastrar un `null` hasta el assert.
  */
@@ -69,8 +69,8 @@ const op = (over = {}) => ({
 
 /* ── Vista central ──────────────────────────────────────────── */
 
-test('sw-minidoc-view pinta la operación entera, sin plegar nada', () => {
-  const root = montar('sw-minidoc-view', {
+test('docs-minidoc-view pinta la operación entera, sin plegar nada', () => {
+  const root = montar('docs-minidoc-view', {
     op: op(), spec: null, grupo: 'Tareas', serverBase: 'https://h/api', authEnabled: false, docMd: '',
   });
   const texto = root.textContent;
@@ -83,23 +83,23 @@ test('sw-minidoc-view pinta la operación entera, sin plegar nada', () => {
   assert.equal(root.querySelectorAll<HTMLElement>('iswc-details').length, 0, 'la vista no debe plegar contenido');
 });
 
-test('sw-minidoc-view marca los obligatorios y enseña los valores de un enum', () => {
-  const root = montar('sw-minidoc-view', {
+test('docs-minidoc-view marca los obligatorios y enseña los valores de un enum', () => {
+  const root = montar('docs-minidoc-view', {
     op: op(), spec: null, grupo: '', serverBase: '', authEnabled: false, docMd: '',
   });
   assert.equal(root.querySelectorAll<HTMLElement>('.param-req').length, 2, 'id y page_num son obligatorios');
   assert.match(root.textContent, /queued/, 'no lista los valores del enum');
 });
 
-test('sw-minidoc-view sin operación invita a elegir en vez de quedarse en blanco', () => {
-  const root = montar('sw-minidoc-view', {
+test('docs-minidoc-view sin operación invita a elegir en vez de quedarse en blanco', () => {
+  const root = montar('docs-minidoc-view', {
     op: null, spec: null, grupo: '', serverBase: '', authEnabled: false, docMd: '',
   });
   assert.match(root.textContent, /Elige una operación/);
 });
 
-test('sw-home pinta info.description como portada', () => {
-  const root = montar('sw-home', {
+test('docs-home pinta info.description como portada', () => {
+  const root = montar('docs-home', {
     spec: {
       info: {
         title: 'ISS PatyIA',
@@ -110,16 +110,16 @@ test('sw-home pinta info.description como portada', () => {
   });
   assert.match(root.textContent, /ISS PatyIA/);
   assert.match(root.textContent, /v1\.0\.0/);
-  const doc = root.querySelector<HTMLElement>('sw-doc')!;
-  assert.ok(doc, 'debe renderizar la descripción vía sw-doc');
+  const doc = root.querySelector<HTMLElement>('docs-doc')!;
+  assert.ok(doc, 'debe renderizar la descripción vía docs-doc');
   const fuente = doc?.shadowRoot?.querySelector<HTMLElement>('script[type="text/markdown"]');
   assert.match(fuente?.textContent ?? '', /Bienvenido/);
 });
 
 /* ── Columna de código ──────────────────────────────────────── */
 
-test('sw-minidoc-code abre en el primer código de estado y ofrece los demás', () => {
-  const root = montar('sw-minidoc-code', {
+test('docs-minidoc-code abre en el primer código de estado y ofrece los demás', () => {
+  const root = montar('docs-minidoc-code', {
     op: op(), spec: null, serverBase: 'https://h/api', requiereBearer: false,
   });
   const estados = [...root.querySelectorAll<HTMLElement>('.estado')].map((b) => b.textContent.trim());
@@ -127,9 +127,9 @@ test('sw-minidoc-code abre en el primer código de estado y ofrece los demás', 
   assert.equal(root.querySelector<HTMLElement>('.estado[data-activo]').textContent.trim(), '200');
 });
 
-test('sw-minidoc-code cambia de estado sin tocar la URL', () => {
+test('docs-minidoc-code cambia de estado sin tocar la URL', () => {
   const antes = dom.window.location.search;
-  const root = montar('sw-minidoc-code', {
+  const root = montar('docs-minidoc-code', {
     op: op(), spec: null, serverBase: 'https://h/api', requiereBearer: false,
   });
   root.querySelectorAll<HTMLElement>('.estado')[1]!.click();
@@ -181,30 +181,30 @@ test('ejemploDeParam cae al tipo cuando no hay ejemplo ni default', () => {
 
 /* ── Los dos drivers conviven ───────────────────────────────── */
 
-test('sw-app y sw-minidoc son tags distintos y ninguno registra el del otro', () => {
-  assert.ok(dom.window.customElements.get('sw-app'), 'sw-app sin registrar');
-  assert.ok(dom.window.customElements.get('sw-minidoc'), 'sw-minidoc sin registrar');
+test('docs-app y docs-minidoc son tags distintos y ninguno registra el del otro', () => {
+  assert.ok(dom.window.customElements.get('docs-app'), 'docs-app sin registrar');
+  assert.ok(dom.window.customElements.get('docs-minidoc'), 'docs-minidoc sin registrar');
   assert.notEqual(
-    dom.window.customElements.get('sw-app'),
-    dom.window.customElements.get('sw-minidoc'),
+    dom.window.customElements.get('docs-app'),
+    dom.window.customElements.get('docs-minidoc'),
     'los dos drivers no pueden ser la misma clase',
   );
 });
 
 test('los dos drivers pueden montarse en la misma página sin romperse', () => {
-  const a = dom.window.document.createElement('sw-app');
-  const b = dom.window.document.createElement('sw-minidoc');
+  const a = dom.window.document.createElement('docs-app');
+  const b = dom.window.document.createElement('docs-minidoc');
   dom.window.document.body.append(a, b);
   // Sin red no cargan documento, pero deben tener shadow propio y no compartirlo.
-  assert.ok(a.shadowRoot, 'sw-app sin shadow');
-  assert.ok(b.shadowRoot, 'sw-minidoc sin shadow');
+  assert.ok(a.shadowRoot, 'docs-app sin shadow');
+  assert.ok(b.shadowRoot, 'docs-minidoc sin shadow');
   assert.notEqual(a.shadowRoot, b.shadowRoot);
   a.remove();
   b.remove();
 });
 
-test('sw-minidoc acepta el conn como objeto y como atributo JSON', () => {
-  const node = dom.window.document.createElement('sw-minidoc');
+test('docs-minidoc acepta el conn como objeto y como atributo JSON', () => {
+  const node = dom.window.document.createElement('docs-minidoc');
   node.setAttribute('conn', '{"apiBase":"https://h/api"}');
   dom.window.document.body.append(node);
   assert.ok(node.shadowRoot, 'no montó con conn en atributo');
@@ -214,8 +214,8 @@ test('sw-minidoc acepta el conn como objeto y como atributo JSON', () => {
   node.remove();
 });
 
-test('sw-minidoc no revienta con un conn de JSON roto en el atributo', () => {
-  const node = dom.window.document.createElement('sw-minidoc');
+test('docs-minidoc no revienta con un conn de JSON roto en el atributo', () => {
+  const node = dom.window.document.createElement('docs-minidoc');
   node.setAttribute('conn', '{esto no es json');
   dom.window.document.body.append(node);
   assert.ok(node.shadowRoot, 'un atributo corrupto no debe dejar la página en blanco');
@@ -226,19 +226,19 @@ test('sw-minidoc no revienta con un conn de JSON roto en el atributo', () => {
 
 test('driver: la URL manda sobre la preferencia guardada', () => {
   // Quien comparte un enlace decide qué vista se abre, aunque el lector tenga otra guardada.
-  globalThis.localStorage?.setItem('sw:driver', 'sw-app');
-  const s = btoa(JSON.stringify({ driver: 'sw-minidoc' })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  globalThis.localStorage?.setItem('docs:driver', 'docs-app');
+  const s = btoa(JSON.stringify({ driver: 'docs-minidoc' })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   dom.window.history.replaceState({}, '', `/?s=${s}`);
-  assert.equal(readDriver(), 'sw-minidoc');
+  assert.equal(readDriver(), 'docs-minidoc');
 
   dom.window.history.replaceState({}, '', '/');
-  assert.equal(readDriver(), 'sw-app', 'sin driver en `?s=` vuelve a mandar lo guardado');
+  assert.equal(readDriver(), 'docs-app', 'sin driver en `?s=` vuelve a mandar lo guardado');
 });
 
 test('driver: un valor inventado no rompe, cae al de por defecto', () => {
   const s = btoa(JSON.stringify({ driver: 'inventado' })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   dom.window.history.replaceState({}, '', `/?s=${s}`);
-  globalThis.localStorage?.removeItem('sw:driver');
+  globalThis.localStorage?.removeItem('docs:driver');
   assert.equal(readDriver(), DRIVER_DEFAULT);
   assert.equal(esDriver('inventado'), false);
   dom.window.history.replaceState({}, '', '/');
@@ -266,8 +266,8 @@ test('el índice de minidoc expone el path en title y caption', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-minidoc.ts'), 'utf8');
-  const css = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-minidoc.css'), 'utf8');
+  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-minidoc.ts'), 'utf8');
+  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-minidoc.css'), 'utf8');
   assert.match(ts, /title="\$\{ruta\}"/, 'falta title con el endpoint');
   assert.match(ts, /class="op-texto"/, 'falta columna título+path');
   assert.match(ts, /class="op-path"/, 'falta caption del path');
@@ -283,67 +283,67 @@ test('el índice de minidoc expone el path en title y caption', async () => {
   assert.doesNotMatch(css, /\.entidad-titulo/, 'no debe quedar estilo de divisor de entidad');
 });
 
-test('sw-viewer monta el driver activo y lo cambia en caliente', () => {
+test('docs-viewer monta el driver activo y lo cambia en caliente', () => {
   dom.window.history.replaceState({}, '', '/');
-  globalThis.localStorage?.removeItem('sw:driver');
+  globalThis.localStorage?.removeItem('docs:driver');
 
-  const visor = dom.window.document.createElement('sw-viewer');
+  const visor = dom.window.document.createElement('docs-viewer');
   dom.window.document.body.append(visor);
 
   const montado = () => visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild?.tagName.toLowerCase();
   assert.equal(montado(), DRIVER_DEFAULT, 'no montó el driver por defecto');
 
-  visor.driver = 'sw-minidoc';
-  assert.equal(montado(), 'sw-minidoc', 'no cambió el driver montado');
+  visor.driver = 'docs-minidoc';
+  assert.equal(montado(), 'docs-minidoc', 'no cambió el driver montado');
   assert.equal(visor.shadowRoot!.querySelectorAll<HTMLElement>('.montaje > *').length, 1, 'quedaron dos drivers vivos');
 
   visor.remove();
 });
 
-test('sw-driver-switch ofrece una opción por driver registrado', () => {
-  const sel = dom.window.document.createElement('sw-driver-switch');
+test('docs-driver-switch ofrece una opción por driver registrado', () => {
+  const sel = dom.window.document.createElement('docs-driver-switch');
   dom.window.document.body.append(sel);
   const valores = [...sel.shadowRoot!.querySelectorAll<HTMLElement>('iswc-option')].map((o) => o.getAttribute('value'));
   assert.deepEqual(valores, DRIVERS.map((d) => d.id));
   sel.remove();
 });
 
-test('sw-driver-switch no monta drivers: solo emite el cambio', () => {
+test('docs-driver-switch no monta drivers: solo emite el cambio', () => {
   // Reparto de responsabilidades: el selector escribe la preferencia y avisa; quien sabe
-  // dónde está montado el driver —y por tanto quien lo reemplaza— es sw-viewer.
-  const sel = dom.window.document.createElement('sw-driver-switch');
+  // dónde está montado el driver —y por tanto quien lo reemplaza— es docs-viewer.
+  const sel = dom.window.document.createElement('docs-driver-switch');
   dom.window.document.body.append(sel);
   let recibido = null;
-  sel.addEventListener('sw-driver-change', (e) => { recibido = e.detail?.driver; });
+  sel.addEventListener('docs-driver-change', (e) => { recibido = e.detail?.driver; });
 
   const otro = DRIVERS.find((d) => d.id !== readDriver()).id;
   const select = sel.shadowRoot!.querySelector<HTMLElement>('iswc-select');
   select.value = otro;
   select.dispatchEvent(new dom.window.CustomEvent('iswc-change', { bubbles: true }));
 
-  assert.equal(recibido, otro, 'no emitió sw-driver-change');
+  assert.equal(recibido, otro, 'no emitió docs-driver-change');
   assert.equal(readDriver(), otro, 'no persistió la elección');
   sel.remove();
   dom.window.history.replaceState({}, '', '/');
-  globalThis.localStorage?.removeItem('sw:driver');
+  globalThis.localStorage?.removeItem('docs:driver');
 });
 
-test('sw-viewer cambia de driver al recibir sw-driver-change desde la cabecera', () => {
+test('docs-viewer cambia de driver al recibir docs-driver-change desde la cabecera', () => {
   dom.window.history.replaceState({}, '', '/');
-  globalThis.localStorage?.removeItem('sw:driver');
-  const visor = dom.window.document.createElement('sw-viewer');
+  globalThis.localStorage?.removeItem('docs:driver');
+  const visor = dom.window.document.createElement('docs-viewer');
   dom.window.document.body.append(visor);
 
   const otro = DRIVERS.find((d) => d.id !== visor.driver).id;
-  visor.dispatchEvent(new dom.window.CustomEvent('sw-driver-change', { detail: { driver: otro } }));
+  visor.dispatchEvent(new dom.window.CustomEvent('docs-driver-change', { detail: { driver: otro } }));
 
   const montado = visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild?.tagName.toLowerCase();
   assert.equal(montado, otro, 'el evento de la cabecera no cambió el driver montado');
   visor.remove();
 });
 
-test('sw-viewer reenvía el conn al driver que monta', () => {
-  const visor = dom.window.document.createElement('sw-viewer');
+test('docs-viewer reenvía el conn al driver que monta', () => {
+  const visor = dom.window.document.createElement('docs-viewer');
   visor.conn = { apiBase: 'https://h/api' };
   dom.window.document.body.append(visor);
 
@@ -351,7 +351,7 @@ test('sw-viewer reenvía el conn al driver que monta', () => {
   assert.deepEqual(activo.conn, { apiBase: 'https://h/api' }, 'el driver montó sin conn');
 
   // Y al siguiente también: si no, cambiar de vista perdería la conexión del anfitrión.
-  visor.driver = visor.driver === 'sw-app' ? 'sw-minidoc' : 'sw-app';
+  visor.driver = visor.driver === 'docs-app' ? 'docs-minidoc' : 'docs-app';
   assert.deepEqual(
     visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild.conn,
     { apiBase: 'https://h/api' },
@@ -362,16 +362,16 @@ test('sw-viewer reenvía el conn al driver que monta', () => {
 
 /* ── Armazón de tres zonas ──────────────────────────────────── */
 
-test('sw-layout expone las cuatro zonas por slot', () => {
-  const l = dom.window.document.createElement('sw-layout');
+test('docs-layout expone las cuatro zonas por slot', () => {
+  const l = dom.window.document.createElement('docs-layout');
   dom.window.document.body.append(l);
   const nombres = [...l.shadowRoot!.querySelectorAll<HTMLSlotElement>('slot')].map((s) => s.getAttribute('name')).sort();
   assert.deepEqual(nombres, ['cabecera', 'centro', 'fin', 'inicio']);
   l.remove();
 });
 
-test('sw-layout anida dos splits, uno por divisor arrastrable', () => {
-  const l = dom.window.document.createElement('sw-layout');
+test('docs-layout anida dos splits, uno por divisor arrastrable', () => {
+  const l = dom.window.document.createElement('docs-layout');
   dom.window.document.body.append(l);
   const splits = l.shadowRoot!.querySelectorAll<HTMLElement>('iswc-split-panel');
   assert.equal(splits.length, 2, 'hacen falta dos: índice|resto y centro|código');
@@ -380,8 +380,8 @@ test('sw-layout anida dos splits, uno por divisor arrastrable', () => {
   l.remove();
 });
 
-test('sw-layout trae un cajón y una hamburguesa por lateral', () => {
-  const l = dom.window.document.createElement('sw-layout');
+test('docs-layout trae un cajón y una hamburguesa por lateral', () => {
+  const l = dom.window.document.createElement('docs-layout');
   dom.window.document.body.append(l);
   for (const lado of ['inicio', 'fin']) {
     assert.ok(l.shadowRoot!.querySelector<HTMLElement>(`iswc-drawer[data-lado="${lado}"]`), `sin cajón ${lado}`);
@@ -390,10 +390,10 @@ test('sw-layout trae un cajón y una hamburguesa por lateral', () => {
   l.remove();
 });
 
-test('sw-layout esconde las hamburguesas mientras los paneles caben', () => {
+test('docs-layout esconde las hamburguesas mientras los paneles caben', () => {
   // jsdom no implementa matchMedia con umbrales reales: sin coincidencia, ambos laterales
   // están al lado y ninguna hamburguesa debe verse. Es el caso de escritorio.
-  const l = dom.window.document.createElement('sw-layout');
+  const l = dom.window.document.createElement('docs-layout');
   dom.window.document.body.append(l);
   for (const lado of ['inicio', 'fin']) {
     assert.equal(l.shadowRoot!.querySelector<HTMLElement>(`.hamburguesa-${lado}`).hidden, true, `hamburguesa ${lado} visible de más`);
@@ -408,11 +408,11 @@ test('los umbrales del CSS y los del JS son los mismos', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-layout.ts'), 'utf8');
-  const css = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-layout.css'), 'utf8');
+  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.ts'), 'utf8');
+  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.css'), 'utf8');
   for (const umbral of ['87.5rem', '60rem']) {
-    assert.ok(ts.includes(umbral), `sw-layout.ts perdió el umbral ${umbral}`);
-    assert.ok(css.includes(umbral), `sw-layout.css perdió el umbral ${umbral}`);
+    assert.ok(ts.includes(umbral), `docs-layout.ts perdió el umbral ${umbral}`);
+    assert.ok(css.includes(umbral), `docs-layout.css perdió el umbral ${umbral}`);
   }
 });
 
@@ -427,8 +427,8 @@ test('QUERY tiene color propio: el API lo usa para filtrar', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const css = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-method.css'), 'utf8');
-  assert.match(css, /data-method=["']query["']/, 'sw-method.css pinta QUERY con teal propio');
+  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-method.css'), 'utf8');
+  assert.match(css, /data-method=["']query["']/, 'docs-method.css pinta QUERY con teal propio');
 });
 
 test('todos los chips de método miden lo mismo', async () => {
@@ -439,7 +439,7 @@ test('todos los chips de método miden lo mismo', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const css = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-method.css'), 'utf8');
+  const css = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-method.css'), 'utf8');
   const host = css.slice(css.indexOf(':host'), css.indexOf('.metodo'));
   assert.match(host, /width:\s*calc\(6ch/, 'el ancho debe basarse en DELETE (6ch) + padding');
   assert.match(css, /\.metodo::part\(tag\)/, 'el pill de is-tag debe estirarse al ancho del host');
@@ -448,14 +448,14 @@ test('todos los chips de método miden lo mismo', async () => {
 
 /* ── Regresiones de montaje ─────────────────────────────────── */
 
-test('sw-viewer entrega el conn ANTES de conectar el driver', () => {
+test('docs-viewer entrega el conn ANTES de conectar el driver', () => {
   // El parpadeo: si el driver se inserta primero y recibe el conn después, arranca sin
   // configuración, pinta «falta specUrl o apiBase» y solo entonces se re-monta. El error se
   // veía un instante en cada carga.
   dom.window.history.replaceState({}, '', '/');
-  globalThis.localStorage?.removeItem('sw:driver');
+  globalThis.localStorage?.removeItem('docs:driver');
 
-  const visor = dom.window.document.createElement('sw-viewer');
+  const visor = dom.window.document.createElement('docs-viewer');
   visor.setAttribute('conn', JSON.stringify({ apiBase: 'https://h/api' }));
   dom.window.document.body.append(visor);
 
@@ -465,7 +465,7 @@ test('sw-viewer entrega el conn ANTES de conectar el driver', () => {
   visor.remove();
 });
 
-test('sw-layout corrige un reparto degenerado de los splits', async () => {
+test('docs-layout corrige un reparto degenerado de los splits', async () => {
   // `iswc-split-panel` cachea su posición en píxeles al conectarse; dentro de un shadow recién
   // construido el host mide 0, cachea 0px y —como el píxel es canónico— el índice y el
   // contenido colapsan. Con storage-key ese cero además se persiste y envenena las siguientes
@@ -473,7 +473,7 @@ test('sw-layout corrige un reparto degenerado de los splits', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-layout.ts'), 'utf8');
+  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.ts'), 'utf8');
   assert.match(ts, /positionInPixels\s*=/, 'debe fijar píxeles: el porcentaje lo pisa el píxel canónico');
   assert.match(ts, /requestAnimationFrame/, 'debe esperar a que el layout tenga ancho real');
   assert.match(ts, /MINIMO_PANEL_PX/, 'debe respetar el ancho que el usuario haya arrastrado');
@@ -482,54 +482,54 @@ test('sw-layout corrige un reparto degenerado de los splits', async () => {
 /* ── Caducidad del estado persistido ────────────────────────── */
 
 test('la geometría guardada caduca al cambiar de build', async () => {
-  const { caducarPrefsSiCambioBuild, CLAVE_VERSION, CLAVE_KIT, SW_VERSION } =
+  const { caducarPrefsSiCambioBuild, CLAVE_VERSION, CLAVE_KIT, DOCS_VERSION } =
     await import('../dist/cdn/js/prefs.js?bust=' + Math.random());
 
   // Estado escrito por una versión anterior, con el cero que rompía el layout.
   globalThis.localStorage.setItem(CLAVE_KIT, JSON.stringify({
     'iswc-split-panel': {
-      'sw:split:inicio': { positionInPixels: 0 },
-      'sw:split:fin': { positionInPixels: 0 },
+      'docs:split:inicio': { positionInPixels: 0 },
+      'docs:split:fin': { positionInPixels: 0 },
       'otra-app': { positionInPixels: 250 },
     },
     'iswc-otro-componente': { algo: 1 },
   }));
   globalThis.localStorage.setItem(CLAVE_VERSION, 'build-viejo');
-  globalThis.localStorage.setItem('sw:driver', 'sw-app');
+  globalThis.localStorage.setItem('docs:driver', 'docs-app');
 
   assert.equal(caducarPrefsSiCambioBuild(), true, 'debió purgar: el sello no coincide');
 
   const tras = JSON.parse(globalThis.localStorage.getItem(CLAVE_KIT));
-  assert.equal(tras['iswc-split-panel']['sw:split:inicio'], undefined, 'no borró la geometría propia');
-  assert.equal(tras['iswc-split-panel']['sw:split:fin'], undefined, 'no borró la geometría propia');
+  assert.equal(tras['iswc-split-panel']['docs:split:inicio'], undefined, 'no borró la geometría propia');
+  assert.equal(tras['iswc-split-panel']['docs:split:fin'], undefined, 'no borró la geometría propia');
   // Cirugía, no demolición: lo que no es nuestro se queda.
   assert.deepEqual(tras['iswc-split-panel']['otra-app'], { positionInPixels: 250 }, 'tocó geometría ajena');
   assert.deepEqual(tras['iswc-otro-componente'], { algo: 1 }, 'tocó otro componente del kit');
   // El driver es una elección deliberada del lector: cambiar de versión no se la cambia.
-  assert.equal(globalThis.localStorage.getItem('sw:driver'), 'sw-app', 'borró una preferencia del usuario');
-  assert.equal(globalThis.localStorage.getItem(CLAVE_VERSION), SW_VERSION, 'no dejó sellado el build actual');
+  assert.equal(globalThis.localStorage.getItem('docs:driver'), 'docs-app', 'borró una preferencia del usuario');
+  assert.equal(globalThis.localStorage.getItem(CLAVE_VERSION), DOCS_VERSION, 'no dejó sellado el build actual');
 });
 
 test('con el mismo build no se toca nada', async () => {
-  const { caducarPrefsSiCambioBuild, CLAVE_VERSION, CLAVE_KIT, SW_VERSION } =
+  const { caducarPrefsSiCambioBuild, CLAVE_VERSION, CLAVE_KIT, DOCS_VERSION } =
     await import('../dist/cdn/js/prefs.js?bust=' + Math.random());
 
-  globalThis.localStorage.setItem(CLAVE_VERSION, SW_VERSION);
-  const guardado = JSON.stringify({ 'iswc-split-panel': { 'sw:split:inicio': { positionInPixels: 320 } } });
+  globalThis.localStorage.setItem(CLAVE_VERSION, DOCS_VERSION);
+  const guardado = JSON.stringify({ 'iswc-split-panel': { 'docs:split:inicio': { positionInPixels: 320 } } });
   globalThis.localStorage.setItem(CLAVE_KIT, guardado);
 
   assert.equal(caducarPrefsSiCambioBuild(), false, 'purgó sin haber cambiado de build');
   assert.equal(globalThis.localStorage.getItem(CLAVE_KIT), guardado, 'el ancho que arrastró el usuario debe sobrevivir');
 });
 
-test('sw-layout caduca las prefs antes de montar los splits', async () => {
+test('docs-layout caduca las prefs antes de montar los splits', async () => {
   const { readFileSync } = await import('node:fs');
   const { join } = await import('node:path');
   const raiz = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-  const ts = readFileSync(join(raiz, 'src', 'components', 'sw', 'sw-layout.ts'), 'utf8');
+  const ts = readFileSync(join(raiz, 'src', 'components', 'docs', 'docs-layout.ts'), 'utf8');
   const llamada = ts.indexOf('caducarPrefsSiCambioBuild()');
-  const clase = ts.indexOf('class SwLayout');
-  assert.ok(llamada > 0, 'sw-layout no caduca las prefs');
+  const clase = ts.indexOf('class DocsLayout');
+  assert.ok(llamada > 0, 'docs-layout no caduca las prefs');
   assert.ok(llamada < clase, 'debe caducar al cargar el módulo: si no, los splits ya restauraron');
 });
 

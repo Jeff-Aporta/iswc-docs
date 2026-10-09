@@ -6,11 +6,11 @@
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#0a0e14">
 
-<title>IS-Swagger · Visor de documentación de APIs</title>
+<title>ISWC Docs · Visor de documentación de APIs</title>
 <meta name="description" content="Visor de documentación InSoft en web components: explora, documenta y prueba los endpoints de cualquier API documentada, sin salir del navegador.">
 <meta name="author" content="Jeff-Aporta">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://jeff-aporta.github.io/isc-swagger/">
+<link rel="canonical" href="https://jeff-aporta.github.io/iswc-docs/">
 
 <!--
   Icono de pestaña. El SVG lo entienden todos los navegadores vigentes y escala a cualquier
@@ -25,31 +25,31 @@
   LinkedIn, WhatsApp y Slack no resuelven rutas relativas y la tarjeta sale sin imagen.
 -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="IS-Swagger">
+<meta property="og:site_name" content="ISWC Docs">
 <meta property="og:locale" content="es_ES">
-<meta property="og:url" content="https://jeff-aporta.github.io/isc-swagger/">
-<meta property="og:title" content="IS-Swagger · Visor de documentación de APIs">
+<meta property="og:url" content="https://jeff-aporta.github.io/iswc-docs/">
+<meta property="og:title" content="ISWC Docs · Visor de documentación de APIs">
 <meta property="og:description" content="Visor de documentación InSoft en web components: explora, documenta y prueba los endpoints de cualquier API documentada, sin salir del navegador.">
 <meta property="og:image" content="https://i.ytimg.com/vi/k0XcnhHQlzc/maxresdefault.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
-<meta property="og:image:alt" content="Interfaz de IS-Swagger mostrando endpoints agrupados por sección">
+<meta property="og:image:alt" content="Interfaz de ISWC Docs mostrando endpoints agrupados por sección">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="IS-Swagger · Visor de documentación de APIs">
+<meta name="twitter:title" content="ISWC Docs · Visor de documentación de APIs">
 <meta name="twitter:description" content="Explora, documenta y prueba los endpoints de tu API desde el navegador. Web components, sin React ni bundler.">
 <meta name="twitter:image" content="https://i.ytimg.com/vi/k0XcnhHQlzc/maxresdefault.jpg">
-<meta name="twitter:image:alt" content="Interfaz de IS-Swagger mostrando endpoints agrupados por sección">
+<meta name="twitter:image:alt" content="Interfaz de ISWC Docs mostrando endpoints agrupados por sección">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "IS-Swagger",
+  "name": "ISWC Docs",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Cualquiera con navegador moderno",
-  "url": "https://jeff-aporta.github.io/isc-swagger/",
+  "url": "https://jeff-aporta.github.io/iswc-docs/",
   "image": "https://i.ytimg.com/vi/k0XcnhHQlzc/maxresdefault.jpg",
   "description": "Visor de documentación de APIs en web components: explora, documenta y prueba los endpoints de tu API desde el navegador.",
   "author": { "@type": "Person", "name": "Jeff-Aporta" },
@@ -99,13 +99,13 @@
   // resuelve la ruta correcta (raíz o core/) y se invalidan caches viejos al cambiar el `v`.
   const KIT = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn';
   const { ISWebComponentsLoader: L } = await import(`${KIT}/core/loader.min.js`);
-  const { SW_KIT_TAGS } = await import('./dist/cdn/js/kit-tags.js');
+  const { DOCS_KIT_TAGS } = await import('./dist/cdn/js/kit-tags.js');
   // host + mirrors por el loader; los overrides de test (host/v/mirrors/ref) van en ?iswc=<b64url-json>.
 
   await L.loadCSSBase();
   await L.loadCSSPalettesDefault();
   // Sin L.pin → tip de main. Pin solo si el host lo pide de forma explícita.
-  await L.load(...SW_KIT_TAGS);
+  await L.load(...DOCS_KIT_TAGS);
 </script>
 
 <!--
@@ -138,18 +138,18 @@
 </script>
 
 <!--
-  Configuración del visor. Se puede sustituir por `window.__SWAGGER_CONFIG__`
+  Configuración del visor. Se puede sustituir por `window.__DOCS_CONFIG__`
   desde el host, o pisar con `?spec=<url>` / `?api=<base>` / `?conn=<b64>` en la URL.
 
   Por defecto carga la spec pública de httpbin para que el visor funcione al
   abrirlo sin configuración: cualquier endpoint se puede probar contra el
   servidor real de httpbin.
 -->
-<script type="application/json" id="sw-config">
+<script type="application/json" id="docs-config">
 {
   "ns": "ISA",
   "specUrl": "https://httpbin.org/spec.json",
-  "brand": { "title": "IS-Swagger", "subtitle": "Visor de documentación", "icon": "mdi:api" },
+  "brand": { "title": "ISWC Docs", "subtitle": "Visor de documentación", "icon": "mdi:api" },
   "auth": { "enabled": false },
   "serverSelect": true
 }
@@ -162,7 +162,7 @@
     Hero. Solo se enseña cuando no llega config por URL. En cuanto el visitante
     comparte un enlace con `?conn=` (o variantes), este bloque desaparece y el
     visor toma el control. El vídeo es la presentación del proyecto: si el
-    visitante aún no sabe qué es IS-Swagger, este es su primer contacto.
+    visitante aún no sabe qué es ISWC Docs, este es su primer contacto.
   -->
   <section class="hero" hidden>
     <div class="hero__texto">
@@ -172,7 +172,7 @@
         <span class="hero__acento">Solo no lo sabías.</span>
       </h1>
       <p class="hero__lede">
-        IS-Swagger lee la configuración que tu backend ya publica y la convierte
+        ISWC Docs lee la configuración que tu backend ya publica y la convierte
         en documentación navegable y probable. Sin instalar nada, sin exportar
         colecciones, sin mantener un segundo catálogo en paralelo.
       </p>
@@ -189,7 +189,7 @@
       <iframe
         class="hero__video-frame"
         src="https://www.youtube-nocookie.com/embed/k0XcnhHQlzc"
-        title="Vídeo de presentación de IS-Swagger"
+        title="Vídeo de presentación de ISWC Docs"
         loading="lazy"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
@@ -203,28 +203,28 @@
   </section>
 
   <!--
-    `sw-viewer` en vez de `sw-app` a secas: envuelve los dos drivers y saca el selector de
+    `docs-viewer` en vez de `docs-app` a secas: envuelve los dos drivers y saca el selector de
     vista, para que el lector cambie de presentación sin recargar. Recuerda la elección en
     `?driver=` y en localStorage.
   -->
-  <sw-viewer hidden></sw-viewer>
+  <docs-viewer hidden></docs-viewer>
   <iswc-toast placement="bottom-end"></iswc-toast>
 
   <noscript>
-    <div class="sw-sin-js">
+    <div class="docs-sin-js">
       <strong>El visor necesita JavaScript.</strong>
       Es una aplicación de una sola página: sin JS no hay nada que mostrar.
     </div>
   </noscript>
 
   <!--
-    Un solo módulo: `dist/cdn/all.min.js` empaqueta los `sw-*` y su dominio. Antes se listaban
+    Un solo módulo: `dist/cdn/all.min.js` empaqueta los `docs-*` y su dominio. Antes se listaban
     los 16 componentes uno a uno, lo que eran 16 peticiones y un orden que había que mantener
     a mano. El CSS no va dentro del bundle: cada componente lo sigue pidiendo de
-    `dist/cdn/components/sw/<tag>.css`, y el barril fija esa base al arrancar.
+    `dist/cdn/components/docs/<tag>.css`, y el barril fija esa base al arrancar.
 
     Para incrustar solo una parte en otra página siguen estando los módulos sueltos en
-    `dist/cdn/components/sw/`. `deno task build` genera ambas cosas; `deno task dev`, en watch.
+    `dist/cdn/components/docs/`. `deno task build` genera ambas cosas; `deno task dev`, en watch.
   -->
   <script type="module" src="./dist/cdn/all.min.js"></script>
 
@@ -238,7 +238,7 @@
     (function () {
       var modo = document.documentElement.dataset.modo || 'app';
       var hero = document.querySelector('.hero');
-      var app = document.querySelector('sw-viewer');
+      var app = document.querySelector('docs-viewer');
       if (modo === 'hero') {
         hero.hidden = false;
       } else {

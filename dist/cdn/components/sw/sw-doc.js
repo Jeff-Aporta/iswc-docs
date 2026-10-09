@@ -1,3 +1,0 @@
-import{crearComponente as d,define as s,html as r}from"./_shared.js";const c=d(import.meta.url,(o,{markdown:a,vacio:i})=>{const n=String(a??"").trim();if(!n){o.append(r`
-        <iswc-callout color="neutral" variant="plain" icon="mdi:book-off-outline">${i}</iswc-callout>
-      `);return}const t=document.createElement("iswc-md-render");t.className="md",t.setAttribute("readonly","");const e=document.createElement("script");e.type="text/markdown",e.setAttribute("data-md-source",""),e.textContent=n,t.append(e),o.append(r`<div class="prosa">${t}</div>`)},{markdown:"",vacio:"Esta operaci\xF3n no trae documentaci\xF3n en el documento."},"sw-doc");s("sw-doc",c);export{c as SwDoc};

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jeff-aporta.github.io/isc-swagger/sitemap.xml
+Sitemap: https://jeff-aporta.github.io/iswc-docs/sitemap.xml

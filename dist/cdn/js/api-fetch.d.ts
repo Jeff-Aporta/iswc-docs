@@ -6,21 +6,21 @@
  * cuando la petición ni siquiera llegó a salir (red, CORS, host caído).
  */
 export declare function authHeaders(includeAuth?: boolean): Record<string, string>;
-export type SwFetchOpts = Omit<RequestInit, 'headers'> & {
+export type DocsFetchOpts = Omit<RequestInit, 'headers'> & {
     headers?: Record<string, string>;
     /** `false` no adjunta el JWT (endpoints públicos). */
     auth?: boolean;
 };
-export type SwFetchResult = {
+export type DocsFetchResult = {
     data: unknown;
     res: Response;
     text: string;
     ok: boolean;
 };
-export declare function fetchApiRaw(url: string, opts?: SwFetchOpts): Promise<SwFetchResult>;
-export declare function fetchApiJson(url: string, opts?: SwFetchOpts & {
+export declare function fetchApiRaw(url: string, opts?: DocsFetchOpts): Promise<DocsFetchResult>;
+export declare function fetchApiJson(url: string, opts?: DocsFetchOpts & {
     errorHint?: string;
-}): Promise<SwFetchResult>;
+}): Promise<DocsFetchResult>;
 /**
  * Error de negocio dentro de un 200.
  *

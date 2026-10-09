@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Empezar · IS-Swagger</title>
+  <title>Empezar · ISWC Docs</title>
   <meta name="description" content="Conectar tu API con ?conn=, embeber el visor en un host o levantarlo en local.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
@@ -64,7 +64,7 @@ const b64url = (obj) =&gt; btoa(
         <li>
           <div class="pasos__cuerpo">
             <h3>Pégalo en la URL del visor</h3>
-            <pre><code>https://tu-host/is-swagger/?conn=eyJhcGlCYXNlIjoi…</code></pre>
+            <pre><code>https://tu-host/docs/?conn=eyJhcGlCYXNlIjoi…</code></pre>
             <p>Y ya está: ese enlace abre tu API documentada y probable.</p>
           </div>
         </li>
@@ -137,19 +137,19 @@ const b64url = (obj) =&gt; btoa(
 &lt;script type="module" src="…/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/all.min.js"&gt;&lt;/script&gt;
 
 &lt;!-- Tema antes del primer pintado --&gt;
-&lt;script src="…/isc-swagger/dist/cdn/boot.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="…/isc-swagger/src/css/app.css"&gt;
+&lt;script src="…/iswc-docs/dist/cdn/boot.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="…/iswc-docs/src/css/app.css"&gt;
 
 &lt;!-- Configuración --&gt;
-&lt;script type="application/json" id="sw-config"&gt;
+&lt;script type="application/json" id="docs-config"&gt;
 { "apiBase": "https://tu-host/api", "brand": { "title": "Mi API" } }
 &lt;/script&gt;
 
-&lt;sw-app&gt;&lt;/sw-app&gt;
+&lt;docs-app&gt;&lt;/docs-app&gt;
 &lt;iswc-toast placement="bottom-end"&gt;&lt;/iswc-toast&gt;
 
 &lt;!-- Los dieciséis componentes en un módulo --&gt;
-&lt;script type="module" src="…/isc-swagger/dist/cdn/sw.all.js"&gt;&lt;/script&gt;</code></pre>
+&lt;script type="module" src="…/iswc-docs/dist/cdn/sw.all.js"&gt;&lt;/script&gt;</code></pre>
       <div class="nota">
         <p>
           <code>sw.all.js</code> trae el JavaScript de todos los componentes, pero
@@ -162,8 +162,8 @@ const b64url = (obj) =&gt; btoa(
       <h3>Precedencia de la configuración</h3>
       <ol>
         <li><code>?conn=</code>, <code>?spec=</code>, <code>?api=</code> — el enlace manda.</li>
-        <li><code>window.__SWAGGER_CONFIG__</code> — lo inyecta el host.</li>
-        <li><code>&lt;script type="application/json" id="sw-config"&gt;</code> — la página.</li>
+        <li><code>window.__DOCS_CONFIG__</code> — lo inyecta el host.</li>
+        <li><code>&lt;script type="application/json" id="docs-config"&gt;</code> — la página.</li>
       </ol>
       <p>
         Que el enlace gane es deliberado: tu host fija su API por defecto y aun
@@ -201,7 +201,7 @@ deno task serve     # http://localhost:4190</code></pre>
 
     <!-- ── Añadir un componente ────────────────────────────── -->
     <section class="seccion">
-      <h2>Añadir un componente <code>sw-*</code></h2>
+      <h2>Añadir un componente <code>docs-*</code></h2>
       <p>
         Cuatro pasos, y los cuatro los verifica <code>tests/estructura.test.ts</code>.
         Hacer solo tres deja un bug mudo: un custom element que no se importa no
@@ -212,21 +212,21 @@ deno task serve     # http://localhost:4190</code></pre>
         <li>
           <div class="pasos__cuerpo">
             <h3>El módulo y su hoja</h3>
-            <pre><code>src/components/sw/sw-x.ts
-src/components/sw/sw-x.css</code></pre>
+            <pre><code>src/components/docs/docs-x.ts
+src/components/docs/docs-x.css</code></pre>
           </div>
         </li>
         <li>
           <div class="pasos__cuerpo">
             <h3>Cargarlo en <code>index.html</code></h3>
-            <pre><code>&lt;script type="module" src="./dist/cdn/components/sw/sw-x.js"&gt;&lt;/script&gt;</code></pre>
+            <pre><code>&lt;script type="module" src="./dist/cdn/components/docs/docs-x.js"&gt;&lt;/script&gt;</code></pre>
           </div>
         </li>
         <li>
           <div class="pasos__cuerpo">
             <h3>Importarlo en el barril</h3>
-            <pre><code>// src/components/sw/all.ts
-import './sw-x.js';</code></pre>
+            <pre><code>// src/components/docs/all.ts
+import './docs-x.js';</code></pre>
           </div>
         </li>
         <li>
@@ -234,7 +234,7 @@ import './sw-x.js';</code></pre>
             <h3>Documentarlo aquí</h3>
             <p>
               Entrada en <code>docs/manifest.js</code> y su página en
-              <code>docs/previews/sw-x.html</code>.
+              <code>docs/previews/docs-x.html</code>.
             </p>
           </div>
         </li>
@@ -245,12 +245,12 @@ import './sw-x.js';</code></pre>
     <section class="seccion">
       <h2>Verlo funcionando</h2>
       <div class="rejilla">
-        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-app">
+        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="docs-app">
           <iswc-icon class="tarjeta__icono" icon="mdi:application-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">El visor completo</h3>
           <p>Con secciones, subgrupos y una API que responde.</p>
         </button>
-        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-try">
+        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="docs-try">
           <iswc-icon class="tarjeta__icono" icon="mdi:play-circle-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Probar un endpoint</h3>
           <p>El panel de peticiones, disparando contra un eco público.</p>

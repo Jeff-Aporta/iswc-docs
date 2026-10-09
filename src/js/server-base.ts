@@ -23,7 +23,7 @@ export const normalizeServerBase = (raw: unknown): string =>
  * Una `url` relativa en `servers` se resuelve contra el origen, como manda
  * OpenAPI: `{"url": "/api"}` en producción significa «este mismo host».
  */
-export function inferDefaultServerBase(spec: SwSpec | null | undefined, config: SwConfig = {}): string {
+export function inferDefaultServerBase(spec: DocsSpec | null | undefined, config: DocsConfig = {}): string {
   const apiBase = normalizeServerBase(config.apiBase);
   if (apiBase) return apiBase;
 
@@ -35,7 +35,7 @@ export function inferDefaultServerBase(spec: SwSpec | null | undefined, config: 
 }
 
 /** Todas las bases ofrecibles: las del documento más la configurada. */
-export function serverOptions(spec: SwSpec | null | undefined, config: SwConfig = {}): string[] {
+export function serverOptions(spec: DocsSpec | null | undefined, config: DocsConfig = {}): string[] {
   const out: string[] = [];
   const push = (v: string): void => {
     const s = normalizeServerBase(v);

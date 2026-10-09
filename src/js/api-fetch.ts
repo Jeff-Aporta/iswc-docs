@@ -17,15 +17,15 @@ export function authHeaders(includeAuth = true): Record<string, string> {
   return headers;
 }
 
-export type SwFetchOpts = Omit<RequestInit, 'headers'> & {
+export type DocsFetchOpts = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>;
   /** `false` no adjunta el JWT (endpoints públicos). */
   auth?: boolean;
 };
 
-export type SwFetchResult = { data: unknown; res: Response; text: string; ok: boolean; };
+export type DocsFetchResult = { data: unknown; res: Response; text: string; ok: boolean; };
 
-export async function fetchApiRaw(url: string, opts: SwFetchOpts = {}): Promise<SwFetchResult> {
+export async function fetchApiRaw(url: string, opts: DocsFetchOpts = {}): Promise<DocsFetchResult> {
   const { auth, headers: extra, ...init } = opts;
   const headers = { ...authHeaders(auth !== false), ...(extra ?? {}) };
   if (typeof FormData !== 'undefined' && init.body instanceof FormData) {
@@ -56,7 +56,7 @@ export async function fetchApiRaw(url: string, opts: SwFetchOpts = {}): Promise<
   return { data, res, text, ok: res.ok };
 }
 
-export async function fetchApiJson(url: string, opts: SwFetchOpts & { errorHint?: string } = {}): Promise<SwFetchResult> {
+export async function fetchApiJson(url: string, opts: DocsFetchOpts & { errorHint?: string } = {}): Promise<DocsFetchResult> {
   const { errorHint, ...rest } = opts;
   const out = await fetchApiRaw(url, rest);
   if (!out.ok) {

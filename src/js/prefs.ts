@@ -16,16 +16,16 @@
  * geometría en vez de vaciar el almacén entero.
  */
 
-import { SW_VERSION } from './version.js';
+import { DOCS_VERSION } from './version.js';
 
-const CLAVE_VERSION = 'sw:build';
+const CLAVE_VERSION = 'docs:build';
 
 /** Almacén del kit `is-*`, donde `iswc-split-panel` guarda su posición. */
 const CLAVE_KIT = 'is-components';
 
 /** Geometría que se descarta al cambiar de build. Es lo que un layout nuevo invalida. */
 const GEOMETRIA: Array<{ componente: string; claves: string[] }> = [
-  { componente: 'iswc-split-panel', claves: ['sw:split:inicio', 'sw:split:fin'] },
+  { componente: 'iswc-split-panel', claves: ['docs:split:inicio', 'docs:split:fin'] },
 ];
 
 function leer(clave: string): string | null {
@@ -79,10 +79,10 @@ function purgarGeometria(): void {
  */
 export function caducarPrefsSiCambioBuild(): boolean {
   const guardada = leer(CLAVE_VERSION);
-  if (guardada === SW_VERSION) return false;
+  if (guardada === DOCS_VERSION) return false;
   purgarGeometria();
-  escribir(CLAVE_VERSION, SW_VERSION);
+  escribir(CLAVE_VERSION, DOCS_VERSION);
   return true;
 }
 
-export { SW_VERSION, CLAVE_VERSION, CLAVE_KIT, GEOMETRIA };
+export { DOCS_VERSION, CLAVE_VERSION, CLAVE_KIT, GEOMETRIA };

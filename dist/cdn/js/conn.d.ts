@@ -29,14 +29,14 @@ export declare const DEFAULT_CONN_PATHS: {
     readonly info: "/info";
     readonly docs: "/docs?v=json";
 };
-export type SwConnPathValue = string | false | null;
-export type SwConnPaths = Partial<Record<keyof typeof DEFAULT_CONN_PATHS, SwConnPathValue>> & Record<string, SwConnPathValue | undefined>;
-export type SwConn = {
+export type DocsConnPathValue = string | false | null;
+export type DocsConnPaths = Partial<Record<keyof typeof DEFAULT_CONN_PATHS, DocsConnPathValue>> & Record<string, DocsConnPathValue | undefined>;
+export type DocsConn = {
     apiBase?: string;
     auto?: boolean;
     embed?: boolean;
     fixedServer?: boolean;
-    paths?: SwConnPaths;
+    paths?: DocsConnPaths;
     /** Documento único en bruto (InSoft config u OpenAPI). Si viene, no hay fetch a `paths.docs`. */
     spec?: unknown;
     title?: string;
@@ -44,14 +44,14 @@ export type SwConn = {
     [k: string]: unknown;
 };
 /** `true` si el host desactivó el fetch del JSON de docs. */
-export declare function isDocsPathDisabled(paths: SwConnPaths | undefined): boolean;
+export declare function isDocsPathDisabled(paths: DocsConnPaths | undefined): boolean;
 /**
  * URL del JSON único de docs, o `""` si no hay fetch.
  * Solo aplica cuando no hay `spec` quemado: path personalizable, default `/docs?v=json`.
  */
-export declare function resolveDocsJsonUrl(apiBase: string, paths: SwConnPaths | undefined): string;
+export declare function resolveDocsJsonUrl(apiBase: string, paths: DocsConnPaths | undefined): string;
 /** Decodifica base64url tolerante a padding. Devuelve `null` si el JSON falla. */
-export declare function parseConnParam(raw: unknown): SwConn | null;
+export declare function parseConnParam(raw: unknown): DocsConn | null;
 /** Codifica un objeto a base64url sin padding — para construir `?conn=`. */
 export declare function encodeConnParam(obj: unknown): string;
 /** Une `apiBase` con un segmento relativo (admite `?query`). */
@@ -59,11 +59,11 @@ export declare function joinConnUrl(apiBase: string, segment: string | undefined
 /**
  * Resuelve la config del visor a partir de `?conn=<base64url>`.
  */
-export declare function resolveConnConfig(search: string | URLSearchParams | null | undefined): SwConnResuelto | null;
+export declare function resolveConnConfig(search: string | URLSearchParams | null | undefined): DocsConnResuelto | null;
 /** Forma ya resuelta del conn: lo que el visor consume. */
-export type SwConnResuelto = {
+export type DocsConnResuelto = {
     apiBase: string;
-    paths: SwConnPaths;
+    paths: DocsConnPaths;
     fixedServer: boolean;
     brand: {
         title?: string;
@@ -72,6 +72,6 @@ export type SwConnResuelto = {
     spec?: unknown;
 };
 /**
- * Normaliza un `SwConn` ya deserializado.
+ * Normaliza un `DocsConn` ya deserializado.
  */
-export declare function normalizeConn(conn: SwConn | null | undefined): SwConnResuelto | null;
+export declare function normalizeConn(conn: DocsConn | null | undefined): DocsConnResuelto | null;

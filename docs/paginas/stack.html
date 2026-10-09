@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>El stack · IS-Swagger</title>
+  <title>El stack · ISWC Docs</title>
   <meta name="description" content="TypeScript sin bundler, web components vanilla y CSS hermano por componente.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
@@ -63,7 +63,7 @@
             <tr>
               <th scope="row">Estado</th>
               <td>Context + hooks repartidos</td>
-              <td>Un solo dueño (<code>sw-app</code>), hijos controlados</td>
+              <td>Un solo dueño (<code>docs-app</code>), hijos controlados</td>
             </tr>
             <tr>
               <th scope="row">Distribución</th>
@@ -103,8 +103,8 @@
                 ],
                 "nodes": [
                   { "id": "ts", "label": "src/**/*.ts", "shape": "cylinder", "group": "g-src",
-                    "desc": "Dominio en `js/`, componentes en `components/sw/`." },
-                  { "id": "css", "label": "sw-x.css hermano", "shape": "cylinder", "group": "g-src",
+                    "desc": "Dominio en `js/`, componentes en `components/docs/`." },
+                  { "id": "css", "label": "docs-x.css hermano", "shape": "cylinder", "group": "g-src",
                     "desc": "Un archivo por componente. Nunca dentro del `.ts`." },
                   { "id": "esb", "label": "esbuild por archivo", "group": "g-build",
                     "desc": "Borra tipos y minifica. **No** empaqueta ni resuelve dependencias." },
@@ -139,14 +139,14 @@
       <p>
         Cada componente tiene su hoja hermana. El módulo la reclama con
         <code>adoptCss(shadow, import.meta.url)</code>, que deriva
-        <code>sw-operation.css</code> de <code>sw-operation.js</code> — nadie tiene
+        <code>docs-operation.css</code> de <code>docs-operation.js</code> — nadie tiene
         que declarar la relación en ningún sitio.
       </p>
-      <pre><code>src/components/sw/sw-operation.ts
-src/components/sw/sw-operation.css
+      <pre><code>src/components/docs/docs-operation.ts
+src/components/docs/docs-operation.css
         ↓ build
-dist/cdn/components/sw/sw-operation.js
-dist/cdn/sw-operation.css</code></pre>
+dist/cdn/components/docs/docs-operation.js
+dist/cdn/docs-operation.css</code></pre>
       <p>
         La hoja se aplica como <code>CSSStyleSheet</code> construida y cacheada
         por URL, no como <code>&lt;link&gt;</code>. Es una diferencia que se ve:

@@ -1,0 +1,25 @@
+/* docs-export — menú de descargas (trigger solo icono). */
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+}
+
+.menu {
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu iswc-button,
+.menu [slot="trigger"] {
+  min-inline-size: 2rem;
+  min-block-size: 2rem;
+  padding-inline: 0.35rem;
+}
+
+[slot="details"] {
+  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-size: 0.6875rem;
+  opacity: 0.55;
+}

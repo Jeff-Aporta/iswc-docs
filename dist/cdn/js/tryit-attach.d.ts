@@ -6,10 +6,10 @@
  */
 export declare const EXT_TRYIT_ATTACHMENTS = "x-iss-tryit-attachments";
 /** Campos JSON donde caen los data URL. Sin partir por tipo de archivo. */
-export declare function attachmentFieldNames(op: SwOp | undefined, spec: SwSpec | null | undefined): string[];
-export declare function opPrefersMultipart(op: SwOp | undefined): boolean;
-export declare function opAllowsAttachments(op: SwOp | undefined, spec?: SwSpec | null | undefined): boolean;
-export declare function packTryItBody(op: SwOp | undefined, spec: SwSpec | null | undefined, jsonText: string, files: File[]): Promise<{
+export declare function attachmentFieldNames(op: DocsOp | undefined, spec: DocsSpec | null | undefined): string[];
+export declare function opPrefersMultipart(op: DocsOp | undefined): boolean;
+export declare function opAllowsAttachments(op: DocsOp | undefined, spec?: DocsSpec | null | undefined): boolean;
+export declare function packTryItBody(op: DocsOp | undefined, spec: DocsSpec | null | undefined, jsonText: string, files: File[]): Promise<{
     body: string | FormData;
     multipart: boolean;
 }>;

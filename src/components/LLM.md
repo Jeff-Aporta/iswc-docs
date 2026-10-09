@@ -12,8 +12,8 @@ La capa de pintado. Traduce los datos que produce
 
 ## Qué componente elegir
 
-Antes de crear un `sw-*` nuevo, la pregunta no es «¿cómo lo pinto?» sino
-**«¿qué tag del kit lo pinta ya?»**. Un `sw-*` solo existe para traducir un
+Antes de crear un `docs-*` nuevo, la pregunta no es «¿cómo lo pinto?» sino
+**«¿qué tag del kit lo pinta ya?»**. Un `docs-*` solo existe para traducir un
 concepto del documento (una operación, un parámetro, una respuesta) a esos
 tags. Si el componente nuevo no traduce nada del dominio, no debería existir.
 
@@ -21,17 +21,17 @@ Catálogo del kit:
 [catalog.md](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/skills/is-webcomponents/catalog.md).
 Confirmar props y eventos en el `.md` del módulo, nunca por el nombre del tag.
 
-## Anatomía de un `sw-*`
+## Anatomía de un `docs-*`
 
 Un `.ts` y un `.css` **hermano**. Nada más, y en ese orden:
 
 ```
-src/components/sw/sw-x.ts     ← estructura y eventos
-src/components/sw/sw-x.css    ← estilo, siempre aparte
+src/components/docs/docs-x.ts     ← estructura y eventos
+src/components/docs/docs-x.css    ← estilo, siempre aparte
 ```
 
 El build los copia planos y hermanos a `dist/cdn/`, y ese es todo el contrato
-de `adoptCss(shadow, import.meta.url)`: de `sw-x.js` deriva `sw-x.css`.
+de `adoptCss(shadow, import.meta.url)`: de `docs-x.js` deriva `docs-x.css`.
 
 ### Dos formas de escribirlo
 
@@ -40,10 +40,10 @@ de `adoptCss(shadow, import.meta.url)`: de `sw-x.js` deriva `sw-x.css`.
 del CSS (adopción y precarga).
 
 **`#render()` a mano** — solo cuando repintar entero rompería algo: el foco del
-usuario, una animación o el coste diferido. Son once: `sw-app`, `sw-nav`,
-`sw-auth`, `sw-operation`, `sw-tag-group`, `sw-try`, la envoltura `sw-viewer`, el
-armazón `sw-layout`, y los tres del driver de vistas — `sw-minidoc`,
-`sw-minidoc-view`, `sw-minidoc-code`. Estos deben, además:
+usuario, una animación o el coste diferido. Son once: `docs-app`, `docs-nav`,
+`docs-auth`, `docs-operation`, `docs-tag-group`, `docs-try`, la envoltura `docs-viewer`, el
+armazón `docs-layout`, y los tres del driver de vistas — `docs-minidoc`,
+`docs-minidoc-view`, `docs-minidoc-code`. Estos deben, además:
 
 - `adoptCss(this.#root, import.meta.url)` al final de **cada** salida del render;
 - `precargarCss(import.meta.url)` junto al `define(...)`.
@@ -52,14 +52,14 @@ Guardián: `tests/invariantes.test.ts`.
 
 ### Cuándo NO repintar entero
 
-- `sw-try` reparte el repintado en zonas (URL, aviso, resultado): escribir en un
+- `docs-try` reparte el repintado en zonas (URL, aviso, resultado): escribir en un
   parámetro le quitaría el foco al campo en cada tecla.
-- `sw-nav` ignora un cambio de `query` que venga solo: lo está escribiendo el
+- `docs-nav` ignora un cambio de `query` que venga solo: lo está escribiendo el
   usuario en ese mismo shadow.
-- `sw-operation` no rehace la tarjeta al cambiar de pestaña ni de servidor.
-- `sw-tag-group` distingue «cambió el grupo» de «cambió qué está abierto».
-- `sw-operation` monta su cuerpo **al abrir**. Una spec de doscientos endpoints
-  crearía doscientos `sw-try` antes de que nadie mire ninguno. No lo deshagas
+- `docs-operation` no rehace la tarjeta al cambiar de pestaña ni de servidor.
+- `docs-tag-group` distingue «cambió el grupo» de «cambió qué está abierto».
+- `docs-operation` monta su cuerpo **al abrir**. Una spec de doscientos endpoints
+  crearía doscientos `docs-try` antes de que nadie mire ninguno. No lo deshagas
   «para simplificar».
 
 ## El CSS: hojas construidas, no `<link>`
@@ -98,17 +98,17 @@ Guardianes: `tests/css-adopcion.test.ts`, `tests/hojas.test.ts`.
 
 ## Composición y relaciones
 
-`sw-app` es el **único** dueño del estado: config, spec, grupos, sesión,
+`docs-app` es el **único** dueño del estado: config, spec, grupos, sesión,
 servidor, pestaña, operación abierta y búsqueda. Todo lo demás es controlado.
 
-- Escritura de la URL: solo `sw-app`, vía `js/url-state.ts`.
+- Escritura de la URL: solo `docs-app`, vía `js/url-state.ts`.
 - Un hijo que necesita cambiar algo **emite**. Nunca escribe.
-- `sw-tag-group` reemite sin interpretar: no puede saber qué hay abierto en otro
+- `docs-tag-group` reemite sin interpretar: no puede saber qué hay abierto en otro
   grupo.
 
-Eventos del visor: `sw-op-toggle`, `sw-op-tab`, `sw-param-change`,
-`sw-body-change`, `sw-server-change`, `sw-search`, `sw-nav-tab`,
-`sw-session-change`, `sw-need-login`, `sw-reset`.
+Eventos del visor: `docs-op-toggle`, `docs-op-tab`, `docs-param-change`,
+`docs-body-change`, `docs-server-change`, `docs-search`, `docs-nav-tab`,
+`docs-session-change`, `docs-need-login`, `docs-reset`.
 
 ## Dependencias compartidas
 
@@ -143,7 +143,7 @@ números. El kit ya los trae y entran con `all.min.js`.
 - CSS en el `.css` hermano.
 - Adoptar el CSS **después** de rellenar el shadow.
 - Registrar el componente nuevo en los **cuatro** sitios: `index.html`,
-  `sw/all.ts`, `demo/manifest.js` y `demo/previews/sw-x.html`.
+  `sw/all.ts`, `demo/manifest.js` y `demo/previews/docs-x.html`.
 
 ## Qué no hacer
 
@@ -155,7 +155,7 @@ números. El kit ya los trae y entran con `all.min.js`.
 - Lógica de negocio dentro de un componente.
 - Que un hijo escriba la URL o el estado global.
 - Asumir que `<iswc-button type="submit">` envía el form: el `<button>` real está
-  en Shadow DOM. `sw-auth` escucha `iswc-click` y llama `requestSubmit()`.
+  en Shadow DOM. `docs-auth` escucha `iswc-click` y llama `requestSubmit()`.
 
 ## Errores conocidos y prevención
 
@@ -163,8 +163,8 @@ números. El kit ya los trae y entran con `all.min.js`.
 2. **Flicker por `<link>` en el shadow** — arriba, con el intento fallido.
    Guardianes: `css-adopcion.test.ts`, `hojas.test.ts`.
 3. **Diálogo montado en `document.body` con CSS en el shadow** — el diálogo de
-   confirmación de `sw-try` vive en light DOM, así que su CSS está en
-   `src/css/app.css` (`.sw-confirmar-*`). Un `.css` de componente **nunca**
+   confirmación de `docs-try` vive en light DOM, así que su CSS está en
+   `src/css/app.css` (`.docs-confirmar-*`). Un `.css` de componente **nunca**
    alcanza a un nodo fuera de su shadow.
 4. **Un custom element que `createElement` monta sin estar importado** — no hace
    upgrade: el tag queda en el DOM sin shadow y la vista sale vacía, **sin error
@@ -183,7 +183,7 @@ desincronizarse aquí sin que nada se rompa?*
 ## Navegación
 
 - Índice de `src`: [`../LLM.md`](../LLM.md)
-- Catálogo `sw-*`: [`sw/LLM.md`](sw/LLM.md)
+- Catálogo `docs-*`: [`sw/LLM.md`](sw/LLM.md)
 - Galería: [`demo/LLM.md`](demo/LLM.md)
 - Dominio: [`../js/LLM.md`](../js/LLM.md)
 - Leyes del repo: [`../../LLM.md`](../../LLM.md)

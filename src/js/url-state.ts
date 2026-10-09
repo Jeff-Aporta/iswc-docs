@@ -22,20 +22,20 @@ export const PARAM_OP = 'op';
 export const PARAM_OP_TAB = 'opt';
 
 export const OP_TABS = ['try', 'examples', 'doc'] as const;
-export type SwOpTab = (typeof OP_TABS)[number];
-export const OP_TAB_DEFAULT: SwOpTab = 'try';
+export type DocsOpTab = (typeof OP_TABS)[number];
+export const OP_TAB_DEFAULT: DocsOpTab = 'try';
 
-export type SwUrlState = { tab: string; op: string; opTab: SwOpTab; };
+export type DocsUrlState = { tab: string; op: string; opTab: DocsOpTab; };
 
 function strField(bag: Record<string, unknown>, key: string): string {
   const v = bag[key];
   return typeof v === 'string' ? v.trim() : '';
 }
 
-export function readUrlState(): SwUrlState {
+export function readUrlState(): DocsUrlState {
   migrateLegacyNavToS();
   const bag = readSState();
-  const opTabRaw = strField(bag, PARAM_OP_TAB) as SwOpTab;
+  const opTabRaw = strField(bag, PARAM_OP_TAB) as DocsOpTab;
   return {
     tab: strField(bag, PARAM_TAB),
     op: strField(bag, PARAM_OP),
@@ -50,7 +50,7 @@ export function readUrlState(): SwUrlState {
  * Pásalo en `false` para sincronizar la URL con un estado que el visor resolvió
  * solo (la sección o la operación por defecto), que no es un paso atrás.
  */
-export function mergeUrlState(patch: Partial<SwUrlState>, opts: { push?: boolean } = {}): void {
+export function mergeUrlState(patch: Partial<DocsUrlState>, opts: { push?: boolean } = {}): void {
   if (typeof location === 'undefined') return;
   try {
     migrateLegacyNavToS();
@@ -70,7 +70,7 @@ export function mergeUrlState(patch: Partial<SwUrlState>, opts: { push?: boolean
 
 /* ── Suscripción ────────────────────────────────────────────── */
 
-const oyentes = new Set<(estado: SwUrlState) => void>();
+const oyentes = new Set<(estado: DocsUrlState) => void>();
 let cableado = false;
 
 const notificar = (): void => {
@@ -82,7 +82,7 @@ const notificar = (): void => {
  * Avisa de cualquier cambio de estado, venga de `mergeUrlState` o del botón
  * atrás del navegador. Devuelve la función para desuscribirse.
  */
-export function subscribeUrlState(fn: (estado: SwUrlState) => void): () => void {
+export function subscribeUrlState(fn: (estado: DocsUrlState) => void): () => void {
   oyentes.add(fn);
   if (!cableado && typeof window !== 'undefined') {
     cableado = true;

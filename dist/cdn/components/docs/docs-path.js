@@ -1,0 +1,1 @@
+import{crearComponente as s,define as p,html as e,raw as o,esc as c}from"./_shared.js";const n=t=>c(t).replace(/\{(\w+)\}/g,'<span class="param">{$1}</span>'),a=s(import.meta.url,(t,{path:r})=>{t.append(e`<code class="ruta" title="${r}">${o(n(String(r??"")))}</code>`)},{path:""},"docs-path");p("docs-path",a);export{a as DocsPath};

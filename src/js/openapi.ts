@@ -16,19 +16,19 @@
    recorre exactamente estos métodos, así que las que quedaban fuera no se agrupaban, no salían en el
    índice y no había forma de abrirlas. El API tiene tres (/conversaciones, /auditoria/terceros y
    /file/query) y ninguna aparecía. */
-const HTTP_METHODS: SwMetodo[] = ['get', 'post', 'put', 'patch', 'delete', 'query', 'options', 'head'];
+const HTTP_METHODS: DocsMetodo[] = ['get', 'post', 'put', 'patch', 'delete', 'query', 'options', 'head'];
 
 const EXT_SUBGROUP = 'x-isa-subgroup';
 const EXT_SUBGROUPS = 'x-isa-subgroups';
 const EXT_DOC_MD = 'x-iss-doc-md';
 const EXT_LOOKUP = 'x-iss-lookup';
 
-const subgroupDefs = (tagMeta: SwTag | Record<string, unknown> | undefined): SwSubgrupoDef[] => {
+const subgroupDefs = (tagMeta: DocsTag | Record<string, unknown> | undefined): DocsSubgrupoDef[] => {
   const raw = (tagMeta as Record<string, unknown> | undefined)?.[EXT_SUBGROUPS];
-  return Array.isArray(raw) ? (raw as SwSubgrupoDef[]) : [];
+  return Array.isArray(raw) ? (raw as DocsSubgrupoDef[]) : [];
 };
 
-function resolveSubgroupDef(tagMeta: SwTag | Record<string, unknown> | undefined, subgroupId: string): SwSubgrupoDef {
+function resolveSubgroupDef(tagMeta: DocsTag | Record<string, unknown> | undefined, subgroupId: string): DocsSubgrupoDef {
   const hit = subgroupDefs(tagMeta).find((d) => d?.id === subgroupId);
   if (hit) return { ...hit };
   if (subgroupId) return { id: subgroupId, name: subgroupId, icon: 'mdi:folder-outline' };
@@ -36,8 +36,8 @@ function resolveSubgroupDef(tagMeta: SwTag | Record<string, unknown> | undefined
 }
 
 /** Orden declarado en el tag primero; lo no declarado, detrás y en orden de aparición. */
-function orderSubgroups(subgroupMap: Map<string, SwSubgrupo>, tagMeta: SwTag | Record<string, unknown> | undefined): SwSubgrupo[] {
-  const ordenados: SwSubgrupo[] = [];
+function orderSubgroups(subgroupMap: Map<string, DocsSubgrupo>, tagMeta: DocsTag | Record<string, unknown> | undefined): DocsSubgrupo[] {
+  const ordenados: DocsSubgrupo[] = [];
   const vistos = new Set<string>();
   for (const def of subgroupDefs(tagMeta)) {
     const id = def?.id;
@@ -52,7 +52,7 @@ function orderSubgroups(subgroupMap: Map<string, SwSubgrupo>, tagMeta: SwTag | R
 }
 
 /** Id estable de la operación. Sin `operationId`, se deriva de método + ruta. */
-export function opIdFromOperation(op: SwOperation | undefined, method: string, path: string): string {
+export function opIdFromOperation(op: DocsOperation | undefined, method: string, path: string): string {
   if (op?.operationId) return op.operationId;
   return (
     `${method}_` +
@@ -64,7 +64,7 @@ export function opIdFromOperation(op: SwOperation | undefined, method: string, p
 }
 
 /** Primer ejemplo utilizable de un media type: `example` → `examples` → `schema.example`. */
-export function extractJsonExample(media: SwMediaType | undefined): unknown {
+export function extractJsonExample(media: DocsMediaType | undefined): unknown {
   if (!media || typeof media !== 'object') return undefined;
   if (media.example !== undefined) return media.example;
   if (media.examples && typeof media.examples === 'object') {
@@ -77,9 +77,9 @@ export function extractJsonExample(media: SwMediaType | undefined): unknown {
   return undefined;
 }
 
-export function listOperations(spec: SwSpec | null | undefined): SwOp[] {
+export function listOperations(spec: DocsSpec | null | undefined): DocsOp[] {
   const paths = spec?.paths ?? {};
-  const out: SwOp[] = [];
+  const out: DocsOp[] = [];
   for (const path of Object.keys(paths)) {
     const item = paths[path];
     if (!item || typeof item !== 'object') continue;
@@ -97,14 +97,14 @@ export function listOperations(spec: SwSpec | null | undefined): SwOp[] {
   return out;
 }
 
-export function groupOperationsByTag(spec: SwSpec | null | undefined): SwGrupo[] {
+export function groupOperationsByTag(spec: DocsSpec | null | undefined): DocsGrupo[] {
   const ops = listOperations(spec);
-  const tagMeta = new Map<string, SwTag>();
+  const tagMeta = new Map<string, DocsTag>();
   for (const t of spec?.tags ?? []) {
     if (t?.name) tagMeta.set(t.name, t);
   }
 
-  type Acc = { name: string; description: string; meta: SwTag | Record<string, never>; operations: SwOp[]; subgroupMap: Map<string, SwSubgrupo>; };
+  type Acc = { name: string; description: string; meta: DocsTag | Record<string, never>; operations: DocsOp[]; subgroupMap: Map<string, DocsSubgrupo>; };
   const groups = new Map<string, Acc>();
 
   for (const op of ops) {
@@ -114,7 +114,7 @@ export function groupOperationsByTag(spec: SwSpec | null | undefined): SwGrupo[]
         const meta = tagMeta.get(name) ?? ({} as Record<string, never>);
         groups.set(name, {
           name,
-          description: (meta as SwTag).description ?? '',
+          description: (meta as DocsTag).description ?? '',
           meta,
           operations: [],
           subgroupMap: new Map(),
@@ -148,7 +148,7 @@ export function groupOperationsByTag(spec: SwSpec | null | undefined): SwGrupo[]
 }
 
 /** Grupos en el orden en que `spec.tags` los declara; el resto, alfabético al final. */
-export function sortGroupsBySpecOrder(groups: SwGrupo[], spec: SwSpec | null | undefined): SwGrupo[] {
+export function sortGroupsBySpecOrder(groups: DocsGrupo[], spec: DocsSpec | null | undefined): DocsGrupo[] {
   const orden = (spec?.tags ?? []).map((t) => t.name);
   return [...groups].sort((a, b) => {
     const ia = orden.indexOf(a.name);
@@ -161,7 +161,7 @@ export function sortGroupsBySpecOrder(groups: SwGrupo[], spec: SwSpec | null | u
 }
 
 /** `operationId` → markdown de la pestaña «Doc». */
-export function buildDocIndex(spec: SwSpec | null | undefined): Record<string, string> {
+export function buildDocIndex(spec: DocsSpec | null | undefined): Record<string, string> {
   const out: Record<string, string> = {};
   for (const op of listOperations(spec)) {
     const md = op[EXT_DOC_MD];
@@ -171,7 +171,7 @@ export function buildDocIndex(spec: SwSpec | null | undefined): Record<string, s
 }
 
 /** Nombre de parámetro → descriptor de lookup, mirando también `$ref`. */
-export function buildLookupIndex(spec: SwSpec | null | undefined): Record<string, unknown> {
+export function buildLookupIndex(spec: DocsSpec | null | undefined): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   const params = spec?.components?.parameters ?? {};
   for (const [name, def] of Object.entries(params)) {
@@ -192,7 +192,7 @@ export function buildLookupIndex(spec: SwSpec | null | undefined): Record<string
 }
 
 /** Resuelve el `$ref` de un parámetro contra `components.parameters`. */
-export function resolveParam(param: SwParam, spec: SwSpec | null | undefined): SwParam {
+export function resolveParam(param: DocsParam, spec: DocsSpec | null | undefined): DocsParam {
   if (!param?.$ref) return param;
   const key = param.$ref.split('/').pop() ?? '';
   const def = spec?.components?.parameters?.[key];
@@ -200,7 +200,7 @@ export function resolveParam(param: SwParam, spec: SwSpec | null | undefined): S
 }
 
 /** Resuelve `$ref` de un schema contra `components.schemas`. */
-export function resolveSchema(schema: SwSchema | undefined, spec: SwSpec | null | undefined, profundidad = 0): SwSchema | undefined {
+export function resolveSchema(schema: DocsSchema | undefined, spec: DocsSpec | null | undefined, profundidad = 0): DocsSchema | undefined {
   if (!schema || profundidad > 8) return schema;
   const ref = typeof schema.$ref === 'string' ? schema.$ref : '';
   if (!ref) return schema;
@@ -210,7 +210,7 @@ export function resolveSchema(schema: SwSchema | undefined, spec: SwSpec | null 
   return resolveSchema({ ...def, ...schema, $ref: undefined }, spec, profundidad + 1);
 }
 
-export function resolveParams(op: SwOp, spec: SwSpec | null | undefined): SwParam[] {
+export function resolveParams(op: DocsOp, spec: DocsSpec | null | undefined): DocsParam[] {
   return (op.parameters ?? []).map((p) => resolveParam(p, spec)).filter((p) => !!p.name);
 }
 
@@ -221,7 +221,7 @@ export function resolveParams(op: SwOp, spec: SwSpec | null | undefined): SwPara
  * las formas laxas que usan los documentos IS (`"bearer"`, `"none"`, `false`)
  * además del array estándar de OpenAPI.
  */
-export function operationRequiresBearer(op: SwOperation | undefined, spec: SwSpec | null | undefined): boolean {
+export function operationRequiresBearer(op: DocsOperation | undefined, spec: DocsSpec | null | undefined): boolean {
   const raw = op?.security ?? spec?.security;
   if (raw === 'bearer' || raw === 'Bearer') return true;
   if (raw === 'none' || raw === false) return false;
@@ -239,7 +239,7 @@ export function operationRequiresBearer(op: SwOperation | undefined, spec: SwSpe
 }
 
 /** URL del servidor con las variables sustituidas por su `default`. */
-export function resolveServerUrl(spec: SwSpec | null | undefined, serverIndex = 0): string {
+export function resolveServerUrl(spec: DocsSpec | null | undefined, serverIndex = 0): string {
   const servers = spec?.servers ?? [];
   const s = servers[serverIndex] ?? servers[0];
   if (!s?.url) return '';
@@ -258,10 +258,10 @@ export function jsonPretty(v: unknown): string {
   }
 }
 
-export type SwTono = 'ok' | 'auth' | 'warn' | 'err' | 'neutral';
+export type DocsTono = 'ok' | 'auth' | 'warn' | 'err' | 'neutral';
 
 /** Tono semántico de un código de respuesta (401/403 se separan del resto de 4xx). */
-export function responseTone(code: string | number): SwTono {
+export function responseTone(code: string | number): DocsTono {
   const n = Number(code);
   if (n >= 200 && n < 300) return 'ok';
   if (n === 401 || n === 403) return 'auth';
@@ -271,7 +271,7 @@ export function responseTone(code: string | number): SwTono {
 }
 
 /** Tono → `color` de los `is-*` (los únicos valores que el kit acepta). */
-export function toneToIsColor(tone: SwTono): 'success' | 'warning' | 'danger' | 'neutral' {
+export function toneToIsColor(tone: DocsTono): 'success' | 'warning' | 'danger' | 'neutral' {
   if (tone === 'ok') return 'success';
   if (tone === 'auth' || tone === 'warn') return 'warning';
   if (tone === 'err') return 'danger';
@@ -286,7 +286,7 @@ export const METHOD_COLOR: Record<string, string> = {
   put: 'warning',
   patch: 'brand',
   delete: 'danger',
-  // Teal propio en sw-method.css / sw-operation.css (el enum iswc-tag no trae cyan).
+  // Teal propio en docs-method.css / docs-operation.css (el enum iswc-tag no trae cyan).
   query: 'neutral',
   options: 'neutral',
   head: 'neutral',

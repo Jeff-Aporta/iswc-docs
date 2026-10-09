@@ -10,7 +10,7 @@
  * la cabecera invalida el almacén y vuelve a pedir red.
  */
 export declare const JSON_CACHE_TTL_MS: number;
-export declare const JSON_CACHE_PREFIX = "sw:json-cache:v1:";
+export declare const JSON_CACHE_PREFIX = "docs:json-cache:v1:";
 export type JsonCacheSource = 'cache' | 'network' | 'stale-cache';
 export type JsonCacheEntry = {
     /** Epoch ms del último GET exitoso. */
@@ -23,7 +23,7 @@ export type FetchJsonCachedResult = {
 };
 export declare function readJsonCache(url: string): JsonCacheEntry | null;
 export declare function writeJsonCache(url: string, data: unknown, fetchedAt?: number): void;
-/** Borra una URL o, sin argumento, todas las entradas `sw:json-cache:v1:`. */
+/** Borra una URL o, sin argumento, todas las entradas `docs:json-cache:v1:`. */
 export declare function clearJsonCache(url?: string): void;
 export declare function isJsonCacheFresh(entry: JsonCacheEntry | null | undefined, now?: number, ttlMs?: number): boolean;
 /**

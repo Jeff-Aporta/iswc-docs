@@ -1,7 +1,7 @@
 /**
  * curl.ts — muestra de petición cURL para una operación.
  *
- * El panel derecho de `sw-minidoc` enseña la llamada antes de que nadie pulse «Probar»: es lo
+ * El panel derecho de `docs-minidoc` enseña la llamada antes de que nadie pulse «Probar»: es lo
  * primero que copia quien viene a integrar. Se construye desde la operación y el servidor
  * activo, sin tocar el DOM ni la red.
  *
@@ -17,7 +17,7 @@ function comillar(valor: string): string {
 }
 
 /** Valor de muestra de un parámetro: el declarado, si no el default, si no el tipo. */
-export function ejemploDeParam(p: SwParam): string {
+export function ejemploDeParam(p: DocsParam): string {
   const enSchema = p.schema as { example?: unknown; default?: unknown; type?: string; enum?: unknown[] } | undefined;
   const directo = (p as { example?: unknown }).example ?? enSchema?.example ?? enSchema?.default;
   if (directo !== undefined && directo !== null && directo !== '') return String(directo);
@@ -30,7 +30,7 @@ export function ejemploDeParam(p: SwParam): string {
 }
 
 /** Sustituye `{param}` en la ruta por su valor de muestra. */
-function rutaConValores(path: string, params: SwParam[]): string {
+function rutaConValores(path: string, params: DocsParam[]): string {
   return path.replace(/\{([^}]+)\}/g, (m, nombre: string) => {
     const p = params.find((x) => x.name === nombre && x.in === 'path');
     return p ? encodeURIComponent(ejemploDeParam(p)) : m;
@@ -52,8 +52,8 @@ export type MuestraCurl = {
  * arrastrar credenciales de nadie.
  */
 export function buildCurl(
-  op: SwOp | null | undefined,
-  spec: SwSpec | null | undefined,
+  op: DocsOp | null | undefined,
+  spec: DocsSpec | null | undefined,
   serverBase: string,
   requiereBearer = false,
   cuerpoOverride?: unknown,

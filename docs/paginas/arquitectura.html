@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Arquitectura · IS-Swagger</title>
-  <meta name="description" content="Capas, flujo de datos y jerarquía de componentes del visor IS-Swagger.">
+  <title>Arquitectura · ISWC Docs</title>
+  <meta name="description" content="Capas, flujo de datos y jerarquía de componentes del visor ISWC Docs.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
@@ -48,10 +48,10 @@
                   { "id": "par", "label": "openapi · param-schema · tryit-body", "group": "g-dom", "span": 2, "icon": "mdi:code-braces" },
                   { "id": "url", "label": "url-state · search-state", "group": "g-dom", "icon": "mdi:link-variant" },
 
-                  { "id": "shell", "label": "sw-app (dueño del estado)", "group": "g-comp", "span": 3, "shape": "round", "icon": "mdi:crown-outline" },
-                  { "id": "nav", "label": "sw-nav", "group": "g-comp", "icon": "mdi:page-layout-header" },
-                  { "id": "grp", "label": "sw-tag-group", "group": "g-comp", "icon": "mdi:folder-outline" },
-                  { "id": "op", "label": "sw-operation → sw-try", "group": "g-comp", "icon": "mdi:card-outline" },
+                  { "id": "shell", "label": "docs-app (dueño del estado)", "group": "g-comp", "span": 3, "shape": "round", "icon": "mdi:crown-outline" },
+                  { "id": "nav", "label": "docs-nav", "group": "g-comp", "icon": "mdi:page-layout-header" },
+                  { "id": "grp", "label": "docs-tag-group", "group": "g-comp", "icon": "mdi:folder-outline" },
+                  { "id": "op", "label": "docs-operation → docs-try", "group": "g-comp", "icon": "mdi:card-outline" },
 
                   { "id": "js", "label": "*.js plano", "group": "g-pub", "icon": "mdi:language-javascript" },
                   { "id": "css", "label": "*.css hermano", "group": "g-pub", "icon": "mdi:language-css3" },
@@ -89,14 +89,14 @@
                 "actors": [
                   { "id": "u", "name": "Quien abre el enlace", "icon": "mdi:account-outline" },
                   { "id": "boot", "name": "boot.js + hojas.js", "icon": "mdi:flash-outline" },
-                  { "id": "app", "name": "sw-app", "icon": "mdi:crown-outline" },
+                  { "id": "app", "name": "docs-app", "icon": "mdi:crown-outline" },
                   { "id": "cfg", "name": "config.ts", "icon": "mdi:cog-outline" },
                   { "id": "be", "name": "Backend InSoft", "icon": "mdi:server-network-outline" }
                 ],
                 "messages": [
                   { "from": "u", "to": "boot", "text": "abre ?conn=…" },
                   { "from": "boot", "to": "boot", "text": "aplica tema antes del primer pintado" },
-                  { "from": "boot", "to": "app", "text": "el módulo registra <sw-app>" },
+                  { "from": "boot", "to": "app", "text": "el módulo registra <docs-app>" },
                   { "from": "app", "to": "cfg", "text": "resolveBootConfig()" },
                   { "from": "cfg", "to": "cfg", "text": "?conn= gana sobre el <script> local" },
                   { "from": "cfg", "to": "be", "text": "GET /system/swagger/config.json" },
@@ -120,7 +120,7 @@
     <section class="seccion">
       <h2>El estado tiene un solo dueño</h2>
       <p>
-        <code>sw-app</code> guarda config, documento, grupos, sesión, servidor,
+        <code>docs-app</code> guarda config, documento, grupos, sesión, servidor,
         pestaña activa, endpoint abierto y búsqueda. Todos los demás componentes
         son <strong>controlados</strong>: reciben <code>props</code> y, cuando
         necesitan cambiar algo, <strong>emiten un evento</strong>.
@@ -144,17 +144,17 @@
                   { "id": "g-abajo", "name": "Controlados", "hue": 199 }
                 ],
                 "nodes": [
-                  { "id": "app", "label": "sw-app", "shape": "round", "group": "g-arriba",
+                  { "id": "app", "label": "docs-app", "shape": "round", "group": "g-arriba",
                     "desc": "Único que llama a `mergeUrlState`." },
                   { "id": "url", "label": "url-state.ts", "shape": "cylinder", "group": "g-arriba" },
-                  { "id": "nav", "label": "sw-nav", "group": "g-abajo",
-                    "desc": "Emite `sw-nav-tab`, `sw-search`, `sw-session-change`, `sw-reset`." },
-                  { "id": "grp", "label": "sw-tag-group", "group": "g-abajo",
+                  { "id": "nav", "label": "docs-nav", "group": "g-abajo",
+                    "desc": "Emite `docs-nav-tab`, `docs-search`, `docs-session-change`, `docs-reset`." },
+                  { "id": "grp", "label": "docs-tag-group", "group": "g-abajo",
                     "desc": "Reemite sin interpretar: no puede saber qué hay abierto en otro grupo." },
-                  { "id": "op", "label": "sw-operation", "group": "g-abajo",
-                    "desc": "Emite `sw-op-toggle` y `sw-op-tab`." },
-                  { "id": "try", "label": "sw-try", "group": "g-abajo",
-                    "desc": "Emite `sw-need-login` cuando falta el JWT." }
+                  { "id": "op", "label": "docs-operation", "group": "g-abajo",
+                    "desc": "Emite `docs-op-toggle` y `docs-op-tab`." },
+                  { "id": "try", "label": "docs-try", "group": "g-abajo",
+                    "desc": "Emite `docs-need-login` cuando falta el JWT." }
                 ],
                 "edges": [
                   { "from": "app", "to": "nav", "label": "props" },
@@ -181,9 +181,9 @@
     <section class="seccion">
       <h2>El coste se paga al abrir, no al listar</h2>
       <p>
-        <code>sw-operation</code> monta su cuerpo <strong>cuando se
+        <code>docs-operation</code> monta su cuerpo <strong>cuando se
         despliega</strong>, no cuando se pinta la lista. Una API con doscientos
-        endpoints crearía doscientos <code>sw-try</code> con sus campos, su
+        endpoints crearía doscientos <code>docs-try</code> con sus campos, su
         editor y su CSS antes de que nadie mire ninguno.
       </p>
       <p>
@@ -203,24 +203,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row"><code>sw-app</code></th><td>Shell y único dueño del estado</td></tr>
-            <tr><th scope="row"><code>sw-nav</code></th><td>Marca, secciones, búsqueda, descargas, sesión y tema</td></tr>
-            <tr><th scope="row"><code>sw-info</code></th><td>Título, versión y descripción del documento</td></tr>
-            <tr><th scope="row"><code>sw-server</code></th><td>Host contra el que se prueba</td></tr>
-            <tr><th scope="row"><code>sw-tag-group</code></th><td>Un tag con sus endpoints y subgrupos</td></tr>
-            <tr><th scope="row"><code>sw-operation</code></th><td>Tarjeta desplegable con pestañas Probar / Respuestas / Doc</td></tr>
-            <tr><th scope="row"><code>sw-try</code></th><td>Arma la petición, la ejecuta y enseña la respuesta</td></tr>
-            <tr><th scope="row"><code>sw-params</code> · <code>sw-body</code></th><td>Campos y editor JSON, ambos controlados</td></tr>
-            <tr><th scope="row"><code>sw-responses</code></th><td>Respuestas declaradas en el documento</td></tr>
-            <tr><th scope="row"><code>sw-auth</code></th><td>Login JWT y pegado de token</td></tr>
-            <tr><th scope="row"><code>sw-export</code></th><td>Documento JSON, colección Postman y paquete IS</td></tr>
-            <tr><th scope="row"><code>sw-method</code> · <code>sw-path</code> · <code>sw-json</code> · <code>sw-doc</code></th><td>Átomos de presentación</td></tr>
+            <tr><th scope="row"><code>docs-app</code></th><td>Shell y único dueño del estado</td></tr>
+            <tr><th scope="row"><code>docs-nav</code></th><td>Marca, secciones, búsqueda, descargas, sesión y tema</td></tr>
+            <tr><th scope="row"><code>docs-info</code></th><td>Título, versión y descripción del documento</td></tr>
+            <tr><th scope="row"><code>docs-server</code></th><td>Host contra el que se prueba</td></tr>
+            <tr><th scope="row"><code>docs-tag-group</code></th><td>Un tag con sus endpoints y subgrupos</td></tr>
+            <tr><th scope="row"><code>docs-operation</code></th><td>Tarjeta desplegable con pestañas Probar / Respuestas / Doc</td></tr>
+            <tr><th scope="row"><code>docs-try</code></th><td>Arma la petición, la ejecuta y enseña la respuesta</td></tr>
+            <tr><th scope="row"><code>docs-params</code> · <code>docs-body</code></th><td>Campos y editor JSON, ambos controlados</td></tr>
+            <tr><th scope="row"><code>docs-responses</code></th><td>Respuestas declaradas en el documento</td></tr>
+            <tr><th scope="row"><code>docs-auth</code></th><td>Login JWT y pegado de token</td></tr>
+            <tr><th scope="row"><code>docs-export</code></th><td>Documento JSON, colección Postman y paquete IS</td></tr>
+            <tr><th scope="row"><code>docs-method</code> · <code>docs-path</code> · <code>docs-json</code> · <code>docs-doc</code></th><td>Átomos de presentación</td></tr>
           </tbody>
         </table>
       </div>
       <p>
         Cada uno tiene su página en este sitio con casos en vivo. Empieza por el
-        <a data-ir-a="sw-app">visor completo</a> si prefieres verlo entero antes
+        <a data-ir-a="docs-app">visor completo</a> si prefieres verlo entero antes
         de mirar las piezas.
       </p>
     </section>

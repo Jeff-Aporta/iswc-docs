@@ -1,0 +1,115 @@
+/* Armazón de tres zonas: índice · contenido · código.
+
+   Los umbrales de las media queries repiten los de docs-layout.ts a propósito: el CSS decide
+   cómo se ve y el JS decide dónde vive cada nodo, y ninguno de los dos puede leer al otro.
+   Si se cambia uno, hay que cambiar el otro — el test `docs-layout` lo vigila. */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--is-color-surface, #0a0e14);
+  color: var(--is-color-text, #e6edf7);
+}
+
+/* ── Cabecera ─────────────────────────────────────────────── */
+
+.cabecera {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--is-space-2, .5rem);
+  padding: var(--is-space-3, .75rem) var(--is-space-4, 1rem);
+  border-bottom: 1px solid var(--is-color-border, #2a3240);
+  background: var(--is-color-surface-2, #11161f);
+}
+
+.cabecera-slot {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.hamburguesa {
+  flex: 0 0 auto;
+}
+
+/* ── Cuerpo ───────────────────────────────────────────────── */
+
+.split-externo {
+  flex: 1 1 auto;
+  min-height: 0;
+  /* El componente del kit expone estas variables para el divisor. Un divisor visible y con
+     zona de agarre generosa: 1 px se ve fino pero es imposible de coger con el ratón. */
+  --divider-width: 10px;
+  --divider-hit-area: 14px;
+}
+
+.split-interno {
+  height: 100%;
+  --divider-width: 10px;
+  --divider-hit-area: 14px;
+}
+
+.resto,
+.centro,
+.lateral {
+  height: 100%;
+  min-width: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+/* Los laterales van pegados al borde de la ventana: el ancho lo decide quien arrastra, y
+   robarle sitio con márgenes contradice eso. El aire va por dentro. */
+.lateral {
+  padding-block: var(--is-space-5, 1.25rem);
+  background: var(--is-color-surface-2, #11161f);
+}
+
+.hueco-inicio { padding-inline: var(--is-space-3, .75rem) var(--is-space-2, .5rem); }
+
+.lateral.hueco-fin {
+  padding-inline: var(--is-space-2, .5rem) var(--is-space-3, .75rem);
+  /* Doc scroll = `.centro`. Este panel se ancla al viewport del split. */
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.lateral.hueco-fin ::slotted(*) {
+  display: block;
+  min-height: min-content;
+}
+
+.centro {
+  padding: var(--is-space-6, 1.5rem) var(--is-space-8, 2rem) var(--is-space-10, 3rem);
+  background: var(--is-color-surface, #0a0e14);
+}
+
+/* ── Cajones ──────────────────────────────────────────────── */
+
+/* Dentro del cajón el lateral ya no compite por ancho: ocupa lo que le den. */
+iswc-drawer .hueco {
+  display: block;
+  height: 100%;
+  overflow: auto;
+}
+
+iswc-drawer[data-lado='inicio'] { --size: min(20rem, 86vw); }
+iswc-drawer[data-lado='fin'] { --size: min(34rem, 92vw); }
+
+/* Al pasar a cajón, el hueco del split se queda vacío: sin esto dejaría una franja muerta. */
+@media (max-width: 87.5rem) {
+  .lateral.hueco-fin { padding: 0; background: none; }
+}
+
+@media (max-width: 60rem) {
+  .hueco-inicio { padding: 0; background: none; }
+  .centro { padding: var(--is-space-5, 1.25rem) var(--is-space-4, 1rem) var(--is-space-8, 2rem); }
+}
+
+@media print {
+  :host { height: auto; overflow: visible; }
+  .cabecera, iswc-drawer { display: none; }
+}

@@ -1,7 +1,7 @@
 /**
  * curl.ts — muestra de petición cURL para una operación.
  *
- * El panel derecho de `sw-minidoc` enseña la llamada antes de que nadie pulse «Probar»: es lo
+ * El panel derecho de `docs-minidoc` enseña la llamada antes de que nadie pulse «Probar»: es lo
  * primero que copia quien viene a integrar. Se construye desde la operación y el servidor
  * activo, sin tocar el DOM ni la red.
  *
@@ -9,7 +9,7 @@
  * forma de la llamada, no reproduce un intento concreto.
  */
 /** Valor de muestra de un parámetro: el declarado, si no el default, si no el tipo. */
-export declare function ejemploDeParam(p: SwParam): string;
+export declare function ejemploDeParam(p: DocsParam): string;
 export type MuestraCurl = {
     /** Comando completo, ya partido en líneas con `\` de continuación. */
     texto: string;
@@ -23,4 +23,4 @@ export type MuestraCurl = {
  * se deja el placeholder `<token>` — una muestra que se copia a un chat o a un ticket no debe
  * arrastrar credenciales de nadie.
  */
-export declare function buildCurl(op: SwOp | null | undefined, spec: SwSpec | null | undefined, serverBase: string, requiereBearer?: boolean, cuerpoOverride?: unknown): MuestraCurl;
+export declare function buildCurl(op: DocsOp | null | undefined, spec: DocsSpec | null | undefined, serverBase: string, requiereBearer?: boolean, cuerpoOverride?: unknown): MuestraCurl;

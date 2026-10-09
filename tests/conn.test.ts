@@ -135,7 +135,7 @@ test('spec quemado gana sobre specUrl del script (no pide config.json legacy)', 
   const url = buildUrl({ apiBase: 'https://h/api', title: 'Del Conn', spec: sample });
   const dom = new JSDOM(
     `<!doctype html><html><head>
-       <script type="application/json" id="sw-config">${JSON.stringify({
+       <script type="application/json" id="docs-config">${JSON.stringify({
          specUrl: 'https://evil.example/system/swagger/config.json',
          brand: { title: 'Del Script' },
        })}</script>

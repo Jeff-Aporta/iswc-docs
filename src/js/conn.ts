@@ -32,17 +32,17 @@ export const DEFAULT_CONN_PATHS = {
   docs: DEFAULT_DOCS_JSON_PATH,
 } as const;
 
-export type SwConnPathValue = string | false | null;
+export type DocsConnPathValue = string | false | null;
 
-export type SwConnPaths = Partial<Record<keyof typeof DEFAULT_CONN_PATHS, SwConnPathValue>> &
-  Record<string, SwConnPathValue | undefined>;
+export type DocsConnPaths = Partial<Record<keyof typeof DEFAULT_CONN_PATHS, DocsConnPathValue>> &
+  Record<string, DocsConnPathValue | undefined>;
 
-export type SwConn = {
+export type DocsConn = {
   apiBase?: string;
   auto?: boolean;
   embed?: boolean;
   fixedServer?: boolean;
-  paths?: SwConnPaths;
+  paths?: DocsConnPaths;
   /** Documento único en bruto (InSoft config u OpenAPI). Si viene, no hay fetch a `paths.docs`. */
   spec?: unknown;
   title?: string;
@@ -51,7 +51,7 @@ export type SwConn = {
 };
 
 /** `true` si el host desactivó el fetch del JSON de docs. */
-export function isDocsPathDisabled(paths: SwConnPaths | undefined): boolean {
+export function isDocsPathDisabled(paths: DocsConnPaths | undefined): boolean {
   if (!paths || !('docs' in paths)) return false;
   const v = paths.docs;
   return v === false || v == null || String(v).trim() === '';
@@ -61,7 +61,7 @@ export function isDocsPathDisabled(paths: SwConnPaths | undefined): boolean {
  * URL del JSON único de docs, o `""` si no hay fetch.
  * Solo aplica cuando no hay `spec` quemado: path personalizable, default `/docs?v=json`.
  */
-export function resolveDocsJsonUrl(apiBase: string, paths: SwConnPaths | undefined): string {
+export function resolveDocsJsonUrl(apiBase: string, paths: DocsConnPaths | undefined): string {
   if (isDocsPathDisabled(paths)) return '';
   const raw = typeof paths?.docs === 'string' && paths.docs.trim()
     ? paths.docs.trim()
@@ -71,7 +71,7 @@ export function resolveDocsJsonUrl(apiBase: string, paths: SwConnPaths | undefin
 }
 
 /** Decodifica base64url tolerante a padding. Devuelve `null` si el JSON falla. */
-export function parseConnParam(raw: unknown): SwConn | null {
+export function parseConnParam(raw: unknown): DocsConn | null {
   const s = String(raw ?? '').trim();
   if (!s) return null;
   let pad = s.replace(/-/g, '+').replace(/_/g, '/');
@@ -86,7 +86,7 @@ export function parseConnParam(raw: unknown): SwConn | null {
     const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
     const json = new TextDecoder().decode(bytes);
     const obj = JSON.parse(json);
-    return obj && typeof obj === 'object' ? (obj as SwConn) : null;
+    return obj && typeof obj === 'object' ? (obj as DocsConn) : null;
   } catch {
     return null;
   }
@@ -112,7 +112,7 @@ export function joinConnUrl(apiBase: string, segment: string | undefined): strin
 /**
  * Resuelve la config del visor a partir de `?conn=<base64url>`.
  */
-export function resolveConnConfig(search: string | URLSearchParams | null | undefined): SwConnResuelto | null {
+export function resolveConnConfig(search: string | URLSearchParams | null | undefined): DocsConnResuelto | null {
   const sp =
     search instanceof URLSearchParams
       ? search
@@ -127,15 +127,15 @@ export function resolveConnConfig(search: string | URLSearchParams | null | unde
 }
 
 /** Forma ya resuelta del conn: lo que el visor consume. */
-export type SwConnResuelto = { apiBase: string; paths: SwConnPaths; fixedServer: boolean; brand: { title?: string; icon?: string }; spec?: unknown; };
+export type DocsConnResuelto = { apiBase: string; paths: DocsConnPaths; fixedServer: boolean; brand: { title?: string; icon?: string }; spec?: unknown; };
 
 /**
- * Normaliza un `SwConn` ya deserializado.
+ * Normaliza un `DocsConn` ya deserializado.
  */
-export function normalizeConn(conn: SwConn | null | undefined): SwConnResuelto | null {
+export function normalizeConn(conn: DocsConn | null | undefined): DocsConnResuelto | null {
   if (!conn?.apiBase) return null;
   const incoming = conn.paths ?? {};
-  const paths: SwConnPaths = { ...DEFAULT_CONN_PATHS, ...incoming };
+  const paths: DocsConnPaths = { ...DEFAULT_CONN_PATHS, ...incoming };
   if (isDocsPathDisabled(incoming)) paths.docs = '';
   return {
     apiBase: String(conn.apiBase).replace(/\/+$/, ''),

@@ -8,7 +8,7 @@
  *
  * Lo que se afirma aquí es lo que no se puede afirmar mirando el código: que
  * el primer componente nunca se queda sin estilos, que el segundo ya no
- * enlaza nada, y que los `sw-*` comparten el caché en vez de duplicarlo.
+ * enlaza nada, y que los `docs-*` comparten el caché en vez de duplicarlo.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -45,9 +45,9 @@ globalThis.fetch = async (url: string) => {
   return { ok: true, status: 200, text: async () => '.x{color:red}' };
 };
 
-// Orden real: `hojas.js` corre en <head>, los módulos `sw-*` después.
+// Orden real: `hojas.js` corre en <head>, los módulos `docs-*` después.
 await import('../dist/cdn/hojas.js');
-const { adoptCss } = await import('../dist/cdn/components/sw/_shared.js');
+const { adoptCss } = await import('../dist/cdn/components/docs/_shared.js');
 
 const nuevoShadow = () => {
   const host = dom.window.document.createElement('div');
@@ -69,9 +69,9 @@ const asentar = () => new Promise((r) => setTimeout(r, 0));
 const KIT = 'http://localhost/cdn/actions/button.css';
 
 test('hojas.js publica el caché compartido', () => {
-  assert.ok(globalThis.__swHojas, 'falta window.__swHojas');
-  assert.ok(globalThis.__swHojas.hojas instanceof Map);
-  assert.ok(globalThis.__swHojas.cargas instanceof Map);
+  assert.ok(globalThis.__docsHojas, 'falta window.__docsHojas');
+  assert.ok(globalThis.__docsHojas.hojas instanceof Map);
+  assert.ok(globalThis.__docsHojas.cargas instanceof Map);
 });
 
 test('el primer componente conserva su <link>: nunca se queda sin estilos', async () => {
@@ -83,7 +83,7 @@ test('el primer componente conserva su <link>: nunca se queda sin estilos', asyn
   assert.deepEqual(peticiones, [KIT], 'la descarga debe dispararse en paralelo');
 
   await asentar();
-  assert.ok(globalThis.__swHojas.hojas.has(KIT), 'la hoja no quedó construida en caché');
+  assert.ok(globalThis.__docsHojas.hojas.has(KIT), 'la hoja no quedó construida en caché');
 });
 
 test('los siguientes adoptan la hoja y ya no enlazan nada', () => {
@@ -124,10 +124,10 @@ test('prepend sigue funcionando para nodos que no son hojas', () => {
   assert.equal(shadow.children.length, 2);
 });
 
-test('los sw-* comparten el caché: una sola descarga por hoja', async () => {
+test('los docs-* comparten el caché: una sola descarga por hoja', async () => {
   peticiones = [];
-  const modulo = 'http://localhost/dist/cdn/components/sw/sw-falso.js';
-  const hoja = 'http://localhost/dist/cdn/components/sw/sw-falso.css';
+  const modulo = 'http://localhost/dist/cdn/components/docs/docs-falso.js';
+  const hoja = 'http://localhost/dist/cdn/components/docs/docs-falso.css';
 
   // `adoptCss` enlaza como respaldo, y ese `prepend` pasa por el parche: si
   // cada capa tuviera su caché, este href se pediría dos veces.

@@ -48,10 +48,10 @@ globalThis.fetch = async (url: string) => {
   return { ok: true, status: 200, text: async () => '.x{color:red}' };
 };
 
-const { adoptCss } = await import('../dist/cdn/components/sw/_shared.js');
+const { adoptCss } = await import('../dist/cdn/components/docs/_shared.js');
 
-const MODULO = 'http://localhost/dist/cdn/components/sw/sw-falso.js';
-const HOJA = 'http://localhost/dist/cdn/components/sw/sw-falso.css';
+const MODULO = 'http://localhost/dist/cdn/components/docs/docs-falso.js';
+const HOJA = 'http://localhost/dist/cdn/components/docs/docs-falso.css';
 
 const nuevoShadow = () => {
   const host = dom.window.document.createElement('div');
@@ -115,7 +115,7 @@ test('repintar el shadow no se lleva la hoja', () => {
 
 test('N shadow roots en paralelo comparten una sola descarga', async () => {
   peticiones = [];
-  const otro = 'http://localhost/dist/cdn/components/sw/sw-otro.js';
+  const otro = 'http://localhost/dist/cdn/components/docs/docs-otro.js';
   const shadows = [nuevoShadow(), nuevoShadow(), nuevoShadow()];
   for (const s of shadows) adoptCss(s, otro);
 

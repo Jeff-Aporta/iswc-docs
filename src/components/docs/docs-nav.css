@@ -1,0 +1,204 @@
+/* docs-nav — barra superior. */
+
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--is-bg, #0d1117) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--is-border-soft, #1f242b);
+  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.6rem clamp(0.75rem, 2vw, 1.5rem);
+}
+
+/* ── Marca ──────────────────────────────────────────────────── */
+
+.marca {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
+  &:hover { background: color-mix(in srgb, currentColor 6%, transparent); }
+  &:focus-visible {
+    outline: 2px solid var(--is-accent, #1a6eb0);
+    outline-offset: 2px;
+  }
+}
+
+.marca-icono {
+  color: var(--is-accent, #1a6eb0);
+  font-size: 1.35rem;
+}
+
+.marca-texto {
+  display: grid;
+  min-width: 0;
+}
+
+.marca-titulo {
+  color: var(--is-text, #e6edf3);
+  font-size: 0.9375rem;
+  font-weight: 640;
+  letter-spacing: -0.012em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.marca-sub {
+  color: var(--is-text, #e6edf3);
+  font-size: 0.6875rem;
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Búsqueda y acciones ────────────────────────────────────── */
+
+.busqueda {
+  flex: 1;
+  min-width: 12rem;
+  max-width: 36rem;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* ── Secciones ──────────────────────────────────────────────── */
+
+.secciones {
+  display: flex;
+  gap: 0.15rem;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(0.75rem, 2vw, 1.5rem);
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.seccion {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--is-text, #e6edf3);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  opacity: 0.6;
+  transition: opacity 120ms ease, border-color 120ms ease;
+
+  &:hover { opacity: 0.9; }
+
+  &:focus-visible {
+    outline: 2px solid var(--is-accent, #1a6eb0);
+    outline-offset: -2px;
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+
+  &[selected] {
+    border-bottom-color: var(--is-accent, #1a6eb0);
+    font-weight: 600;
+    opacity: 1;
+  }
+}
+
+/* ── Encabezado de búsqueda (sustituye a las pestañas) ──────── */
+
+.busqueda-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: var(--docs-ancho, 92rem);
+  margin: 0 auto;
+  padding: 0.55rem clamp(0.75rem, 2vw, 1.5rem) 0.65rem;
+  border-top: 1px solid var(--is-border-soft, #1f242b);
+  color: var(--is-text, #e6edf3);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+.busqueda-titulo__q {
+  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-weight: 650;
+  font-size: 0.8125rem;
+  padding: 0.05em 0.45em;
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.busqueda-titulo__meta {
+  margin-left: auto;
+  color: var(--is-text, #e6edf3);
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.busqueda-limpiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.55rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  opacity: 0.7;
+
+  &:hover { opacity: 1; }
+}
+
+/* En móvil la búsqueda baja a su propia fila: en la misma que la marca y las
+   acciones queda con 4rem útiles y deja de servir para buscar. */
+@media (max-width: 760px) {
+  .barra {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .busqueda {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .marca-sub { display: none; }
+}

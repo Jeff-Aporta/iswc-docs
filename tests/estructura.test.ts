@@ -11,9 +11,9 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, basename, dirname, relative } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-const SW = join(ROOT, 'src', 'components', 'sw');
+const SW = join(ROOT, 'src', 'components', 'docs');
 const DIST = join(ROOT, 'dist', 'cdn');
-const DIST_SW = join(DIST, 'components', 'sw');
+const DIST_SW = join(DIST, 'components', 'docs');
 const DOCS = join(ROOT, 'docs');
 
 const componentes = readdirSync(SW)
@@ -24,7 +24,7 @@ test('cada componente tiene su .css hermano', () => {
   // El error que este proyecto no repite: CSS embebido en el .ts. Sin el
   // hermano, `adoptCss` pide un 404 y el componente se pinta sin estilos.
   for (const c of componentes) {
-    assert.ok(existsSync(join(SW, `${c}.css`)), `falta src/components/sw/${c}.css`);
+    assert.ok(existsSync(join(SW, `${c}.css`)), `falta src/components/docs/${c}.css`);
   }
 });
 
@@ -66,8 +66,8 @@ test('cada componente adopta su CSS y declara el nombre de su hoja', () => {
 
 test('el build deja .js y .css hermanos en dist/cdn/components/sw', () => {
   for (const c of componentes) {
-    assert.ok(existsSync(join(DIST_SW, `${c}.js`)), `falta dist/cdn/components/sw/${c}.js`);
-    assert.ok(existsSync(join(DIST_SW, `${c}.css`)), `falta dist/cdn/components/sw/${c}.css`);
+    assert.ok(existsSync(join(DIST_SW, `${c}.js`)), `falta dist/cdn/components/docs/${c}.js`);
+    assert.ok(existsSync(join(DIST_SW, `${c}.css`)), `falta dist/cdn/components/docs/${c}.css`);
   }
 });
 
@@ -99,7 +99,7 @@ test('index.html carga el bundle que trae todos los componentes del shell', () =
   // ahora entra el bundle, y de que el bundle los traiga todos se encarga el test del barril.
   assert.ok(html.includes('dist/cdn/all.min.js'), 'index.html no carga dist/cdn/all.min.js');
   assert.ok(
-    !/dist\/cdn\/sw-[a-z-]+\.js/.test(html),
+    !/dist\/cdn\/docs-[a-z-]+\.js/.test(html),
     'index.html vuelve a listar módulos sueltos: con el bundle sobran y se cargarían dos veces',
   );
 });

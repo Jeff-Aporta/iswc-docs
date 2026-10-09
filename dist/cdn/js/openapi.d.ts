@@ -12,22 +12,22 @@
  *   x-iss-lookup      en el parámetro → autocompletado remoto
  */
 /** Id estable de la operación. Sin `operationId`, se deriva de método + ruta. */
-export declare function opIdFromOperation(op: SwOperation | undefined, method: string, path: string): string;
+export declare function opIdFromOperation(op: DocsOperation | undefined, method: string, path: string): string;
 /** Primer ejemplo utilizable de un media type: `example` → `examples` → `schema.example`. */
-export declare function extractJsonExample(media: SwMediaType | undefined): unknown;
-export declare function listOperations(spec: SwSpec | null | undefined): SwOp[];
-export declare function groupOperationsByTag(spec: SwSpec | null | undefined): SwGrupo[];
+export declare function extractJsonExample(media: DocsMediaType | undefined): unknown;
+export declare function listOperations(spec: DocsSpec | null | undefined): DocsOp[];
+export declare function groupOperationsByTag(spec: DocsSpec | null | undefined): DocsGrupo[];
 /** Grupos en el orden en que `spec.tags` los declara; el resto, alfabético al final. */
-export declare function sortGroupsBySpecOrder(groups: SwGrupo[], spec: SwSpec | null | undefined): SwGrupo[];
+export declare function sortGroupsBySpecOrder(groups: DocsGrupo[], spec: DocsSpec | null | undefined): DocsGrupo[];
 /** `operationId` → markdown de la pestaña «Doc». */
-export declare function buildDocIndex(spec: SwSpec | null | undefined): Record<string, string>;
+export declare function buildDocIndex(spec: DocsSpec | null | undefined): Record<string, string>;
 /** Nombre de parámetro → descriptor de lookup, mirando también `$ref`. */
-export declare function buildLookupIndex(spec: SwSpec | null | undefined): Record<string, unknown>;
+export declare function buildLookupIndex(spec: DocsSpec | null | undefined): Record<string, unknown>;
 /** Resuelve el `$ref` de un parámetro contra `components.parameters`. */
-export declare function resolveParam(param: SwParam, spec: SwSpec | null | undefined): SwParam;
+export declare function resolveParam(param: DocsParam, spec: DocsSpec | null | undefined): DocsParam;
 /** Resuelve `$ref` de un schema contra `components.schemas`. */
-export declare function resolveSchema(schema: SwSchema | undefined, spec: SwSpec | null | undefined, profundidad?: number): SwSchema | undefined;
-export declare function resolveParams(op: SwOp, spec: SwSpec | null | undefined): SwParam[];
+export declare function resolveSchema(schema: DocsSchema | undefined, spec: DocsSpec | null | undefined, profundidad?: number): DocsSchema | undefined;
+export declare function resolveParams(op: DocsOp, spec: DocsSpec | null | undefined): DocsParam[];
 /**
  * ¿La operación exige `Authorization: Bearer`?
  *
@@ -35,15 +35,15 @@ export declare function resolveParams(op: SwOp, spec: SwSpec | null | undefined)
  * las formas laxas que usan los documentos IS (`"bearer"`, `"none"`, `false`)
  * además del array estándar de OpenAPI.
  */
-export declare function operationRequiresBearer(op: SwOperation | undefined, spec: SwSpec | null | undefined): boolean;
+export declare function operationRequiresBearer(op: DocsOperation | undefined, spec: DocsSpec | null | undefined): boolean;
 /** URL del servidor con las variables sustituidas por su `default`. */
-export declare function resolveServerUrl(spec: SwSpec | null | undefined, serverIndex?: number): string;
+export declare function resolveServerUrl(spec: DocsSpec | null | undefined, serverIndex?: number): string;
 export declare function jsonPretty(v: unknown): string;
-export type SwTono = 'ok' | 'auth' | 'warn' | 'err' | 'neutral';
+export type DocsTono = 'ok' | 'auth' | 'warn' | 'err' | 'neutral';
 /** Tono semántico de un código de respuesta (401/403 se separan del resto de 4xx). */
-export declare function responseTone(code: string | number): SwTono;
+export declare function responseTone(code: string | number): DocsTono;
 /** Tono → `color` de los `is-*` (los únicos valores que el kit acepta). */
-export declare function toneToIsColor(tone: SwTono): 'success' | 'warning' | 'danger' | 'neutral';
+export declare function toneToIsColor(tone: DocsTono): 'success' | 'warning' | 'danger' | 'neutral';
 /** Color `is-*` por método HTTP. Es la única tabla: chips, bordes y botones la comparten.
  *  QUERY no usa `info`/`brand`: en paleta ContaPyme ambos son azul y se confundían con GET. */
 export declare const METHOD_COLOR: Record<string, string>;

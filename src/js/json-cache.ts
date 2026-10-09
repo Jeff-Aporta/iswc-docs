@@ -11,7 +11,7 @@
  */
 
 export const JSON_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-export const JSON_CACHE_PREFIX = 'sw:json-cache:v1:';
+export const JSON_CACHE_PREFIX = 'docs:json-cache:v1:';
 
 export type JsonCacheSource = 'cache' | 'network' | 'stale-cache';
 
@@ -57,7 +57,7 @@ export function writeJsonCache(url: string, data: unknown, fetchedAt = Date.now(
   escribir(url, data, fetchedAt);
 }
 
-/** Borra una URL o, sin argumento, todas las entradas `sw:json-cache:v1:`. */
+/** Borra una URL o, sin argumento, todas las entradas `docs:json-cache:v1:`. */
 export function clearJsonCache(url?: string): void {
   try {
     const store = globalThis.localStorage;

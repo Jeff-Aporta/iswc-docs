@@ -12,9 +12,10 @@
 
 import { parseIsDocument } from './is-document.js';
 import { normalizeConn, resolveConnConfig, resolveDocsJsonUrl } from './conn.js';
-import type { SwConn } from './conn.js';
+import type { DocsConn } from './conn.js';
 import { isInsoftConfig, parseInsoftConfig } from './insoft-config.js';
 import { clearJsonCache, fetchJsonCached } from './json-cache.js';
+import { avisarLegado, GLOBAL_CONFIG_LEGADO, ID_CONFIG_LEGADO } from './legado.js';
 
 export const DEFAULT_NS = 'ISA';
 
@@ -47,13 +48,25 @@ function apiBaseDesdeOrigen(): string {
   }
 }
 
-function leerConfigEmbebida(): SwConfig {
+/** `window.__DOCS_CONFIG__`, o el global legado si el host aún no se actualizó. */
+function configDelHost(): DocsConfig | undefined {
+  if (window.__DOCS_CONFIG__) return window.__DOCS_CONFIG__;
+  const viejo = (window as unknown as Record<string, DocsConfig | undefined>)[GLOBAL_CONFIG_LEGADO];
+  if (viejo) avisarLegado(`window.${GLOBAL_CONFIG_LEGADO}`, 'window.__DOCS_CONFIG__');
+  return viejo;
+}
+
+function leerConfigEmbebida(): DocsConfig {
   if (typeof document === 'undefined') return {};
-  const node = document.getElementById('sw-config');
+  let node = document.getElementById('docs-config');
+  if (!node) {
+    node = document.getElementById(ID_CONFIG_LEGADO);
+    if (node) avisarLegado(`#${ID_CONFIG_LEGADO}`, '#docs-config');
+  }
   if (!node?.textContent?.trim()) return {};
   try {
     const parsed = JSON.parse(node.textContent) as unknown;
-    return parsed && typeof parsed === 'object' ? (parsed as SwConfig) : {};
+    return parsed && typeof parsed === 'object' ? (parsed as DocsConfig) : {};
   } catch {
     return {};
   }
@@ -62,7 +75,7 @@ function leerConfigEmbebida(): SwConfig {
 /**
  * Materializa un `spec` ya en memoria (sin red): InSoft `kind:"config"`, documento IS u OpenAPI.
  */
-export function materializeEmbeddedSpec(config: SwConfig, raw: unknown): { config: SwConfig; spec: SwSpec } | null {
+export function materializeEmbeddedSpec(config: DocsConfig, raw: unknown): { config: DocsConfig; spec: DocsSpec } | null {
   if (!raw || typeof raw !== 'object') return null;
 
   const desdeIs = parseIsDocument(raw);
@@ -79,7 +92,7 @@ export function materializeEmbeddedSpec(config: SwConfig, raw: unknown): { confi
     };
   }
 
-  const d = raw as SwSpec;
+  const d = raw as DocsSpec;
   if (d?.paths || d?.openapi) {
     const { spec: _drop, ...viewer } = config;
     return { config: viewer, spec: d };
@@ -93,9 +106,9 @@ export function materializeEmbeddedSpec(config: SwConfig, raw: unknown): { confi
  * @param connDirecto  Conn del anfitrión (`conn=` / propiedad). Opcional.
  * @param docDirecto   Documento InSoft/OpenAPI quemado (`doc=` / propiedad). Preferido en ISS.
  */
-export function resolveBootConfig(connDirecto?: SwConn | null, docDirecto?: unknown): SwConfig {
-  const host = (typeof window !== 'undefined' ? window.__SWAGGER_CONFIG__ : null) ?? {};
-  const config: SwConfig = { ...leerConfigEmbebida(), ...host };
+export function resolveBootConfig(connDirecto?: DocsConn | null, docDirecto?: unknown): DocsConfig {
+  const host = (typeof window !== 'undefined' ? configDelHost() : null) ?? {};
+  const config: DocsConfig = { ...leerConfigEmbebida(), ...host };
 
   const sp = typeof location !== 'undefined' ? new URLSearchParams(location.search) : null;
   const specParam = sp?.get('spec')?.trim();
@@ -103,7 +116,7 @@ export function resolveBootConfig(connDirecto?: SwConn | null, docDirecto?: unkn
 
   // `doc` gana: si llega documento quemado, `conn` (y su fetch) se ignoran.
   if (docDirecto !== undefined && docDirecto !== null) {
-    config.spec = docDirecto as SwConfig['spec'];
+    config.spec = docDirecto as DocsConfig['spec'];
     delete config.specUrl;
     config.serverSelect = false;
     if (!config.apiBase) config.apiBase = apiBaseDesdeOrigen();
@@ -124,7 +137,7 @@ export function resolveBootConfig(connDirecto?: SwConn | null, docDirecto?: unkn
     config.brand = brand;
 
     if (conn.spec !== undefined && conn.spec !== null) {
-      config.spec = conn.spec as SwConfig['spec'];
+      config.spec = conn.spec as DocsConfig['spec'];
       delete config.specUrl;
     } else {
       const url = resolveDocsJsonUrl(config.apiBase, conn.paths);
@@ -162,7 +175,7 @@ async function fetchJson(url: string, opts: { force?: boolean } = {}): Promise<u
   return data;
 }
 
-export async function loadViewerDocument(config: SwConfig, opts: { force?: boolean } = {}): Promise<{ config: SwConfig; spec: SwSpec }> {
+export async function loadViewerDocument(config: DocsConfig, opts: { force?: boolean } = {}): Promise<{ config: DocsConfig; spec: DocsSpec }> {
   const embebido = parseIsDocument(config);
   if (embebido) {
     const { spec: _omit, ...viewer } = embebido.config;
@@ -172,13 +185,13 @@ export async function loadViewerDocument(config: SwConfig, opts: { force?: boole
   if (config.spec && typeof config.spec === 'object') {
     const materializado = materializeEmbeddedSpec(config, config.spec);
     if (materializado) return materializado;
-    throw new Error('IS-Swagger: el `doc`/`spec` embebido no es documento InSoft, ni OpenAPI 3, ni documento IS.');
+    throw new Error('ISWC Docs: el `doc`/`spec` embebido no es documento InSoft, ni OpenAPI 3, ni documento IS.');
   }
 
   const url = String(config.specUrl ?? '').trim();
   if (!url) {
     throw new Error(
-      'IS-Swagger: falta el documento. Quémalo en el atributo `doc` del componente, o deja el fallback `paths.docs` (default `/docs?v=json`).',
+      'ISWC Docs: falta el documento. Quémalo en el atributo `doc` del componente, o deja el fallback `paths.docs` (default `/docs?v=json`).',
     );
   }
 
@@ -192,6 +205,6 @@ export async function loadViewerDocument(config: SwConfig, opts: { force?: boole
   throw new Error(`El JSON de ${url} no es documento InSoft, ni OpenAPI 3, ni documento IS (sin \`paths\` ni \`openapi\`).`);
 }
 
-export async function loadSpec(config: SwConfig): Promise<SwSpec> {
+export async function loadSpec(config: DocsConfig): Promise<DocsSpec> {
   return (await loadViewerDocument(config)).spec;
 }

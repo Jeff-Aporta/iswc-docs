@@ -1,5 +1,5 @@
 /**
- * export.ts — descargas del visor: IS-Swagger (config InSoft), OpenAPI 3 y Postman.
+ * export.ts — descargas del visor: ISWC Docs (config InSoft), OpenAPI 3 y Postman.
  *
  * Todo se genera en el navegador desde la spec / config ya cargada. No hay endpoint
  * de exportación: el visor es 100 % front y una descarga que dependiera del host
@@ -13,7 +13,7 @@ import { listOperations, resolveServerUrl, jsonPretty } from './openapi.js';
 import { buildIsDocument } from './is-document.js';
 import { issDocMdForPostman, opDocMd } from './postman-md.js';
 
-export type SwFormatoExport = { id: string; label: string; icon: string; filename: string; build(): string | Promise<string>; };
+export type DocsFormatoExport = { id: string; label: string; icon: string; filename: string; build(): string | Promise<string>; };
 
 const slug = (s: unknown): string =>
   String(s ?? 'documento')
@@ -21,8 +21,8 @@ const slug = (s: unknown): string =>
     .replace(/[^\w.-]+/g, '-')
     .replace(/^-|-$/g, '') || 'documento';
 
-/** OpenAPI 3.0 portable a partir del SwSpec interno del visor. */
-export function toOpenApi30(spec: SwSpec): Record<string, unknown> {
+/** OpenAPI 3.0 portable a partir del DocsSpec interno del visor. */
+export function toOpenApi30(spec: DocsSpec): Record<string, unknown> {
   return {
     openapi: '3.0.3',
     info: {
@@ -49,7 +49,7 @@ export function toOpenApi30(spec: SwSpec): Record<string, unknown> {
  * La description de cada item es el markdown InSoft ya convertido para Postman
  * (PNG de diagramas + fences de código).
  */
-export async function toPostmanCollection(spec: SwSpec, nombre?: string): Promise<Record<string, unknown>> {
+export async function toPostmanCollection(spec: DocsSpec, nombre?: string): Promise<Record<string, unknown>> {
   const base = resolveServerUrl(spec) || '{{baseUrl}}';
   const porTag = new Map<string, Record<string, unknown>[]>();
 
@@ -105,7 +105,7 @@ export async function toPostmanCollection(spec: SwSpec, nombre?: string): Promis
   return {
     info: {
       name: nombre || spec.info?.title || 'API',
-      _postman_id: `is-swagger-${Date.now()}`,
+      _postman_id: `iswc-docs-${Date.now()}`,
       description: spec.info?.description ?? '',
       schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
     },
@@ -116,18 +116,18 @@ export async function toPostmanCollection(spec: SwSpec, nombre?: string): Promis
 
 /* ── Formatos ofrecidos ─────────────────────────────────────── */
 
-export function buildExportFormats(spec: SwSpec | null, config: SwConfig): SwFormatoExport[] {
+export function buildExportFormats(spec: DocsSpec | null, config: DocsConfig): DocsFormatoExport[] {
   if (!spec) return [];
   const nombre = slug(config.exports?.openApiDownloadName || spec.info?.title);
-  const isName = slug(config.exports?.isDownloadName || `${nombre}-is-swagger`);
+  const isName = slug(config.exports?.isDownloadName || `${nombre}-iswc-docs`);
   const postmanName = slug(config.exports?.postmanDownloadName || `${nombre}-postman`);
   const openApiName = slug(config.exports?.openApiDownloadName || `${nombre}-openapi`);
-  const insoft = (config as SwConfig & { insoftSource?: unknown }).insoftSource;
+  const insoft = (config as DocsConfig & { insoftSource?: unknown }).insoftSource;
 
-  const formatos: SwFormatoExport[] = [
+  const formatos: DocsFormatoExport[] = [
     {
-      id: 'is-swagger',
-      label: 'IS-Swagger (config)',
+      id: 'iswc-docs',
+      label: 'ISWC Docs (config)',
       icon: 'mdi:file-cog-outline',
       filename: `${isName}.json`,
       build: () => jsonPretty(insoft ?? buildIsDocument(config, spec)),

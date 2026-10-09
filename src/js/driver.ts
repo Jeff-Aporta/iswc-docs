@@ -1,7 +1,7 @@
 /**
  * driver.ts — qué presentación del visor está activa.
  *
- * El visor tiene dos drivers (`sw-app` y `sw-minidoc`) que leen el mismo documento y lo pintan
+ * El visor tiene dos drivers (`docs-app` y `docs-minidoc`) que leen el mismo documento y lo pintan
  * distinto. Cuál se usa es una preferencia del lector, no del documento, así que vive fuera de
  * los dos: si la guardara uno de ellos, el otro no podría leerla sin depender de su hermano.
  *
@@ -16,48 +16,56 @@
  */
 
 import { migrateLegacyNavToS, readSState, writeSState } from './search-state.js';
+import { CLAVE_DRIVER_LEGADO, driverActual } from './legado.js';
 
 export const PARAM_DRIVER = 'driver';
-const CLAVE_ALMACEN = 'sw:driver';
+const CLAVE_ALMACEN = 'docs:driver';
 
-export type SwDriver = {
+export type DocsDriver = {
   /** Tag del custom element que monta este driver. */
-  id: 'sw-app' | 'sw-minidoc';
+  id: 'docs-app' | 'docs-minidoc';
   label: string;
   /** Una línea para el `title` del selector: qué gana quien lo elige. */
   detalle: string;
 };
 
-export const DRIVERS: readonly SwDriver[] = [
-  { id: 'sw-app', label: 'Clásico', detalle: 'Lista por secciones; cada operación se despliega en su sitio' },
-  { id: 'sw-minidoc', label: 'Documento', detalle: 'Índice lateral, una operación por página y el código a la derecha' },
+export const DRIVERS: readonly DocsDriver[] = [
+  { id: 'docs-app', label: 'Clásico', detalle: 'Lista por secciones; cada operación se despliega en su sitio' },
+  { id: 'docs-minidoc', label: 'Documento', detalle: 'Índice lateral, una operación por página y el código a la derecha' },
 ] as const;
 
-export const DRIVER_DEFAULT: SwDriver['id'] = 'sw-minidoc';
+export const DRIVER_DEFAULT: DocsDriver['id'] = 'docs-minidoc';
 
 /** `true` si el valor es uno de los drivers registrados. */
-export function esDriver(v: unknown): v is SwDriver['id'] {
+export function esDriver(v: unknown): v is DocsDriver['id'] {
   return DRIVERS.some((d) => d.id === v);
 }
 
-export function driverMeta(id: string): SwDriver {
+export function driverMeta(id: string): DocsDriver {
   return DRIVERS.find((d) => d.id === id) ?? DRIVERS[0]!;
 }
 
 /** Driver activo: `?s=.driver`, luego preferencia guardada, luego el de por defecto. */
-export function readDriver(): SwDriver['id'] {
+export function readDriver(): DocsDriver['id'] {
   try {
     migrateLegacyNavToS();
     const enS = readSState()[PARAM_DRIVER];
     // El guardia estrecha la expresion que recibe, no la variable: hay que
     // pasarle el valor ya recortado para poder devolver ese mismo.
-    const recortado = typeof enS === 'string' ? enS.trim() : null;
-    if (recortado != null && esDriver(recortado)) return recortado;
+    const recortado = driverActual(typeof enS === 'string' ? enS.trim() : null);
+    if (esDriver(recortado)) return recortado;
   } catch {
     /* URL ilegible: se sigue con la preferencia guardada */
   }
   try {
-    const guardado = globalThis.localStorage?.getItem(CLAVE_ALMACEN);
+    const almacen = globalThis.localStorage;
+    const viejo = almacen?.getItem(CLAVE_DRIVER_LEGADO);
+    if (viejo != null) {
+      almacen?.removeItem(CLAVE_DRIVER_LEGADO);
+      const migrado = driverActual(viejo);
+      if (esDriver(migrado) && almacen?.getItem(CLAVE_ALMACEN) == null) almacen?.setItem(CLAVE_ALMACEN, migrado);
+    }
+    const guardado = driverActual(almacen?.getItem(CLAVE_ALMACEN));
     if (esDriver(guardado)) return guardado;
   } catch {
     /* almacenamiento bloqueado (modo privado, cookies off) */

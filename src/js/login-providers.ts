@@ -8,24 +8,25 @@
  * token. La selección la hace el host con datos (JSON: `viewer.auth.provider`/por origen); el fallback
  * es el proveedor por defecto (comportamiento actual, sin cambios).
  */
-import type { SwLoginOpts } from './auth.js';
+import type { DocsLoginOpts } from './auth.js';
+import { APP_LOGIN_ORQUESTADOR } from './legado.js';
 
 /** Petición de login ya resuelta por un proveedor. */
-export type SwLoginRequest = {
+export type DocsLoginRequest = {
   endpoint: string;
   headers: Record<string, string>;
   body: Record<string, unknown>;
 };
 
 /** Contexto con que se invoca a cada proveedor. */
-export type SwLoginProviderCtx = {
+export type DocsLoginProviderCtx = {
   base: string;            // auth.loginUrl / serverBase ya resuelto (sin slash final)
   username: string;
   password: string;
-  opts: SwLoginOpts;
+  opts: DocsLoginOpts;
 };
 
-export type SwLoginProvider = (ctx: SwLoginProviderCtx) => SwLoginRequest;
+export type DocsLoginProvider = (ctx: DocsLoginProviderCtx) => DocsLoginRequest;
 
 /* ── Password "wrapped" (César día-UTC + prefijo/sufijo) ─ contrato del orquestador/dsclientes ── */
 
@@ -51,7 +52,7 @@ export const wrapPassword = (plain: string): string =>
 const url = (base: string, path: string): string =>
   `${String(base).trim().replace(/\/$/, '')}${path.startsWith('/') ? path : `/${path}`}`;
 
-const joinAppId = (opts: SwLoginOpts): string => opts.appId || 'swagger';
+const joinAppId = (opts: DocsLoginOpts): string => opts.appId || APP_LOGIN_ORQUESTADOR;
 
 /** Usuario QA InSoft: el dominio no aporta al login del orquestador. */
 export const stripContapymeEmail = (value: unknown): string =>
@@ -63,7 +64,7 @@ export const stripContapymeEmail = (value: unknown): string =>
  * `orquestador` (default): contrato actual del visor — POST a loginUrl+loginPath con la password
  * "wrapeada"; en loginKind 'portal' manda `semail` (sin dominio) como identificador.
  */
-export const proveedorOrquestador: SwLoginProvider = ({ base, username, password, opts }) => {
+export const proveedorOrquestador: DocsLoginProvider = ({ base, username, password, opts }) => {
   const path = String(opts.loginPath || '/auth/login').trim();
   const portal = opts.loginKind === 'portal' || path.includes('portal-login');
   const body: Record<string, unknown> = portal
@@ -82,7 +83,7 @@ export const proveedorOrquestador: SwLoginProvider = ({ base, username, password
  * `patyia-portal-login`: el `portal-login` de PatyIA espera la password **en claro** (hace md5
  * server-side) y `semail` con dominio tal cual; responde `{ok, token, ...}` con el shape estándar.
  */
-export const proveedorPatyiaPortal: SwLoginProvider = ({ base, username, password, opts }) => {
+export const proveedorPatyiaPortal: DocsLoginProvider = ({ base, username, password, opts }) => {
   const path = String(opts.loginPath || '/auth/portal-login').trim();
   const body: Record<string, unknown> = {
     semail: String(username ?? '').trim(),
@@ -98,13 +99,13 @@ export const proveedorPatyiaPortal: SwLoginProvider = ({ base, username, passwor
 };
 
 /** Registro de proveedores conocidos (los hosts pueden aportar más vía `loginProviders`). */
-export const LOGIN_PROVIDERS: Record<string, SwLoginProvider> = {
+export const LOGIN_PROVIDERS: Record<string, DocsLoginProvider> = {
   orquestador: proveedorOrquestador,
   'patyia-portal': proveedorPatyiaPortal,
 };
 
 /** Resuelve el proveedor por id con fallback al por defecto (`orquestador`). */
-export function resolveLoginProvider(id?: string | null): SwLoginProvider {
+export function resolveLoginProvider(id?: string | null): DocsLoginProvider {
   const key = String(id ?? '').trim();
   return (key && LOGIN_PROVIDERS[key]) || proveedorOrquestador;
 }

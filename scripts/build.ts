@@ -4,12 +4,12 @@
  * Sin bundler y sin Babel: cada `.ts` se transpila por separado (esbuild solo le quita los
  * tipos y minifica) y **se conserva la estructura de carpetas de `src/`**. Antes se aplanaba
  * todo a un único directorio y los `import` se reescribían; con el árbol espejo los
- * especificadores del fuente (`./sw-nav.js`, `../../js/config.js`) ya son correctos tal cual,
+ * especificadores del fuente (`./docs-nav.js`, `../../js/config.js`) ya son correctos tal cual,
  * así que no hay reescritura que pueda equivocarse.
  *
  * Los `.css` hermanos se copian al mismo directorio que su módulo. Ese es el contrato de
- * `adoptCss(shadow, import.meta.url)`: `components/sw/sw-operation.js` resuelve su hoja en
- * `components/sw/sw-operation.css` sin que nadie la declare. Por eso el CSS nunca vive dentro
+ * `adoptCss(shadow, import.meta.url)`: `components/docs/docs-operation.js` resuelve su hoja en
+ * `components/docs/docs-operation.css` sin que nadie la declare. Por eso el CSS nunca vive dentro
  * del `.ts` — se minifica aparte, se cachea aparte y se edita como CSS.
  *
  * Salida:
@@ -17,13 +17,13 @@
  *   dist/cdn/
  *     all.min.js              bundle único de los componentes (lo que se consume por CDN)
  *     boot.js, hojas.js       scripts planos, síncronos en <head>
- *     components/sw/*.js|css  cada componente con su hoja al lado
+ *     components/docs/*.js|css  cada componente con su hoja al lado
  *     LLM.md                  contrato público para agentes
  *     js/*.js                 dominio (config, conn, openapi, …)
  *     js/*.d.ts               interfaces públicas (piezas JSON, convertidor, kit-tags)
- *     js/iss-swagger-doc.ts   mismo contrato, importable en Deno con tipos
- *     js/iss-swagger-md.min.js convertidor markdown en un solo ESM
- *     types/swagger.d.ts      tipos ambiente del visor
+ *     js/iss-docs-piezas.ts   mismo contrato, importable en Deno con tipos
+ *     js/iss-docs-md.min.js convertidor markdown en un solo ESM
+ *     types/docs.d.ts      tipos ambiente del visor
  */
 import { readdirSync, mkdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, basename, dirname, relative } from 'node:path';
@@ -47,7 +47,7 @@ const listar = (dir: string, ext: string): string[] =>
   return e.name.endsWith(ext) ? [p] : [];
 });
 
-const BARRIL = join(SRC, 'components', 'sw', 'all.ts');
+const BARRIL = join(SRC, 'components', 'docs', 'all.ts');
 
 /**
  * Sello del build, en UTC y al segundo.
@@ -60,7 +60,7 @@ const BARRIL = join(SRC, 'components', 'sw', 'all.ts');
 const PLANOS = new Set(['boot.ts', 'hojas.ts']);
 
 const SELLO = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
-const DEFINE = { __SW_BUILD__: JSON.stringify(SELLO) };
+const DEFINE = { __DOCS_BUILD__: JSON.stringify(SELLO) };
 
 function fuentes() {
   const ts = [
@@ -115,7 +115,7 @@ async function compilar() {
 
   // `all.min.js` — bundle único con todos los componentes del visor, en la raíz del CDN para
   // que la URL que se publica sea corta y estable. El CSS no se inlinea: el barril fija
-  // `setCssBase('./components/sw/')` para que las hojas se sigan pidiendo de su carpeta.
+  // `setCssBase('./components/docs/')` para que las hojas se sigan pidiendo de su carpeta.
   if (existsSync(BARRIL)) {
     const bundle = await esbuild.build({
       entryPoints: [BARRIL],
@@ -154,8 +154,8 @@ async function compilar() {
 
   mkdirSync(join(OUT, 'types'), { recursive: true });
   mkdirSync(join(OUT, 'js'), { recursive: true });
-  copyFileSync(join(SRC, 'types', 'swagger.d.ts'), join(OUT, 'types', 'swagger.d.ts'));
-  copyFileSync(join(SRC, 'js', 'iss-swagger-doc.ts'), join(OUT, 'js', 'iss-swagger-doc.ts'));
+  copyFileSync(join(SRC, 'types', 'docs.d.ts'), join(OUT, 'types', 'docs.d.ts'));
+  copyFileSync(join(SRC, 'js', 'iss-docs-piezas.ts'), join(OUT, 'js', 'iss-docs-piezas.ts'));
 
   // Declaraciones `.d.ts` de todo lo publicado: tsc por especificador npm (sin node_modules a mano).
   const tsc = await new Deno.Command(Deno.execPath(), {
@@ -167,14 +167,14 @@ async function compilar() {
   if (!tsc.success) throw new Error('tsc -p tsconfig.cdn.json falló');
 
   const mdBundle = await esbuild.build({
-    entryPoints: [join(SRC, 'js', 'iss-swagger-md.ts')],
+    entryPoints: [join(SRC, 'js', 'iss-docs-md.ts')],
     bundle: true,
     write: false,
     format: 'esm',
     target: 'es2022',
     minify: true,
   });
-  writeFileSync(join(OUT, 'js', 'iss-swagger-md.min.js'), mdBundle.outputFiles![0]!.text);
+  writeFileSync(join(OUT, 'js', 'iss-docs-md.min.js'), mdBundle.outputFiles![0]!.text);
 
   const docs = await compilarDocs();
 

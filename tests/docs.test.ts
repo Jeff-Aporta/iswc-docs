@@ -16,7 +16,7 @@ import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const SRC = join(ROOT, 'src');
-const SW = join(SRC, 'components', 'sw');
+const SW = join(SRC, 'components', 'docs');
 
 const leer = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 
@@ -31,7 +31,7 @@ const PAGINAS = [
   'src/LLM.md',
   'src/js/LLM.md',
   'src/components/LLM.md',
-  'src/components/sw/LLM.md',
+  'src/components/docs/LLM.md',
   'src/cdn/LLM.md',
   'docs/LLM.md',
 ];
@@ -58,9 +58,9 @@ test('los enlaces relativos entre LLM.md resuelven a un archivo real', () => {
 /* ── El catálogo refleja el código ──────────────────────────── */
 
 test('el catálogo sw/LLM.md lista todos los componentes y ninguno de más', () => {
-  const catalogo = leer('src/components/sw/LLM.md');
+  const catalogo = leer('src/components/docs/LLM.md');
   const documentados = new Set(
-    [...catalogo.matchAll(/^\| `<(sw-[a-z-]+)>`/gm)].map((m) => m[1]),
+    [...catalogo.matchAll(/^\| `<(docs-[a-z-]+)>`/gm)].map((m) => m[1]),
   );
 
   const sinDocumentar = componentes.filter((c) => !documentados.has(c));
@@ -78,7 +78,7 @@ test('la lista de componentes con #render() manual es exacta', () => {
     .filter((c) => !/crearComponente</.test(readFileSync(join(SW, `${c}.ts`), 'utf8')))
     .sort();
 
-  for (const pagina of ['src/components/LLM.md', 'src/components/sw/LLM.md']) {
+  for (const pagina of ['src/components/LLM.md', 'src/components/docs/LLM.md']) {
     const texto = leer(pagina);
     const declarados = manualesReales.filter((c) => texto.includes(`\`${c}\``));
     assert.deepEqual(
@@ -124,7 +124,7 @@ test('la deuda documentada frente al kit sigue siendo la que dice el MD', () => 
   );
   assert.deepEqual(
     conTablist.sort(),
-    ['sw-minidoc-code', 'sw-nav', 'sw-operation'],
+    ['docs-minidoc-code', 'docs-nav', 'docs-operation'],
     'cambió qué componentes pintan pestañas a mano: actualiza la tabla de deuda en src/LLM.md',
   );
 

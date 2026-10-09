@@ -1,4 +1,4 @@
-# LLM.md — isc-swagger
+# LLM.md — iswc-docs
 
 Contrato del proyecto. **Léelo antes de tocar código.** Lo que rompe esto se revierte.
 
@@ -11,7 +11,7 @@ Esta página son las leyes y la historia de errores. El detalle por capa vive en
 | [`src/cdn/LLM.md`](src/cdn/LLM.md) | Contrato **público** (se copia a `dist/cdn/LLM.md` para el CDN) |
 | [`src/js/LLM.md`](src/js/LLM.md) | Vas a tocar dominio, parsers, URL o auth |
 | [`src/components/LLM.md`](src/components/LLM.md) | Vas a tocar pintado, CSS o repintado |
-| [`src/components/sw/LLM.md`](src/components/sw/LLM.md) | Necesitas props/eventos de un `sw-*` |
+| [`src/components/docs/LLM.md`](src/components/docs/LLM.md) | Necesitas props/eventos de un `docs-*` |
 | [`docs/LLM.md`](docs/LLM.md) | Vas a tocar el sitio documental |
 
 Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
@@ -27,7 +27,7 @@ Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
 | **`<iswc-select>` + `<iswc-option>`** en vez de `<select>` + `<option>` | Selects nativos (el kit los estiliza y los integra con el tema) |
 | **`<iswc-checkbox>`** en vez de `<input type="checkbox">` | Checkboxes nativos en formularios |
 | Dominio sin DOM en `src/js/`, pintado en `src/components/` | Lógica de negocio dentro de un componente |
-| `sw-app` es el único dueño del estado; los hijos reciben `props` y emiten eventos | Que un hijo escriba la URL o el estado global |
+| `docs-app` es el único dueño del estado; los hijos reciben `props` y emiten eventos | Que un hijo escriba la URL o el estado global |
 | `props` por **propiedad** | `props` por atributo (llevan objetos y saltos de línea) |
 | Adoptar el CSS **después** de rellenar el shadow | Adoptarlo antes: el vaciado se lleva el `<link>` de respaldo |
 | CSS como hoja construida cacheada (`adoptedStyleSheets`) | Un `<link>` por shadow root: no bloquea el pintado → flicker |
@@ -46,29 +46,29 @@ Guardián de que esas páginas no mienten: `tests/docs.test.ts`.
 | `auth.loginUrl` por defecto = `DEFAULT_AUTH_LOGIN_URL` (main-orchestrator) | Dejar `auth.enabled: false` cuando el visor trae `viewer.auth.enabled: true` |
 | `index.html` decide `data-modo` (hero vs app) **en `<head>`**, antes del primer pintado | Decidir el modo desde un módulo: el visor parpadea como hero antes de cambiar |
 | Título del índice (`.op-nombre`): **1 línea** + `ellipsis` | `-webkit-line-clamp: 2` u otro wrap (rompe el panel estrecho) |
-| `SW_KIT_TAGS` en `src/js/kit-tags.ts` (CDN); hosts ISS lo importan | Lista de tags `is-*` hardcodeada en el host (PatyIA ya la erradicó) |
+| `DOCS_KIT_TAGS` en `src/js/kit-tags.ts` (CDN); hosts ISS lo importan | Lista de tags `is-*` hardcodeada en el host (PatyIA ya la erradicó) |
 | Tras cambiar CSS/JS del visor: `deno task build` + push `main` + avisar al host que bumpee el pin SHA | Solo editar `src/` sin rebuild/push: jsDelivr sigue el commit viejo |
 | Cuerpo try-it vacío = `{ }` (`formatBodyExample`) | `JSON.stringify(null)` → literal `"null"` en el editor |
 | Picker de adjuntos general, sin `accept=` | Filtrar MIME por endpoint o inventar un input nativo |
 | Host RAG = GitHub Pages; host ISS = jsDelivr `@sha40` | Asumir que un push actualiza los dos canales |
-| `dist/cdn/LLM.md` + `js/iss-swagger-doc.{js,d.ts,ts}` para agentes y tests Deno | Reescribir el shape de `swagger__*.json` en cada host |
+| `dist/cdn/LLM.md` + `js/iss-docs-piezas.{js,d.ts,ts}` para agentes y tests Deno | Reescribir el shape de `docs__*.json` en cada host |
 
 ## Dos drivers, un solo documento
 
 El visor tiene **dos presentaciones intercambiables** del mismo documento. No son modos de un
 componente: son dos custom elements, cada uno con su shell, su shadow y su hoja.
 
-| | `<sw-app>` | `<sw-minidoc>` |
+| | `<docs-app>` | `<docs-minidoc>` |
 |---|---|---|
 | Presentación | Lista por tags, la operación se despliega en su sitio | Índice · una operación por página · código fijo a la derecha |
 | Para qué | Barrer una API entera, comparar endpoints vecinos | Integrar un endpoint concreto sin perder de vista la petición |
 | Inspiración | Swagger UI, corregido | Documentación de plataforma tipo MiniMax |
-| Probar | Pestaña dentro de la tarjeta | Botón que abre `sw-try` en un `iswc-dialog` |
+| Probar | Pestaña dentro de la tarjeta | Botón que abre `docs-try` en un `iswc-dialog` |
 | Estado en URL | `?tab`, `?op`, `?opt`, `?server`, `?s` | `?op` |
 
 ### Cambiar de driver en caliente
 
-La página no monta un driver a mano: monta **`<sw-viewer>`**, que resuelve cuál toca y saca un
+La página no monta un driver a mano: monta **`<docs-viewer>`**, que resuelve cuál toca y saca un
 selector fijo abajo a la izquierda. Cambiarlo destruye y recrea el driver; no hay estado que
 migrar porque lo compartido (operación abierta, servidor, sesión) ya viaja por la URL y el
 almacenamiento, así que la vista nueva aterriza donde estaba la anterior.
@@ -78,7 +78,7 @@ del documento— y se resuelve en este orden:
 
 1. `driver` dentro de `?s=`, para que un enlace llegue con la vista que se quiso enseñar.
 2. `localStorage`, para que sobreviva a recargar.
-3. `sw-app`.
+3. `docs-app`.
 
 El valor por defecto **no** se escribe en la URL: la que hay que poder compartir es la que no
 lleva el parámetro. Añadir un tercer driver es meterlo en `DRIVERS` y registrar su tag; el
@@ -90,7 +90,7 @@ estado entre sí. Reglas para que sigan sin pisarse:
 - Ninguno registra el tag del otro. `all.ts` registra los dos; una página monta el que quiera.
 - Lo que sea lógica se añade en `src/js/`, nunca en el shell de uno solo — si no, el otro driver
   se queda sin ello y las dos vistas empiezan a divergir.
-- Montar los dos a la vez funciona; solo duplica la carga del documento. `sw-viewer`
+- Montar los dos a la vez funciona; solo duplica la carga del documento. `docs-viewer`
   mantiene uno solo vivo: al cambiar, reemplaza el nodo entero.
 
 Guardián: `tests/minidoc.test.ts`.
@@ -101,11 +101,11 @@ El visor guarda dos cosas en `localStorage`, y se tratan distinto **a propósito
 
 | Qué | Clave | Caduca al cambiar de build |
 |---|---|---|
-| Ancho de los paneles (geometría) | `is-components` → `iswc-split-panel` → `sw:split:*` | **Sí** |
-| Driver elegido | `sw:driver` | No |
+| Ancho de los paneles (geometría) | `is-components` → `iswc-split-panel` → `docs:split:*` | **Sí** |
+| Driver elegido | `docs:driver` | No |
 
-Cada build lleva un sello de fecha y hora (`__SW_BUILD__`, lo inyecta `scripts/build.ts` y lo
-expone `js/version.ts`). Al cargar `sw-layout` se compara con el sello que escribió la geometría
+Cada build lleva un sello de fecha y hora (`__DOCS_BUILD__`, lo inyecta `scripts/build.ts` y lo
+expone `js/version.ts`). Al cargar `docs-layout` se compara con el sello que escribió la geometría
 guardada; si no coinciden, la geometría se descarta.
 
 Existe por un caso real: una versión con un fallo guardó `0px` de ancho de panel, y a partir de
@@ -124,7 +124,7 @@ Al tocar el layout, añadir aquí la clave nueva. Guardián: `tests/minidoc.test
 
 1. `src/js/` es puro: sin DOM, sin red salvo `fetch` explícito. Es lo que se
    prueba sin navegador y lo que decide qué se ve.
-2. `src/components/sw/` traduce esos datos a `is-*`. Cada componente es un
+2. `src/components/docs/` traduce esos datos a `is-*`. Cada componente es un
    `.ts` + un `.css` hermano y nada más.
 3. `scripts/build.ts` transpila (no empaqueta) a `dist/cdn/`, un directorio
    **plano** donde todo módulo es hermano de todos. Los imports relativos se
@@ -132,37 +132,37 @@ Al tocar el layout, añadir aquí la clave nueva. Guardián: `tests/minidoc.test
 
 ## Estado: un solo dueño
 
-`sw-app` guarda config, spec, grupos, sesión, servidor, pestaña, operación
+`docs-app` guarda config, spec, grupos, sesión, servidor, pestaña, operación
 abierta y búsqueda. Todo lo demás es controlado.
 
-- Escritura de la URL: **solo** `sw-app`, vía `js/url-state.ts`.
+- Escritura de la URL: **solo** `docs-app`, vía `js/url-state.ts`.
 - `?s=` (tema+paleta+q) lo escribe `js/search-state.ts`.
 - Navegar (sección, operación, sub-pestaña) entra en el historial con `pushState`;
   ajustar la vista (tema, driver, servidor, teclear en la búsqueda) usa `replaceState`.
 - Sin `?s=` se abre **siempre** la primera sección y la primera operación: el documento
   no puede elegir otra.
-- Un hijo que necesita cambiar algo **emite**: `sw-op-toggle`, `sw-op-tab`,
-  `sw-param-change`, `sw-body-change`, `sw-server-change`, `sw-search`,
-  `sw-nav-tab`, `sw-session-change`, `sw-need-login`, `sw-reset`.
-- `sw-tag-group` reemite sin interpretar: no puede saber qué hay abierto en otro grupo.
+- Un hijo que necesita cambiar algo **emite**: `docs-op-toggle`, `docs-op-tab`,
+  `docs-param-change`, `docs-body-change`, `docs-server-change`, `docs-search`,
+  `docs-nav-tab`, `docs-session-change`, `docs-need-login`, `docs-reset`.
+- `docs-tag-group` reemite sin interpretar: no puede saber qué hay abierto en otro grupo.
 
 ## Repintado: cuándo entero y cuándo no
 
 Por defecto, asignar `props` repinta el shadow entero (`crearComponente`). Eso
 es correcto para lo inmutable. **No** lo es donde el usuario tiene el foco:
 
-- `sw-try` reparte el repintado en tres zonas (URL, aviso, resultado) porque
+- `docs-try` reparte el repintado en tres zonas (URL, aviso, resultado) porque
   escribir en un parámetro le quitaría el foco al campo en cada tecla.
-- `sw-nav` ignora un cambio de `query` que venga solo: lo está escribiendo el
+- `docs-nav` ignora un cambio de `query` que venga solo: lo está escribiendo el
   usuario en ese mismo shadow.
-- `sw-operation` no rehace la tarjeta al cambiar de pestaña ni de servidor.
-- `sw-tag-group` distingue «cambió el grupo» de «cambió qué está abierto».
+- `docs-operation` no rehace la tarjeta al cambiar de pestaña ni de servidor.
+- `docs-tag-group` distingue «cambió el grupo» de «cambió qué está abierto».
 
 ### Cambio de pestaña sin flicker
 
 Dos causas distintas, las dos resueltas:
 
-**1. Repintado de más.** `sw-app#cambiarNavTab()` no llama a `#render()`: solo
+**1. Repintado de más.** `docs-app#cambiarNavTab()` no llama a `#render()`: solo
 `#sincronizarNav()` (cambia `activeTab` y `tabs` en la barra) y `#pintarLista()`
 (repinta solo la lista filtrada). El shell —nav, info, server— queda intacto.
 
@@ -188,7 +188,7 @@ caché. `src/js/hojas.ts` —plano, síncrono en `<head>`, antes que el kit—
 envuelve `ShadowRoot.prototype.prepend` y cambia esos `<link>` por la hoja
 construida a partir de la segunda aparición del href. La primera se deja pasar
 tal cual: ningún componente puede quedarse sin estilos por esa capa. Publica el
-caché en `globalThis.__swHojas` y `_shared.ts` lo reusa — una sola descarga por
+caché en `globalThis.__docsHojas` y `_shared.ts` lo reusa — una sola descarga por
 hoja para todo el visor.
 
 Guardianes: `tests/hojas.test.ts` (el parche del kit y el caché compartido) y
@@ -197,8 +197,8 @@ descarga, y que repintar no se lleve la hoja).
 
 ## Coste diferido
 
-`sw-operation` monta su cuerpo al abrir, no al pintar la lista. Una spec con
-doscientos endpoints crearía doscientos `sw-try` con sus campos y su CSS antes
+`docs-operation` monta su cuerpo al abrir, no al pintar la lista. Una spec con
+doscientos endpoints crearía doscientos `docs-try` con sus campos y su CSS antes
 de que nadie mire ninguno. No lo deshagas «para simplificar».
 
 ## Kit `is-*` por CDN: qué se carga y por qué tan poco
@@ -212,23 +212,23 @@ vacío en un ISS). No es el camino normal de `index.html` ni de previews/docs.
 ### Importación mínima con el loader
 
 `all.min.js` del kit arrastra las 12 categorías. Este visor usa un subconjunto de tags,
-declarado **una sola vez** en `src/js/kit-tags.ts` (`SW_KIT_TAGS`) y publicado en
+declarado **una sola vez** en `src/js/kit-tags.ts` (`DOCS_KIT_TAGS`) y publicado en
 `dist/cdn/js/kit-tags.js`. Hosts e `index.html` importan esa lista; no la duplican.
 
 ```html
 <script type="module">
   import { ISWebComponentsLoader as L } from
     'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@3c722aca9579cb2f764c026c6385685c1603e789/dist/cdn/loader.min.js';
-  import { SW_KIT_TAGS } from
-    'https://cdn.jsdelivr.net/gh/Jeff-Aporta/isc-swagger@main/dist/cdn/js/kit-tags.js';
-  await L.load(...SW_KIT_TAGS);
+  import { DOCS_KIT_TAGS } from
+    'https://cdn.jsdelivr.net/gh/Jeff-Aporta/iswc-docs@main/dist/cdn/js/kit-tags.js';
+  await L.load(...DOCS_KIT_TAGS);
 </script>
 ```
 
 ### Inventario: los tags que usa el visor
 
-Si un `sw-*` empieza a usar otro tag del kit, añadirlo **en `src/js/kit-tags.ts`** (y
-actualizar esta tabla). El host ISS **no** mantiene `isSwaggerKitTags`: sin el tag el
+Si un `docs-*` empieza a usar otro tag del kit, añadirlo **en `src/js/kit-tags.ts`** (y
+actualizar esta tabla). El host ISS **no** mantiene `isDocsKitTags`: sin el tag el
 custom element no hace upgrade y el tag queda en el DOM sin shadow — sin error en consola.
 Caso real: sin `iswc-code`, cURL y respuestas salían cajas vacías.
 
@@ -299,7 +299,7 @@ btn.pill = true;
 - **hero**: el visitante llega sin `?conn=` / `?spec=` / `?api=`. Se muestra
   el vídeo promocional en `src/css/hero.css`. Sin JS, el hero se queda
   visible por defecto (atributo `hidden` lo oculta solo vía JS).
-- **app**: hay config por URL. El `<sw-app>` se monta y el hero desaparece.
+- **app**: hay config por URL. El `<docs-app>` se monta y el hero desaparece.
 
 La decisión se hace **en `<head>`**, sincrónica, con un IIFE que escribe
 `document.documentElement.dataset.modo`. Razones:
@@ -308,14 +308,14 @@ La decisión se hace **en `<head>`**, sincrónica, con un IIFE que escribe
    type="module">` (que es diferido por el navegador), el primer frame se
    pintaría con el modo equivocado y luego saltaría al correcto: flash de
    contenido que no debería estar ahí.
-2. **Antes de que los custom elements se registren**: si el `<sw-app>` se
+2. **Antes de que los custom elements se registren**: si el `<docs-app>` se
    mostrara antes de que se ejecuten los `<script type="module"
-   src="./dist/cdn/sw-*.js">`, su shadow no existiría y se vería el tag
+   src="./dist/cdn/docs-*.js">`, su shadow no existiría y se vería el tag
    vacío. El script al final del `<body>` quita el `hidden` del bloque
    correspondiente **después** de que los módulos hayan registrado los
    componentes.
 
-Guardián visual: si ves el `<sw-app>` sin estilos durante un frame al cargar
+Guardián visual: si ves el `<docs-app>` sin estilos durante un frame al cargar
 con `?conn=`, el orden de scripts en `index.html` está mal.
 
 ## Identidad: el sistema NO se llama OpenAPI
@@ -323,8 +323,8 @@ con `?conn=`, el orden de scripts en `index.html` está mal.
 El visor parsea un formato propio de InSoft (`{kind:"config", version, info,
 viewer, paths, catalog, docs, tags}`). OpenAPI nunca debe salir a UI:
 
-- `sw-info.ts` no pinta badge «OpenAPI X.Y».
-- `sw-export.ts` no ofrece «OpenAPI 3 (JSON)» — es «Documento (JSON)».
+- `docs-info.ts` no pinta badge «OpenAPI X.Y».
+- `docs-export.ts` no ofrece «OpenAPI 3 (JSON)» — es «Documento (JSON)».
 - `index.html` no dice «Visor OpenAPI» en título ni descripción.
 - Previews de demo no usan la palabra como marca del visor.
 - `parseInsoftConfig` no emite `spec.openapi` (sería un campo residual sin
@@ -346,7 +346,7 @@ paths: {                                ← overrides opcionales
 title, icon, fixedServer, embed, auto
 ```
 
-Precedencia: `?conn=` gana sobre `<script id="sw-config">` y `?spec=/?api=`.
+Precedencia: `?conn=` gana sobre `<script id="docs-config">` y `?spec=/?api=`.
 **Bug ya visto**: si el `<script>` trae `specUrl` y `?conn=` no lo borra, el
 visor cae al demo local y el usuario ve otra API. Fix: en `resolveBootConfig`,
 `delete config.specUrl` cuando hay conn.
@@ -373,19 +373,19 @@ pintado (tema+paleta). El visor suma `q` (query de búsqueda). F5 restaura todo.
 
 ## Búsqueda cross-tab
 
-`sw-app#buscar(query)`:
+`docs-app#buscar(query)`:
 1. persiste con `setQuery(q)` en `?s=`
 2. `#pintarLista()` re-filtra
 3. `#gruposVisibles`: con query salta `filterGroupsByNavTab` y busca en todos los
    tags; sin query filtra por la pestaña activa
 
-`sw-nav` muestra pestañas cuando no hay query; cuando hay, oculta la fila y
+`docs-nav` muestra pestañas cuando no hay query; cuando hay, oculta la fila y
 pinta `Resultados para «x»` con botón Limpiar.
 
 ## Sesión JWT
 
 `auth.loginUrl` por defecto = `https://main-orchestrator.jeffaporta.workers.dev`.
-`isc-swagger` no debe quedarse con `auth.enabled: false` cuando el visor trae
+`iswc-docs` no debe quedarse con `auth.enabled: false` cuando el visor trae
 `viewer.auth.enabled: true` — siempre se necesita dónde canjear credenciales.
 
 César (`wrapPassword`) + prefijo/sufijo (`abc123`/`xyz987`): **no es cifrado**,
@@ -403,12 +403,12 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
    ejecuta. Guardián: `estructura.test.ts`.
 
 3. **Diálogo montado en `document.body` con CSS en el shadow** — el diálogo de
-   confirmación de `sw-try` vive en light DOM, así que su CSS está en
-   `src/css/app.css` (`.sw-confirmar-*`). Un `.css` de componente nunca alcanza
+   confirmación de `docs-try` vive en light DOM, así que su CSS está en
+   `src/css/app.css` (`.docs-confirmar-*`). Un `.css` de componente nunca alcanza
    a un nodo fuera de su shadow.
 
 4. **`iswc-button type="submit"` no envía el form** — el `<button>` real está en
-   Shadow DOM. `sw-auth` escucha `iswc-click` y llama `requestSubmit()`. Error
+   Shadow DOM. `docs-auth` escucha `iswc-click` y llama `requestSubmit()`. Error
    conocido del kit; no confiar en el tipo nativo.
 
 5. **Valores de enum inventados en los `is-*`** — `variant="ghost"` cuando el
@@ -470,8 +470,8 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
     sincrónico, no se puede diferir.
 
 16. **El script final que quita el `hidden` debe ir después de los módulos**
-    — si se pone antes de los `<script type="module" src="./dist/cdn/sw-*.js">`,
-    el `<sw-app>` aparece con `hidden=false` mientras los componentes aún
+    — si se pone antes de los `<script type="module" src="./dist/cdn/docs-*.js">`,
+    el `<docs-app>` aparece con `hidden=false` mientras los componentes aún
     no están registrados: se ve el tag vacío hasta que carguen. Por eso el
     orden en `index.html` es: módulos → IIFE de un-hide.
 
@@ -499,20 +499,20 @@ es el contrato del backend. Documentarlo en UI es parte del contrato.
 
 La spec es entrada no confiable. `html\`\`` escapa todo primitivo por defecto;
 `raw()` es la excepción y solo para HTML ya saneado (`renderMarkdown`, que
-escapa antes de componer). `sw-json` no ejecuta lo que resalta.
+escapa antes de componer). `docs-json` no ejecuta lo que resalta.
 
 Las credenciales: el JWT va a `sessionStorage` (muere con la pestaña); las
 credenciales de «recordarme» a `localStorage`, ofuscadas y **opt-in**. La
 ofuscación replica el contrato del backend, no es cifrado — decirlo en la UI es
 parte del contrato.
 
-## Añadir un componente `sw-*`
+## Añadir un componente `docs-*`
 
-1. `src/components/sw/sw-x.ts` + `src/components/sw/sw-x.css`.
+1. `src/components/docs/docs-x.ts` + `src/components/docs/docs-x.css`.
 2. `<script type="module">` en `index.html` (orden importa: el shell
-   `sw-app` y los componentes que usa van al final del grupo de scripts).
-3. Import en `src/components/sw/all.ts` (el build genera `sw.all.js`).
-4. Entrada en `docs/manifest.js` + `docs/previews/sw-x.html` (la galería
+   `docs-app` y los componentes que usa van al final del grupo de scripts).
+3. Import en `src/components/docs/all.ts` (el build genera `sw.all.js`).
+4. Entrada en `docs/manifest.js` + `docs/previews/docs-x.html` (la galería
    nueva vive en `docs/`, no en `src/components/demo/`).
 5. Si `#render()` es manual: `adoptCss(this.#root, import.meta.url)` al final
    de cada salida del render, y `precargarCss(import.meta.url)` junto al
@@ -531,7 +531,7 @@ colgarse en JSDOM/`search-state`: un hang no cuenta como verde; corre el archivo
 | `dominio.test.ts` | Filtros, URLs, errores HTTP, markdown, Postman, sesión, búsqueda, conn |
 | `postman-md.test.ts` | Conversión MD InSoft → Postman (`iswc-code`→fences; pipeline diagramas) |
 | `render.test.ts` | Que el shadow se llene (jsdom, `is-*` sin registrar) |
-| `app.test.ts` | El ciclo completo de `sw-app` con la spec de demo real |
+| `app.test.ts` | El ciclo completo de `docs-app` con la spec de demo real |
 | `minidoc.test.ts` | Driver 2: vistas, pestañas de estado, cURL y que los dos drivers convivan |
 | `estructura.test.ts` | Inventario: cada componente ↔ `index.html` ↔ `all.ts` ↔ preview ↔ CSS hermano |
 | `conn.test.ts` | `?conn=`: precedencia, override de paths, default ISS, conn > `<script>` |
@@ -541,9 +541,11 @@ colgarse en JSDOM/`search-state`: un hang no cuenta como verde; corre el archivo
 | `css-adopcion.test.ts` | `adoptCss`: hoja síncrona desde caché, una descarga por href, repintar no la pierde |
 | `docs.test.ts` | Que los `LLM.md` no mienten: catálogo completo, enlaces vivos, reglas que el código sigue cumpliendo |
 | `hojas.test.ts` | El parche de `js/hojas.js` sobre los shadow roots del kit y el caché compartido |
-| `iss-swagger-doc.test.ts` | Piezas JSON `kind` meta/paths/config vs `assertIssSwaggerPiezas` |
-| `iss-swagger-md.test.ts` | JSON → markdown / HTML de `GET /LLM.md` |
-| `cdn.test.ts` | Artefactos públicos: `LLM.md`, `.d.ts`, `iss-swagger-doc.ts`, convertidor `.min.js` |
+| `iss-docs-piezas.test.ts` | Piezas JSON `kind` meta/paths/config vs `assertIssDocsPiezas` |
+| `iss-docs-md.test.ts` | JSON → markdown / HTML de `GET /LLM.md` |
+| `cdn.test.ts` | Artefactos públicos: `LLM.md`, `.d.ts`, `iss-docs-piezas.ts`, convertidor `.min.js` |
+| `pines.test.ts` | Pines congelados: un solo SHA del kit, ninguna ref mutable de CDN, tools vendorizadas al mismo SHA |
+| `nomenclatura.test.ts` | Renombre a iswc-docs: sin la nomenclatura anterior fuera de la capa de legado y de lo ajeno |
 | `invariantes.test.ts` | Regresiones de bugs ya vistos (OpenAPI, flicker, auth, conn, spec por defecto) |
 
 El patrón de fallo de este stack es siempre el mismo: **el artefacto se genera

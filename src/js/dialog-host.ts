@@ -3,16 +3,16 @@
  * El CSS de `app.css` no llega al embed de PatyIA; se inyecta una sola vez.
  */
 
-const STYLE_ID = 'sw-dialog-host-css';
+const STYLE_ID = 'docs-dialog-host-css';
 
 const CSS = /* css */ `
-  .sw-confirmar-texto {
+  .docs-confirmar-texto {
     margin: 0 0 0.75rem;
     font-size: 0.9375rem;
     line-height: 1.55;
     color: var(--is-text, #e6edf3);
   }
-  .sw-confirmar-url {
+  .docs-confirmar-url {
     display: block;
     margin: 0 0 0.25rem;
     padding: 0.65rem 0.75rem;
@@ -25,20 +25,20 @@ const CSS = /* css */ `
     line-height: 1.45;
     overflow-wrap: anywhere;
   }
-  .sw-confirmar-acciones {
+  .docs-confirmar-acciones {
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
     gap: 0.5rem;
     width: 100%;
   }
-  iswc-dialog.sw-dialog-try,
-  iswc-dialog.sw-dialog-confirm {
+  iswc-dialog.docs-dialog-try,
+  iswc-dialog.docs-dialog-confirm {
     --is-dialog-width: min(52rem, calc(100vw - 2rem));
     --is-dialog-spacing: 1.1rem;
     --spacing: var(--is-dialog-spacing);
   }
-  iswc-dialog.sw-dialog-try sw-try {
+  iswc-dialog.docs-dialog-try docs-try {
     display: block;
     min-width: 0;
   }

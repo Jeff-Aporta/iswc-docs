@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>docs-server Â· preview</title>
+  <script src="../preview-boot.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
+  </script>
+  <link rel="stylesheet" href="../styles/preview.css">
+</head>
+<body>
+  <main class="preview"></main>
+  <iswc-toast placement="bottom-end"></iswc-toast>
+
+  <script type="module">
+    import '../../dist/cdn/components/docs/docs-server.js';
+    import { crear, caso, montar, registrarEventos } from '../preview-kit.js';
+
+    const conLog = (props) => {
+      const nodo = crear('docs-server', props);
+      const log = registrarEventos(nodo, ['docs-server-change']);
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:grid;gap:.6rem';
+      wrap.append(nodo, log);
+      return wrap;
+    };
+
+    montar('docs-server', 'Selector del host contra el que se prueba. El campo es libre porque una spec pÃºblica casi nunca lista el entorno local.', [
+      caso('Con varias bases conocidas', 'Escribe una URL o elige del menÃº.',
+        conLog({ value: 'https://httpbin.org', options: ['https://httpbin.org', 'http://localhost:5502/api', 'https://api.contapyme.com/api'] })),
+      caso('Base Ãºnica', 'Con una sola opciÃ³n el menÃº no aparece: serÃ­a un desplegable de un elemento.',
+        conLog({ value: 'https://httpbin.org', options: ['https://httpbin.org'] })),
+    ]);
+  </script>
+</body>
+</html>

@@ -24,7 +24,7 @@ test('isInsoftConfig detecta el documento del ISS por kind+paths', () => {
   assert.equal(isInsoftConfig({ kind: 'config', version: 1, paths: {} }), true);
   assert.equal(isInsoftConfig({ openapi: '3.0.3', paths: {} }), false);
   assert.equal(isInsoftConfig(null), false);
-  assert.equal(isInsoftConfig({ kind: 'insoft.swagger-viewer', spec: {} }), false);
+  assert.equal(isInsoftConfig({ kind: 'iswc.docs', spec: {} }), false);
 });
 
 test('parseInsoftConfig arma spec sin el campo openapi (la UI no enseña OpenAPI)', () => {
@@ -136,7 +136,7 @@ test('QUERY con requestBody OpenAPI (content) no pierde el schema', () => {
   assert.ok(media.schema.properties.dias, 'el visor pintaba body vacío y dias como ?dias=');
 });
 
-test('el viewer del ISS se traduce a SwConfig del visor', () => {
+test('el viewer del ISS se traduce a DocsConfig del visor', () => {
   const { config } = parseInsoftConfig(SAMPLE, 'https://h/api');
   assert.equal(config.brand.title, 'ISS PatyIA');
   assert.equal(config.brand.icon, 'mdi:robot-happy-outline');

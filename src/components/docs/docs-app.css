@@ -1,0 +1,96 @@
+/* docs-app — shell del visor. */
+
+:host {
+  display: block;
+  min-height: 100%;
+  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+}
+
+/* ── Lienzo ─────────────────────────────────────────────────── */
+
+.lienzo {
+  padding: clamp(1rem, 2.5vw, 1.75rem) clamp(0.75rem, 2vw, 1.5rem) 4rem;
+}
+
+.ancho {
+  display: grid;
+  gap: 1.25rem;
+  max-width: var(--docs-ancho, 76rem);
+  margin: 0 auto;
+  min-width: 0;
+}
+
+.grupos {
+  display: grid;
+  gap: 1.75rem;
+  min-width: 0;
+}
+
+.resumen-total {
+  margin: 0;
+  color: var(--is-text, #e6edf3);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  opacity: 0.45;
+}
+
+/* ── Cargando ───────────────────────────────────────────────── */
+
+.cargando {
+  display: grid;
+  place-items: center;
+  gap: 0.85rem;
+  min-height: calc(100vh - 4rem);
+  margin-block: 2rem;
+  color: var(--is-text, #e6edf3);
+  text-align: center;
+
+  iswc-spinner { font-size: 2rem; }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.6;
+  }
+}
+
+/* ── Fallo de carga ─────────────────────────────────────────── */
+
+.fallo {
+  max-width: min(48rem, 100%);
+  margin: clamp(2rem, 8vh, 5rem) auto;
+  padding: 0 clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.fallo-titulo {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 640;
+  letter-spacing: -0.012em;
+}
+
+.fallo-texto {
+  margin: 0 0 0.75rem;
+  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  /* El mensaje trae detalle, URL y pista en líneas separadas. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.fallo-pista {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  opacity: 0.75;
+
+  code {
+    padding: 0.05em 0.3em;
+    border-radius: 0.25em;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+    font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+    font-size: 0.9em;
+  }
+}

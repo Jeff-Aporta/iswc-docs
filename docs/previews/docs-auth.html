@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>docs-auth Â· preview</title>
+  <script src="../preview-boot.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
+  </script>
+  <link rel="stylesheet" href="../styles/preview.css">
+</head>
+<body>
+  <main class="preview"></main>
+  <iswc-toast placement="bottom-end"></iswc-toast>
+
+  <script type="module">
+    import '../../dist/cdn/components/docs/docs-auth.js';
+    import { crear, caso, montar, registrarEventos } from '../preview-kit.js';
+
+    const auth = { enabled: true, loginUrl: 'https://main-orchestrator.example/api', loginPath: '/auth/login', loginKind: 'portal', app: 'swagger' };
+
+    const conLog = (props) => {
+      const nodo = crear('docs-auth', props);
+      const log = registrarEventos(nodo, ['docs-session-change']);
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:grid;gap:.6rem;justify-items:start';
+      wrap.append(nodo, log);
+      return wrap;
+    };
+
+    montar('docs-auth', 'SesiÃ³n JWT: chip de estado, diÃ¡logo de login y pegado de token. Pegar un JWT estÃ¡ al mismo nivel que iniciar sesiÃ³n, no escondido.', [
+      caso('Sin sesiÃ³n', 'Abre el diÃ¡logo: el login fallarÃ¡ (el host es ficticio), y asÃ­ se ve cÃ³mo se presenta el error.',
+        conLog({ authEnabled: true, auth, session: null })),
+      caso('Con sesiÃ³n', 'El chip muestra el primer nombre, sin mayÃºsculas sostenidas de la BD.',
+        conLog({ authEnabled: true, auth, session: { token: 'eyJhbGciOi...', nombre: 'JUAN CARLOS PEREZ' } })),
+      caso('AutenticaciÃ³n deshabilitada', 'No pinta nada: sin loginUrl no hay dÃ³nde iniciar sesiÃ³n.',
+        crear('docs-auth', { authEnabled: false, auth: {}, session: null })),
+    ]);
+  </script>
+</body>
+</html>

@@ -6,7 +6,9 @@
  * suelto por `kind`, y de una config suelta porque trae `spec` dentro.
  */
 
-export const IS_DOCUMENT_KIND = 'insoft.swagger-viewer';
+import { avisarLegado, KIND_DOCUMENTO_LEGADO } from './legado.js';
+
+export const IS_DOCUMENT_KIND = 'iswc.docs';
 export const IS_DOCUMENT_VERSION = 1;
 
 /**
@@ -26,8 +28,8 @@ const RUNTIME_KEYS = new Set([
   'scopes',
 ]);
 
-export function viewerConfigFromBoot(config: SwConfig = {}): SwConfig {
-  const out: SwConfig = {};
+export function viewerConfigFromBoot(config: DocsConfig = {}): DocsConfig {
+  const out: DocsConfig = {};
   for (const [k, v] of Object.entries(config)) {
     if (RUNTIME_KEYS.has(k) || v === undefined) continue;
     (out as Record<string, unknown>)[k] = v;
@@ -35,7 +37,7 @@ export function viewerConfigFromBoot(config: SwConfig = {}): SwConfig {
   return out;
 }
 
-export function buildIsDocument(config: SwConfig, spec: SwSpec): Record<string, unknown> {
+export function buildIsDocument(config: DocsConfig, spec: DocsSpec): Record<string, unknown> {
   return {
     kind: IS_DOCUMENT_KIND,
     version: IS_DOCUMENT_VERSION,
@@ -45,12 +47,14 @@ export function buildIsDocument(config: SwConfig, spec: SwSpec): Record<string, 
 }
 
 /** Acepta documento IS, o config con spec embebido. `null` si no es ninguno. */
-export function parseIsDocument(doc: unknown): { config: SwConfig; spec: SwSpec } | null {
+export function parseIsDocument(doc: unknown): { config: DocsConfig; spec: DocsSpec } | null {
   if (!doc || typeof doc !== 'object') return null;
   const d = doc as Record<string, unknown>;
-  if (d.kind === IS_DOCUMENT_KIND && d.spec && typeof d.spec === 'object') {
-    const viewer = (d.viewer && typeof d.viewer === 'object' ? d.viewer : {}) as SwConfig;
-    return { config: { ...viewer, spec: d.spec as SwSpec }, spec: d.spec as SwSpec };
+  if (d.kind === KIND_DOCUMENTO_LEGADO) avisarLegado(KIND_DOCUMENTO_LEGADO, IS_DOCUMENT_KIND);
+  const esDocumento = d.kind === IS_DOCUMENT_KIND || d.kind === KIND_DOCUMENTO_LEGADO;
+  if (esDocumento && d.spec && typeof d.spec === 'object') {
+    const viewer = (d.viewer && typeof d.viewer === 'object' ? d.viewer : {}) as DocsConfig;
+    return { config: { ...viewer, spec: d.spec as DocsSpec }, spec: d.spec as DocsSpec };
   }
   // Config anidada: `{ spec: { kind: …, spec: … } }`. Sin `paths` no es OpenAPI.
   if (d.spec && typeof d.spec === 'object' && !d.paths) return parseIsDocument(d.spec);

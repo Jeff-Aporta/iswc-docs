@@ -22,7 +22,7 @@
     "build": "deno run -A scripts/build.ts",
     "dev": "deno run -A scripts/build.ts --watch",
     "serve": "deno run -A jsr:@std/http@1/file-server -p 4190 --host 127.0.0.1",
-    "check": "deno run -A npm:typescript@5.9.3/tsc --noEmit -p tsconfig.json",
+    "check": "deno check scripts/ && deno run -A npm:typescript@5.9.3/tsc --noEmit -p tsconfig.json",
     "test": "deno task build && deno test -A --no-check tests/"
   }
 }

@@ -7,9 +7,9 @@
  *
  *   `paginas`     → documentación en prosa: por qué existe, stack, estrategias,
  *                   arquitectura, comparativa. Se leen en orden.
- *   `componentes` → un `sw-*` cada uno, con sus casos en vivo. Se consultan.
+ *   `componentes` → un `docs-*` cada uno, con sus casos en vivo. Se consultan.
  *
- * Añadir un `sw-*` sin entrada en `componentes` lo deja fuera del sitio;
+ * Añadir un `docs-*` sin entrada en `componentes` lo deja fuera del sitio;
  * `tests/estructura.test.mjs` avisa si eso pasa, y también si una entrada
  * apunta a una página que no existe en disco.
  */
@@ -25,38 +25,38 @@ export const paginas = [
   { tag: 'empezar', title: 'Empezar', page: 'paginas/empezar.html', icon: 'mdi:rocket-launch-outline', category: 'documentacion' },
 ];
 
-/** Un `sw-*` por entrada. `category` agrupa el nav. */
+/** Un `docs-*` por entrada. `category` agrupa el nav. */
 export const componentes = [
-  { tag: 'sw-app', title: 'Visor completo', page: 'previews/sw-app.html', category: 'shell' },
+  { tag: 'docs-app', title: 'Visor completo', page: 'previews/docs-app.html', category: 'shell' },
 
-  { tag: 'sw-method', title: 'Método', page: 'previews/sw-method.html', category: 'atomos' },
-  { tag: 'sw-path', title: 'Ruta', page: 'previews/sw-path.html', category: 'atomos' },
-  { tag: 'sw-json', title: 'JSON', page: 'previews/sw-json.html', category: 'atomos' },
-  { tag: 'sw-doc', title: 'Markdown', page: 'previews/sw-doc.html', category: 'atomos' },
+  { tag: 'docs-method', title: 'Método', page: 'previews/docs-method.html', category: 'atomos' },
+  { tag: 'docs-path', title: 'Ruta', page: 'previews/docs-path.html', category: 'atomos' },
+  { tag: 'docs-json', title: 'JSON', page: 'previews/docs-json.html', category: 'atomos' },
+  { tag: 'docs-doc', title: 'Markdown', page: 'previews/docs-doc.html', category: 'atomos' },
 
-  { tag: 'sw-params', title: 'Parámetros', page: 'previews/sw-params.html', category: 'operacion' },
-  { tag: 'sw-body', title: 'Cuerpo', page: 'previews/sw-body.html', category: 'operacion' },
-  { tag: 'sw-responses', title: 'Respuestas', page: 'previews/sw-responses.html', category: 'operacion' },
-  { tag: 'sw-try', title: 'Probar', page: 'previews/sw-try.html', category: 'operacion' },
-  { tag: 'sw-operation', title: 'Operación', page: 'previews/sw-operation.html', category: 'operacion' },
+  { tag: 'docs-params', title: 'Parámetros', page: 'previews/docs-params.html', category: 'operacion' },
+  { tag: 'docs-body', title: 'Cuerpo', page: 'previews/docs-body.html', category: 'operacion' },
+  { tag: 'docs-responses', title: 'Respuestas', page: 'previews/docs-responses.html', category: 'operacion' },
+  { tag: 'docs-try', title: 'Probar', page: 'previews/docs-try.html', category: 'operacion' },
+  { tag: 'docs-operation', title: 'Operación', page: 'previews/docs-operation.html', category: 'operacion' },
 
-  { tag: 'sw-tag-group', title: 'Grupo de tag', page: 'previews/sw-tag-group.html', category: 'shell' },
-  { tag: 'sw-info', title: 'Cabecera', page: 'previews/sw-info.html', category: 'shell' },
-  { tag: 'sw-home', title: 'Portada', page: 'previews/sw-home.html', category: 'shell' },
-  { tag: 'sw-server', title: 'Servidor', page: 'previews/sw-server.html', category: 'shell' },
-  { tag: 'sw-auth', title: 'Sesión', page: 'previews/sw-auth.html', category: 'shell' },
-  { tag: 'sw-export', title: 'Descargas', page: 'previews/sw-export.html', category: 'shell' },
-  { tag: 'sw-doc-reload', title: 'Actualizar documento', page: 'previews/sw-doc-reload.html', category: 'shell' },
-  { tag: 'sw-doc-actions', title: 'Documento (pill)', page: 'previews/sw-doc-actions.html', category: 'shell' },
-  { tag: 'sw-nav', title: 'Barra superior', page: 'previews/sw-nav.html', category: 'shell' },
+  { tag: 'docs-tag-group', title: 'Grupo de tag', page: 'previews/docs-tag-group.html', category: 'shell' },
+  { tag: 'docs-info', title: 'Cabecera', page: 'previews/docs-info.html', category: 'shell' },
+  { tag: 'docs-home', title: 'Portada', page: 'previews/docs-home.html', category: 'shell' },
+  { tag: 'docs-server', title: 'Servidor', page: 'previews/docs-server.html', category: 'shell' },
+  { tag: 'docs-auth', title: 'Sesión', page: 'previews/docs-auth.html', category: 'shell' },
+  { tag: 'docs-export', title: 'Descargas', page: 'previews/docs-export.html', category: 'shell' },
+  { tag: 'docs-doc-reload', title: 'Actualizar documento', page: 'previews/docs-doc-reload.html', category: 'shell' },
+  { tag: 'docs-doc-actions', title: 'Documento (pill)', page: 'previews/docs-doc-actions.html', category: 'shell' },
+  { tag: 'docs-nav', title: 'Barra superior', page: 'previews/docs-nav.html', category: 'shell' },
 
-  { tag: 'sw-viewer', title: 'Envoltura de drivers', page: 'previews/sw-viewer.html', category: 'shell' },
-  { tag: 'sw-driver-switch', title: 'Selector de vista', page: 'previews/sw-driver-switch.html', category: 'shell' },
-  { tag: 'sw-layout', title: 'Armazón de 3 zonas', page: 'previews/sw-layout.html', category: 'shell' },
+  { tag: 'docs-viewer', title: 'Envoltura de drivers', page: 'previews/docs-viewer.html', category: 'shell' },
+  { tag: 'docs-driver-switch', title: 'Selector de vista', page: 'previews/docs-driver-switch.html', category: 'shell' },
+  { tag: 'docs-layout', title: 'Armazón de 3 zonas', page: 'previews/docs-layout.html', category: 'shell' },
 
-  { tag: 'sw-minidoc', title: 'Visor por vistas', page: 'previews/sw-minidoc.html', category: 'minidoc' },
-  { tag: 'sw-minidoc-view', title: 'Ficha de operación', page: 'previews/sw-minidoc-view.html', category: 'minidoc' },
-  { tag: 'sw-minidoc-code', title: 'Petición y respuesta', page: 'previews/sw-minidoc-code.html', category: 'minidoc' },
+  { tag: 'docs-minidoc', title: 'Visor por vistas', page: 'previews/docs-minidoc.html', category: 'minidoc' },
+  { tag: 'docs-minidoc-view', title: 'Ficha de operación', page: 'previews/docs-minidoc-view.html', category: 'minidoc' },
+  { tag: 'docs-minidoc-code', title: 'Petición y respuesta', page: 'previews/docs-minidoc-code.html', category: 'minidoc' },
 ];
 
 /** Orden y etiqueta de los grupos del nav. */

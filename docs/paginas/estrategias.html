@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Estrategias · IS-Swagger</title>
+  <title>Estrategias · ISWC Docs</title>
   <meta name="description" content="Las decisiones de diseño del visor y el error concreto que enseñó cada una.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
@@ -50,7 +50,7 @@
     <section class="seccion">
       <h2>Estrategia 1 · Un solo dueño del estado</h2>
       <p>
-        <code>sw-app</code> es el único que guarda estado y el único que escribe
+        <code>docs-app</code> es el único que guarda estado y el único que escribe
         la URL. Los hijos reciben <code>props</code> y emiten eventos.
       </p>
       <div class="contraste">
@@ -98,22 +98,22 @@
           </thead>
           <tbody>
             <tr>
-              <th scope="row"><code>sw-try</code></th>
+              <th scope="row"><code>docs-try</code></th>
               <td>Tres zonas independientes: URL, aviso, resultado</td>
               <td>Escribir un parámetro no puede rehacer el formulario</td>
             </tr>
             <tr>
-              <th scope="row"><code>sw-nav</code></th>
+              <th scope="row"><code>docs-nav</code></th>
               <td>Ignora un cambio de <code>query</code> que venga solo</td>
               <td>Lo está escribiendo el usuario en ese mismo shadow</td>
             </tr>
             <tr>
-              <th scope="row"><code>sw-operation</code></th>
+              <th scope="row"><code>docs-operation</code></th>
               <td>No rehace la tarjeta al cambiar de pestaña ni de servidor</td>
               <td>La cabecera no cambió; solo el cuerpo</td>
             </tr>
             <tr>
-              <th scope="row"><code>sw-tag-group</code></th>
+              <th scope="row"><code>docs-tag-group</code></th>
               <td>Distingue «cambió el grupo» de «cambió qué está abierto»</td>
               <td>Abrir una tarjeta no debe recrear las otras</td>
             </tr>
@@ -223,7 +223,7 @@
       <h2>Estrategia 5 · Reusar el kit antes que inventar</h2>
       <p>
         Botones, diálogos, campos, selectores, tablas, toasts, iconos y diagramas
-        ya existen en <code>is-*</code>. Un componente <code>sw-*</code> es un
+        ya existen en <code>is-*</code>. Un componente <code>docs-*</code> es un
         <strong>traductor</strong>: convierte el documento del backend en
         atributos de <code>is-*</code> y nada más.
       </p>
@@ -253,7 +253,7 @@
           que una descripción con <code>&lt;script&gt;</code> se pinta como texto.
         </li>
         <li>
-          <code>sw-json</code> resalta sin ejecutar. Y tokeniza el texto crudo
+          <code>docs-json</code> resalta sin ejecutar. Y tokeniza el texto crudo
           escapando dentro del reemplazo — al revés, la regex veía
           <code>&amp;quot;</code> y el bloque salía sin color.
         </li>

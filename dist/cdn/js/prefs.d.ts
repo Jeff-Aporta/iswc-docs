@@ -15,8 +15,8 @@
  * cambiar de versión no debe cambiarle la vista a nadie. Por eso la purga enumera las claves de
  * geometría en vez de vaciar el almacén entero.
  */
-import { SW_VERSION } from './version.js';
-declare const CLAVE_VERSION = "sw:build";
+import { DOCS_VERSION } from './version.js';
+declare const CLAVE_VERSION = "docs:build";
 /** Almacén del kit `is-*`, donde `iswc-split-panel` guarda su posición. */
 declare const CLAVE_KIT = "is-components";
 /** Geometría que se descarta al cambiar de build. Es lo que un layout nuevo invalida. */
@@ -33,4 +33,4 @@ declare const GEOMETRIA: Array<{
  * Devuelve `true` si purgó, para poder afirmarlo en una prueba.
  */
 export declare function caducarPrefsSiCambioBuild(): boolean;
-export { SW_VERSION, CLAVE_VERSION, CLAVE_KIT, GEOMETRIA };
+export { DOCS_VERSION, CLAVE_VERSION, CLAVE_KIT, GEOMETRIA };

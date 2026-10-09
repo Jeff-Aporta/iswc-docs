@@ -1,4 +1,4 @@
-# isc-swagger
+# iswc-docs
 
 Visor de APIs de InSoft en web components. Remake de
 [`../is-swagger`](../is-swagger) sin React, sin MUI y sin Babel.
@@ -13,13 +13,13 @@ transpilador en runtime, y el visor no funcionaba abriendo el HTML a pelo.
 
 Aquí el único runtime es el navegador:
 
-| | `is-swagger` | `isc-swagger` |
+| | `is-swagger` | `iswc-docs` |
 |---|---|---|
 | UI | React 18 + MUI 5 + Emotion | Web components vanilla + kit `is-*` por CDN |
 | Transpilación | Babel **en el navegador** | esbuild en build; el navegador recibe ESM plano |
 | Fuente | `.jsx` | `.ts` (solo se borran los tipos, sin bundler) |
 | CSS | Emotion `sx` + un `.css` global | Un `.css` hermano por componente, adoptado en su shadow |
-| Estado | Context + hooks | Un solo dueño (`sw-app`), hijos controlados |
+| Estado | Context + hooks | Un solo dueño (`docs-app`), hijos controlados |
 | Distribución | 4 bundles + vendor CJS | `dist/cdn/` plano: un `.js` y un `.css` por módulo |
 
 ## Arranque
@@ -32,16 +32,16 @@ deno task serve     # http://localhost:4190
 
 `deno task dev` deja el build en watch. `deno task test` compila y corre `deno test`.
 
-CDN (cuando `dist/` está en GitHub): `https://cdn.jsdelivr.net/gh/Jeff-Aporta/isc-swagger@main/dist/cdn/`.
-Agentes: [`dist/cdn/LLM.md`](src/cdn/LLM.md). Tests Deno de piezas JSON: `dist/cdn/js/iss-swagger-doc.ts`.
+CDN (cuando `dist/` está en GitHub): `https://cdn.jsdelivr.net/gh/Jeff-Aporta/iswc-docs@main/dist/cdn/`.
+Agentes: [`dist/cdn/LLM.md`](src/cdn/LLM.md). Tests Deno de piezas JSON: `dist/cdn/js/iss-docs-piezas.ts`.
 
 ## Cómo se le dice qué documentar
 
 Por orden de precedencia:
 
 1. `?conn=<base64url>`, `?spec=<url>` o `?api=<base>` — el enlace manda sobre todo.
-2. `window.__SWAGGER_CONFIG__` — lo inyecta el host que embebe el visor.
-3. `<script type="application/json" id="sw-config">` en `index.html`.
+2. `window.__DOCS_CONFIG__` — lo inyecta el host que embebe el visor.
+3. `<script type="application/json" id="docs-config">` en `index.html`.
 
 Que 1 gane sobre 2 es deliberado: un host puede fijar su API por defecto y aun
 así dejar que alguien comparta un enlace a otra sin tocar nada.
@@ -51,7 +51,7 @@ así dejar que alguien comparta un enlace a otra sin tocar nada.
   "ns": "ISA",
   "specUrl": "./demo/openapi.sample.json",
   "apiBase": "https://host/api",
-  "brand": { "title": "IS-Swagger", "subtitle": "Visor de APIs", "icon": "mdi:api" },
+  "brand": { "title": "ISWC Docs", "subtitle": "Visor de APIs", "icon": "mdi:api" },
   "auth": { "enabled": true, "loginUrl": "https://main-orchestrator/api", "loginKind": "portal" },
   "nav": [
     { "id": "publica", "label": "Pública", "icon": "mdi:earth" },
@@ -76,12 +76,12 @@ scripts/build.ts             esbuild -> dist/cdn plano
 src/
   css/app.css                 canvas y light DOM (lo que no cabe en un shadow)
   js/                         dominio puro, sin DOM
-  components/sw/              componentes del visor: <tag>.ts + <tag>.css
-  types/swagger.d.ts          tipos ambiente
+  components/docs/              componentes del visor: <tag>.ts + <tag>.css
+  types/docs.d.ts          tipos ambiente
 docs/                         sitio documental (no se compila)
   index.html                  shell: barra + índice + iframe
   paginas/                    prosa: por qué, stack, arquitectura, estrategias
-  previews/                   una página por `sw-*`, con casos en vivo
+  previews/                   una página por `docs-*`, con casos en vivo
   video/                      (reservado; hero → YouTube unlisted)
 dist/cdn/                     artefacto publicado: todo plano y hermano
   LLM.md, js/*.d.ts, types/     contrato para agentes y tests Deno
@@ -97,11 +97,11 @@ Las carpetas están separadas a propósito, igual que en
 Cada componente tiene su `.css` **hermano**, nunca CSS dentro del `.ts`:
 
 ```
-src/components/sw/sw-operation.ts
-src/components/sw/sw-operation.css
+src/components/docs/docs-operation.ts
+src/components/docs/docs-operation.css
         ↓ build
-dist/cdn/sw-operation.js
-dist/cdn/sw-operation.css
+dist/cdn/docs-operation.js
+dist/cdn/docs-operation.css
 ```
 
 `adoptCss(shadow, import.meta.url)` deriva la hoja del módulo y la enlaza en el
@@ -116,18 +116,18 @@ CSS lo ve. `tests/estructura.test.ts` falla si vuelve a aparecer.
 
 | Tag | Qué hace |
 |---|---|
-| `sw-app` | Shell y **único dueño del estado** |
-| `sw-nav` | Marca, secciones, búsqueda, descargas, sesión, tema |
-| `sw-info` | Título, versión y descripción del documento |
-| `sw-server` | Host contra el que se prueba |
-| `sw-tag-group` | Un tag con sus operaciones (y subgrupos) |
-| `sw-operation` | Tarjeta desplegable con pestañas Probar / Respuestas / Doc |
-| `sw-try` | Arma la petición, la ejecuta y enseña la respuesta |
-| `sw-params` · `sw-body` | Campos y editor JSON (controlados) |
-| `sw-responses` | Respuestas declaradas en el documento |
-| `sw-auth` | Login JWT y pegado de token |
-| `sw-export` | Documento JSON, colección Postman y paquete IS |
-| `sw-method` · `sw-path` · `sw-json` · `sw-doc` | Átomos |
+| `docs-app` | Shell y **único dueño del estado** |
+| `docs-nav` | Marca, secciones, búsqueda, descargas, sesión, tema |
+| `docs-info` | Título, versión y descripción del documento |
+| `docs-server` | Host contra el que se prueba |
+| `docs-tag-group` | Un tag con sus operaciones (y subgrupos) |
+| `docs-operation` | Tarjeta desplegable con pestañas Probar / Respuestas / Doc |
+| `docs-try` | Arma la petición, la ejecuta y enseña la respuesta |
+| `docs-params` · `docs-body` | Campos y editor JSON (controlados) |
+| `docs-responses` | Respuestas declaradas en el documento |
+| `docs-auth` | Login JWT y pegado de token |
+| `docs-export` | Documento JSON, colección Postman y paquete IS |
+| `docs-method` · `docs-path` · `docs-json` · `docs-doc` | Átomos |
 
 Sitio documental: `docs/index.html`.
 

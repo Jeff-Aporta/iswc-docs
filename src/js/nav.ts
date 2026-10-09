@@ -9,13 +9,13 @@
 export const NAV_ALL = '__all__';
 
 /** Pestañas visibles según la sesión (`requiresSession` esconde las privadas). */
-export function resolveVisibleNavTabs(config: SwConfig, session: SwSesion | null): SwNavTab[] {
+export function resolveVisibleNavTabs(config: DocsConfig, session: DocsSesion | null): DocsNavTab[] {
   const tabs = Array.isArray(config?.nav) ? config.nav : [];
   return tabs.filter((t) => t?.id && (!t.requiresSession || !!session?.token));
 }
 
 /** Id de pestaña activa: la de la URL si sigue siendo válida, si no la primera. */
-export function resolveActiveNavTab(tabs: SwNavTab[], preferido: string): string {
+export function resolveActiveNavTab(tabs: DocsNavTab[], preferido: string): string {
   if (!tabs.length) return NAV_ALL;
   if (preferido && tabs.some((t) => t.id === preferido)) return preferido;
   return tabs[0]!.id;
@@ -25,7 +25,7 @@ export function resolveActiveNavTab(tabs: SwNavTab[], preferido: string): string
  * Grupos que corresponden a una pestaña. Una pestaña sin `tags` no filtra:
  * sirve para tener una sección «Todo» junto a otras más concretas.
  */
-export function filterGroupsByNavTab(groups: SwGrupo[], tabs: SwNavTab[], activeId: string): SwGrupo[] {
+export function filterGroupsByNavTab(groups: DocsGrupo[], tabs: DocsNavTab[], activeId: string): DocsGrupo[] {
   if (!tabs.length || activeId === NAV_ALL) return groups;
   const tab = tabs.find((t) => t.id === activeId);
   if (!tab || !tab.tags?.length) return groups;
@@ -34,11 +34,11 @@ export function filterGroupsByNavTab(groups: SwGrupo[], tabs: SwNavTab[], active
 }
 
 /** Búsqueda libre sobre ruta, resumen, tag y `operationId`. Vacío = sin filtrar. */
-export function filterGroupsByQuery(groups: SwGrupo[], query: string): SwGrupo[] {
+export function filterGroupsByQuery(groups: DocsGrupo[], query: string): DocsGrupo[] {
   const q = String(query ?? '').trim().toLowerCase();
   if (!q) return groups;
 
-  const coincide = (op: SwOp, grupo: string, entidad = ''): boolean =>
+  const coincide = (op: DocsOp, grupo: string, entidad = ''): boolean =>
     [op.path, op.method, op.summary, op.description, op.operationId, grupo, entidad]
       .filter(Boolean)
       .some((v) => String(v).toLowerCase().includes(q));
@@ -57,5 +57,5 @@ export function filterGroupsByQuery(groups: SwGrupo[], query: string): SwGrupo[]
     .filter((g) => g.operations.length);
 }
 
-export const contarOperaciones = (groups: SwGrupo[]): number =>
+export const contarOperaciones = (groups: DocsGrupo[]): number =>
   groups.reduce((n, g) => n + g.operations.length, 0);

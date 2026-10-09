@@ -9,7 +9,7 @@
     if (!soporta) return;
     var hojas = /* @__PURE__ */ new Map();
     var cargas = /* @__PURE__ */ new Map();
-    globalThis.__swHojas = { hojas, cargas };
+    globalThis.__docsHojas = { hojas, cargas };
     function descargar(href) {
       var enCurso = cargas.get(href);
       if (enCurso) return enCurso;

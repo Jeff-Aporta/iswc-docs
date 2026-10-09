@@ -3,7 +3,7 @@
  *
  * Aquí va **solo** lo que no puede vivir dentro de un shadow: el fondo de
  * página, la tipografía base y los nodos que el visor monta en `document.body`
- * (el diálogo de confirmación de `sw-try`). El estilo de cada componente vive
+ * (el diálogo de confirmación de `docs-try`). El estilo de cada componente vive
  * en su `.css` hermano.
  *
  * `is-base.css` y `palettes.css` solo declaran tokens y no pintan `html`/`body`
@@ -26,27 +26,27 @@ body {
 
 /* Medida de lectura y anchos del visor, en un solo sitio. */
 :root {
-  --sw-ancho: 110rem;
-  --sw-measure: 72ch;
-  --sw-radius: 0.625rem;
+  --docs-ancho: 110rem;
+  --docs-measure: 72ch;
+  --docs-radius: 0.625rem;
 }
 
-sw-app {
+docs-app {
   display: block;
   min-height: 100%;
 }
 
-/* ── Diálogo de confirmación de `sw-try` ────────────────────── */
+/* ── Diálogo de confirmación de `docs-try` ────────────────────── */
 /* Se monta en `document.body` para no multiplicar nodos por operación, así
-   que su CSS no puede vivir en `sw-try.css`. */
+   que su CSS no puede vivir en `docs-try.css`. */
 
-.sw-confirmar-texto {
+.docs-confirmar-texto {
   margin: 0 0 0.6rem;
   font-size: 0.875rem;
   line-height: 1.55;
 }
 
-.sw-confirmar-url {
+.docs-confirmar-url {
   display: block;
   padding: 0.5rem 0.65rem;
   border-radius: 0.4rem;
@@ -56,19 +56,19 @@ sw-app {
   overflow-wrap: anywhere;
 }
 
-.sw-confirmar-acciones {
+.docs-confirmar-acciones {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
 }
 
 /* Sin JS no hay visor: el mensaje tiene que estar en el HTML servido. */
-.sw-sin-js {
+.docs-sin-js {
   max-width: 34rem;
   margin: 4rem auto;
   padding: 1.25rem;
   border: 1px solid var(--is-border-soft, #1f242b);
-  border-radius: var(--sw-radius);
+  border-radius: var(--docs-radius);
   background: var(--is-bg-soft, #14181d);
   line-height: 1.6;
 }

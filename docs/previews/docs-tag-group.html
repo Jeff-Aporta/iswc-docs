@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>docs-tag-group Â· preview</title>
+  <script src="../preview-boot.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
+  </script>
+  <link rel="stylesheet" href="../styles/preview.css">
+</head>
+<body>
+  <main class="preview"></main>
+  <iswc-toast placement="bottom-end"></iswc-toast>
+
+  <script type="module">
+    import '../../dist/cdn/components/docs/docs-tag-group.js';
+    import { crear, caso, montar, registrarEventos } from '../preview-kit.js';
+
+    const spec = { servers: [{ url: 'https://httpbin.org' }] };
+
+    const op = (method, path, summary, subgroup) => ({
+      method, path, summary, operationId: `${method}_${path}`,
+      responses: { 200: { description: 'OK.' } },
+      ...(subgroup ? { 'x-isa-subgroup': subgroup } : {}),
+    });
+
+    const plano = {
+      name: 'Sistema', description: 'Salud del servicio y metadatos.', meta: {}, subgroups: [],
+      operations: [op('get', '/json', 'InformaciÃ³n'), op('get', '/status/200', 'Ping')],
+    };
+
+    const consulta = [op('get', '/get', 'Listar terceros', 'consulta'), op('get', '/status/200', 'Obtener tercero', 'consulta')];
+    const mantenimiento = [op('post', '/post', 'Crear tercero', 'mantenimiento'), op('delete', '/delete', 'Eliminar tercero', 'mantenimiento')];
+
+    const conSubgrupos = {
+      name: 'Terceros', description: 'Consulta y mantenimiento del maestro.', meta: {},
+      operations: [...consulta, ...mantenimiento],
+      subgroups: [
+        { id: 'consulta', name: 'Consulta', icon: 'mdi:magnify', operations: consulta },
+        { id: 'mantenimiento', name: 'Mantenimiento', icon: 'mdi:pencil-outline', operations: mantenimiento },
+      ],
+    };
+
+    const base = { spec, serverBase: 'https://httpbin.org', authEnabled: false, docIndex: {}, opAbierta: '', opTab: 'try' };
+
+    montar('docs-tag-group', 'Un tag con sus operaciones. Si declara x-isa-subgroups se reparten en subcarpetas con su orden; si no, se listan planas.', [
+      caso('Con subgrupos', 'El orden lo fija el tag, no el orden de apariciÃ³n en paths.', crear('docs-tag-group', { ...base, group: conSubgrupos })),
+      caso('Lista plana', null, crear('docs-tag-group', { ...base, group: plano })),
+    ]);
+  </script>
+</body>
+</html>

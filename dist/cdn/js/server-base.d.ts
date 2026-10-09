@@ -14,9 +14,9 @@ export declare const normalizeServerBase: (raw: unknown) => string;
  * Una `url` relativa en `servers` se resuelve contra el origen, como manda
  * OpenAPI: `{"url": "/api"}` en producción significa «este mismo host».
  */
-export declare function inferDefaultServerBase(spec: SwSpec | null | undefined, config?: SwConfig): string;
+export declare function inferDefaultServerBase(spec: DocsSpec | null | undefined, config?: DocsConfig): string;
 /** Todas las bases ofrecibles: las del documento más la configurada. */
-export declare function serverOptions(spec: SwSpec | null | undefined, config?: SwConfig): string[];
+export declare function serverOptions(spec: DocsSpec | null | undefined, config?: DocsConfig): string[];
 export declare function joinApiUrl(serverBase: unknown, apiPath: unknown): string;
 export declare function readServerFromUrl(): string;
 export declare function writeServerToUrl(base: string): void;

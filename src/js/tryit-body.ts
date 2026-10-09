@@ -14,17 +14,17 @@ export const BODY_HTTP_METHODS = new Set(['post', 'put', 'patch', 'query']);
 export const EXT_REQUEST_BODY = 'x-iss-request-body';
 export const EXT_REQUEST_BODY_EXAMPLES = 'x-iss-request-body-examples';
 
-export type SwBodyEjemplo = { id: string; label: string; icon?: string; example: unknown; };
+export type DocsBodyEjemplo = { id: string; label: string; icon?: string; example: unknown; };
 
 export const opUsesRequestBody = (method: unknown): boolean =>
   BODY_HTTP_METHODS.has(String(method ?? '').toLowerCase());
 
-export const shouldShowTryItBody = (op: SwOp | undefined): boolean => opUsesRequestBody(op?.method);
+export const shouldShowTryItBody = (op: DocsOp | undefined): boolean => opUsesRequestBody(op?.method);
 
-const jsonMedia = (op: SwOp | undefined): SwMediaType | undefined =>
+const jsonMedia = (op: DocsOp | undefined): DocsMediaType | undefined =>
   op?.requestBody?.content?.['application/json'];
 
-export function resolveTryItBodyExample(op: SwOp | undefined): unknown {
+export function resolveTryItBodyExample(op: DocsOp | undefined): unknown {
   const fromSpec = extractJsonExample(jsonMedia(op));
   if (fromSpec !== undefined && fromSpec !== null) return fromSpec;
 
@@ -35,10 +35,10 @@ export function resolveTryItBodyExample(op: SwOp | undefined): unknown {
 }
 
 /** Ejemplos con nombre: `x-iss-request-body-examples`, o los `examples` de la spec. */
-export function resolveTryItBodyExamples(op: SwOp | undefined): SwBodyEjemplo[] {
+export function resolveTryItBodyExamples(op: DocsOp | undefined): DocsBodyEjemplo[] {
   const ext = op?.[EXT_REQUEST_BODY_EXAMPLES];
   if (Array.isArray(ext) && ext.length) {
-    return (ext as SwBodyEjemplo[]).filter((i) => i && typeof i === 'object' && i.example !== undefined);
+    return (ext as DocsBodyEjemplo[]).filter((i) => i && typeof i === 'object' && i.example !== undefined);
   }
 
   const examples = jsonMedia(op)?.examples;
@@ -53,7 +53,7 @@ export function resolveTryItBodyExamples(op: SwOp | undefined): SwBodyEjemplo[] 
 export const formatBodyExample = (example: unknown): string =>
   example === undefined || example === null ? '{\n  \n}' : jsonPretty(example);
 
-export const defaultTryItBodyText = (op: SwOp | undefined): string =>
+export const defaultTryItBodyText = (op: DocsOp | undefined): string =>
   formatBodyExample(resolveTryItBodyExample(op));
 
 /** Valida el JSON del editor. `null` = correcto. */

@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Por qué existe · IS-Swagger</title>
-  <meta name="description" content="El problema que resuelve IS-Swagger: la documentación de API que se desincroniza del código.">
+  <title>Por qué existe · ISWC Docs</title>
+  <meta name="description" content="El problema que resuelve ISWC Docs: la documentación de API que se desincroniza del código.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
@@ -106,7 +106,7 @@
         una copia de nada — <strong>es lo que el servidor sabe de sí mismo</strong>.
       </p>
       <p>
-        IS-Swagger no mantiene un catálogo propio. Lee ese endpoint cada vez que
+        ISWC Docs no mantiene un catálogo propio. Lee ese endpoint cada vez que
         se abre. Si el backend cambió esta mañana, el visor lo enseña esta
         mañana, sin que nadie exporte ni reimporte nada.
       </p>
@@ -148,7 +148,7 @@
       </p>
       <p>
         Se podía traducir a OpenAPI y perder esa información, o leer el formato
-        real y aprovecharlo entero. IS-Swagger hace lo segundo: traduce el
+        real y aprovecharlo entero. ISWC Docs hace lo segundo: traduce el
         documento InSoft a su propia estructura interna, y por eso puede pintar
         un selector con los valores válidos donde Swagger UI solo pintaría una
         caja de texto.

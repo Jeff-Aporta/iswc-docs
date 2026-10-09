@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/index.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/index.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/arquitectura.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/arquitectura.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/comparativa.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/comparativa.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/empezar.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/empezar.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/estrategias.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/estrategias.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/inicio.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/inicio.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/porque.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/porque.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jeff-aporta.github.io/isc-swagger/docs/paginas/stack.html</loc>
+    <loc>https://jeff-aporta.github.io/iswc-docs/docs/paginas/stack.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.7</priority>
   </url>

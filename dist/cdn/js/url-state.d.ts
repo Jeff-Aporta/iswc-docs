@@ -18,14 +18,14 @@ export declare const PARAM_TAB = "tab";
 export declare const PARAM_OP = "op";
 export declare const PARAM_OP_TAB = "opt";
 export declare const OP_TABS: readonly ["try", "examples", "doc"];
-export type SwOpTab = (typeof OP_TABS)[number];
-export declare const OP_TAB_DEFAULT: SwOpTab;
-export type SwUrlState = {
+export type DocsOpTab = (typeof OP_TABS)[number];
+export declare const OP_TAB_DEFAULT: DocsOpTab;
+export type DocsUrlState = {
     tab: string;
     op: string;
-    opTab: SwOpTab;
+    opTab: DocsOpTab;
 };
-export declare function readUrlState(): SwUrlState;
+export declare function readUrlState(): DocsUrlState;
 /**
  * Fusiona solo las claves presentes; `''` borra el campo en `?s=`.
  *
@@ -33,11 +33,11 @@ export declare function readUrlState(): SwUrlState;
  * Pásalo en `false` para sincronizar la URL con un estado que el visor resolvió
  * solo (la sección o la operación por defecto), que no es un paso atrás.
  */
-export declare function mergeUrlState(patch: Partial<SwUrlState>, opts?: {
+export declare function mergeUrlState(patch: Partial<DocsUrlState>, opts?: {
     push?: boolean;
 }): void;
 /**
  * Avisa de cualquier cambio de estado, venga de `mergeUrlState` o del botón
  * atrás del navegador. Devuelve la función para desuscribirse.
  */
-export declare function subscribeUrlState(fn: (estado: SwUrlState) => void): () => void;
+export declare function subscribeUrlState(fn: (estado: DocsUrlState) => void): () => void;

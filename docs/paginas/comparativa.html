@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Frente a Postman · IS-Swagger</title>
-  <meta name="description" content="IS-Swagger comparado con Postman y con Swagger UI: qué gana, qué pierde y cuándo no usarlo.">
+  <title>Frente a Postman · ISWC Docs</title>
+  <meta name="description" content="ISWC Docs comparado con Postman y con Swagger UI: qué gana, qué pierde y cuándo no usarlo.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
 </head>
@@ -32,7 +32,7 @@
       <p>
         Postman es un <strong>cliente</strong>: tú le describes la API y él la
         llama. Swagger UI es un <strong>renderizador</strong>: le das un OpenAPI y
-        lo pinta. IS-Swagger es un <strong>consumidor del backend</strong>: le das
+        lo pinta. ISWC Docs es un <strong>consumidor del backend</strong>: le das
         la base de la API y él le pregunta al servidor qué expone.
       </p>
       <p>
@@ -50,7 +50,7 @@
                 "groups": [
                   { "id": "g-pm", "name": "Postman", "hue": 12 },
                   { "id": "g-su", "name": "Swagger UI", "hue": 38 },
-                  { "id": "g-is", "name": "IS-Swagger", "hue": 160 }
+                  { "id": "g-is", "name": "ISWC Docs", "hue": 160 }
                 ],
                 "blocks": [
                   { "id": "pm1", "label": "Tú mantienes la colección", "group": "g-pm", "icon": "mdi:account-edit-outline" },
@@ -75,7 +75,7 @@
           </script>
         </iswc-block-diagram>
         <p class="diagrama__pie">
-          Postman y Swagger UI producen una copia. IS-Swagger no produce ninguna,
+          Postman y Swagger UI producen una copia. ISWC Docs no produce ninguna,
           y por eso no tiene nada que sincronizar.
         </p>
       </div>
@@ -90,7 +90,7 @@
               <th scope="col">Criterio</th>
               <th scope="col">Postman</th>
               <th scope="col">Swagger UI</th>
-              <th scope="col">IS-Swagger</th>
+              <th scope="col">ISWC Docs</th>
             </tr>
           </thead>
           <tbody>
@@ -172,7 +172,7 @@
     </section>
 
     <section class="seccion">
-      <h2>Lo que IS-Swagger hace mejor</h2>
+      <h2>Lo que ISWC Docs hace mejor</h2>
       <div class="rejilla">
         <article class="tarjeta">
           <iswc-icon class="tarjeta__icono" icon="mdi:link-variant"></iswc-icon>
@@ -234,7 +234,7 @@
       <ul>
         <li>
           <strong>Suites de pruebas automatizadas.</strong> Postman con Newman en
-          CI hace eso y IS-Swagger no lo intenta. Aquí se prueba a mano, un
+          CI hace eso y ISWC Docs no lo intenta. Aquí se prueba a mano, un
           endpoint a la vez.
         </li>
         <li>
@@ -264,12 +264,12 @@
         se lleva su colección en dos clics y sigue con su vida.
       </p>
       <div class="rejilla">
-        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-export">
+        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="docs-export">
           <iswc-icon class="tarjeta__icono" icon="mdi:download-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Ver las descargas</h3>
           <p>El componente de exportación, con las tres salidas funcionando.</p>
         </button>
-        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-app">
+        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="docs-app">
           <iswc-icon class="tarjeta__icono" icon="mdi:application-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Probar el visor</h3>
           <p>Con una API de muestra que responde de verdad.</p>

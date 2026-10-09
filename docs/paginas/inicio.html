@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IS-Swagger · Documentación</title>
+  <title>ISWC Docs · Documentación</title>
   <meta name="description" content="Visor de APIs de InSoft: documenta, prueba y comparte sin instalar nada.">
   <script src="../preview-boot.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
   <script type="module">
     const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
-    const { SW_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
-    await L.load(...SW_KIT_TAGS);
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
   </script>
   <link rel="stylesheet" href="../styles/doc.css">
   <link rel="stylesheet" href="../styles/hero.css">
@@ -28,7 +28,7 @@
           <span class="hero__acento">Solo no lo sabías.</span>
         </h1>
         <p class="hero__lede">
-          IS-Swagger lee la configuración que tu backend ya publica y la
+          ISWC Docs lee la configuración que tu backend ya publica y la
           convierte en documentación navegable y probable. Sin instalar nada,
           sin exportar colecciones, sin mantener un segundo catálogo en paralelo.
         </p>
@@ -52,7 +52,7 @@
         <iframe
           class="hero__video-frame"
           src="https://www.youtube-nocookie.com/embed/k0XcnhHQlzc"
-          title="Vídeo de presentación de IS-Swagger"
+          title="Vídeo de presentación de ISWC Docs"
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
@@ -156,7 +156,7 @@
           <h3 class="tarjeta__titulo">Estrategias</h3>
           <p>Las decisiones que sostienen el proyecto y el porqué de cada una.</p>
         </button>
-        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="sw-app">
+        <button type="button" class="tarjeta tarjeta--enlace" data-ir-a="docs-app">
           <iswc-icon class="tarjeta__icono" icon="mdi:application-outline"></iswc-icon>
           <h3 class="tarjeta__titulo">Verlo funcionando</h3>
           <p>El visor completo, con una API de muestra que responde de verdad.</p>

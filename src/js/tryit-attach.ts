@@ -9,13 +9,13 @@ import { resolveSchema } from './openapi.js';
 
 export const EXT_TRYIT_ATTACHMENTS = 'x-iss-tryit-attachments';
 
-type SwTplCampo = { field?: string };
+type DocsTplCampo = { field?: string };
 
-function contentOf(op: SwOp | undefined): Record<string, SwMediaType> {
-  return (op?.requestBody?.content ?? {}) as Record<string, SwMediaType>;
+function contentOf(op: DocsOp | undefined): Record<string, DocsMediaType> {
+  return (op?.requestBody?.content ?? {}) as Record<string, DocsMediaType>;
 }
 
-function schemaTieneArchivo(schema: SwSchema | undefined, spec: SwSpec | null | undefined, profundidad = 0): boolean {
+function schemaTieneArchivo(schema: DocsSchema | undefined, spec: DocsSpec | null | undefined, profundidad = 0): boolean {
   const s = resolveSchema(schema, spec, profundidad);
   if (!s || profundidad > 6) return false;
   const fmt = String(s.format ?? '');
@@ -28,7 +28,7 @@ function schemaTieneArchivo(schema: SwSchema | undefined, spec: SwSpec | null | 
   return schemaTieneArchivo(s.items, spec, profundidad + 1);
 }
 
-function plantillaAdjuntos(op: SwOp | undefined, spec: SwSpec | null | undefined): Record<string, unknown> | null {
+function plantillaAdjuntos(op: DocsOp | undefined, spec: DocsSpec | null | undefined): Record<string, unknown> | null {
   const raw = op?.tryitAttachments;
   if (raw && typeof raw === 'object' && !Array.isArray(raw)) return raw as Record<string, unknown>;
   const catalogo = spec?.[EXT_TRYIT_ATTACHMENTS] as { templates?: Record<string, unknown> } | undefined;
@@ -39,23 +39,23 @@ function plantillaAdjuntos(op: SwOp | undefined, spec: SwSpec | null | undefined
 }
 
 /** Campos JSON donde caen los data URL. Sin partir por tipo de archivo. */
-export function attachmentFieldNames(op: SwOp | undefined, spec: SwSpec | null | undefined): string[] {
+export function attachmentFieldNames(op: DocsOp | undefined, spec: DocsSpec | null | undefined): string[] {
   const tpl = plantillaAdjuntos(op, spec);
   const campos: string[] = [];
   if (tpl) {
     for (const v of Object.values(tpl)) {
-      const field = (v as SwTplCampo | undefined)?.field;
+      const field = (v as DocsTplCampo | undefined)?.field;
       if (typeof field === 'string' && field.trim()) campos.push(field.trim());
     }
   }
   return campos.length ? [...new Set(campos)] : ['archivos'];
 }
 
-export function opPrefersMultipart(op: SwOp | undefined): boolean {
+export function opPrefersMultipart(op: DocsOp | undefined): boolean {
   return Object.keys(contentOf(op)).some((ct) => /multipart|octet-stream/i.test(ct));
 }
 
-export function opAllowsAttachments(op: SwOp | undefined, spec: SwSpec | null | undefined = null): boolean {
+export function opAllowsAttachments(op: DocsOp | undefined, spec: DocsSpec | null | undefined = null): boolean {
   if (!op) return false;
   if (op.tryitAttachments != null && op.tryitAttachments !== false) return true;
   if (opPrefersMultipart(op)) return true;
@@ -78,7 +78,7 @@ async function leerComoDataUrl(file: File): Promise<string> {
   return `data:${mime};base64,${bytesABase64(bytes)}`;
 }
 
-function schemaJson(op: SwOp | undefined, spec: SwSpec | null | undefined): SwSchema | undefined {
+function schemaJson(op: DocsOp | undefined, spec: DocsSpec | null | undefined): DocsSchema | undefined {
   return resolveSchema(contentOf(op)['application/json']?.schema, spec);
 }
 
@@ -94,8 +94,8 @@ function parseCuerpo(texto: string): Record<string, unknown> {
 }
 
 export async function packTryItBody(
-  op: SwOp | undefined,
-  spec: SwSpec | null | undefined,
+  op: DocsOp | undefined,
+  spec: DocsSpec | null | undefined,
   jsonText: string,
   files: File[],
 ): Promise<{ body: string | FormData; multipart: boolean }> {

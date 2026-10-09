@@ -31,8 +31,8 @@ módulo. Están al final de esta página.
 | `markdown.ts` | Markdown → HTML **ya escapado** |
 | `export.ts` | Documento JSON, colección Postman, formato IS |
 | `postman-md.ts` | MD InSoft → Postman: diagramas→PNG, `iswc-code`→fences |
-| `iss-swagger-doc.ts` | Forma y asserts de piezas `swagger__*.json`. CDN: `dist/cdn/js/iss-swagger-doc.{js,d.ts,ts}` |
-| `iss-swagger-md.ts` | JSON → Markdown agentes. CDN: `js/iss-swagger-md.js` y `js/iss-swagger-md.min.js` |
+| `iss-docs-piezas.ts` | Forma y asserts de piezas `docs__*.json`. CDN: `dist/cdn/js/iss-docs-piezas.{js,d.ts,ts}` |
+| `iss-docs-md.ts` | JSON → Markdown agentes. CDN: `js/iss-docs-md.js` y `js/iss-docs-md.min.js` |
 | `json-cache.ts` | Cache 24 h de config/spec; `clearJsonCache` + `force` para el botón actualizar |
 
 ## Reusar antes de crear
@@ -50,7 +50,7 @@ módulo. Están al final de esta página.
 - Lo que puede fallar devuelve un error con **la URL que falló** dentro: el
   visor lo enseña en pantalla, no en la consola.
 - `search-state` y `url-state` son los únicos que tocan `location`, y solo los
-  llama `sw-app`.
+  llama `docs-app`.
 
 ## Qué hacer
 
@@ -58,7 +58,7 @@ módulo. Están al final de esta página.
   contra `dist/cdn/`.
 - Mantener el documento InSoft como entrada **no confiable**: nada de asumir
   que un campo existe o tiene el tipo declarado.
-- `?conn=` gana sobre el `<script id="sw-config">` y sobre `?spec=`/`?api=`.
+- `?conn=` gana sobre el `<script id="docs-config">` y sobre `?spec=`/`?api=`.
 
 ## Qué no hacer
 
@@ -101,7 +101,7 @@ no serviría de nada. El build los copia tal cual a `dist/cdn/`.
 enlazan su CSS con `<link>` y no se puede tocar su fuente. La **primera**
 aparición de cada href se deja pasar tal cual —así ningún componente puede
 quedarse sin estilos por esa capa— y a partir de la segunda adopta la hoja ya
-construida. Publica el caché en `globalThis.__swHojas`, que `_shared.ts` reusa.
+construida. Publica el caché en `globalThis.__docsHojas`, que `_shared.ts` reusa.
 
 Guardián: `tests/hojas.test.ts`.
 

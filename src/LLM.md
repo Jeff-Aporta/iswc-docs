@@ -1,4 +1,4 @@
-# `src` para LLM — isc-swagger
+# `src` para LLM — iswc-docs
 
 Índice de las fuentes del visor. **Punto de entrada para cualquier agente que
 vaya a tocar este proyecto.** Las leyes del repo y la historia de errores viven
@@ -20,11 +20,11 @@ No hay React, ni MUI, ni Babel, ni bundler. TypeScript → módulos ES planos.
 | --- | --- | --- |
 | `js/` | [js/LLM.md](js/LLM.md) | Dominio puro: sin DOM. Lo que decide **qué** se ve |
 | `components/` | [components/LLM.md](components/LLM.md) | Pintado: traduce esos datos a `is-*`. El **cómo** se ve |
-| `components/sw/` | [components/sw/LLM.md](components/sw/LLM.md) | Catálogo de los tags `sw-*` |
-| `../docs/` | [../docs/LLM.md](../docs/LLM.md) | Sitio documental: prosa + una página por `sw-*` |
+| `components/docs/` | [components/docs/LLM.md](components/docs/LLM.md) | Catálogo de los tags `docs-*` |
+| `../docs/` | [../docs/LLM.md](../docs/LLM.md) | Sitio documental: prosa + una página por `docs-*` |
 | `cdn/` | [cdn/LLM.md](cdn/LLM.md) | Contrato **público** que el build copia a `dist/cdn/LLM.md` |
 | `css/` | — | `app.css`: solo lo que vive en **light DOM** (el diálogo de confirmación) |
-| `types/` | — | `swagger.d.ts`: tipos ambiente; el build los publica en `dist/cdn/types/` |
+| `types/` | — | `docs.d.ts`: tipos ambiente; el build los publica en `dist/cdn/types/` |
 
 `js/boot.js` y `js/hojas.js` son los dos únicos archivos en JavaScript plano:
 corren síncronos en `<head>`, antes de que exista ningún módulo. Ver
@@ -41,9 +41,9 @@ tabla, un toast, un icono, un formato de fecha o de bytes:
 1. Buscar la intención en el [catálogo del kit](https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/skills/is-webcomponents/catalog.md).
 2. Abrir el `LLM.md` de la categoría y el `.md` del módulo.
 3. Confirmar props y eventos **en el MD**. No inferir la API desde el nombre.
-4. Usar el tag `is-*`. Los `sw-*` solo **traducen datos** del documento al kit.
+4. Usar el tag `is-*`. Los `docs-*` solo **traducen datos** del documento al kit.
 
-Un `sw-*` que pinta UI genérica en vez de delegar en un `is-*` está mal, aunque
+Un `docs-*` que pinta UI genérica en vez de delegar en un `is-*` está mal, aunque
 funcione.
 
 ### Lo que ya pasó por no hacerlo
@@ -61,9 +61,9 @@ funcione.
 
 | Qué | Kit | Por qué sigue a mano |
 | --- | --- | --- |
-| Barra de secciones de `sw-nav` | `<iswc-tab-group>` | Las pestañas no tienen panel: filtran una lista que pinta `sw-app`. Migrarlo obliga a paneles vacíos |
-| Pestañas de `sw-operation` | `<iswc-tab-group>` | El cuerpo se monta **al abrir** (ver «coste diferido» en `../LLM.md`); `iswc-tab-group` monta los tres paneles |
-| Códigos de estado de `sw-minidoc-code` | `<iswc-tab-group>` | Son etiquetas de un solo panel que se repinta (200/400/429…), no tres paneles vivos. Con `iswc-tab-group` habría un panel por código y el JSON se montaría N veces para enseñar uno |
+| Barra de secciones de `docs-nav` | `<iswc-tab-group>` | Las pestañas no tienen panel: filtran una lista que pinta `docs-app`. Migrarlo obliga a paneles vacíos |
+| Pestañas de `docs-operation` | `<iswc-tab-group>` | El cuerpo se monta **al abrir** (ver «coste diferido» en `../LLM.md`); `iswc-tab-group` monta los tres paneles |
+| Códigos de estado de `docs-minidoc-code` | `<iswc-tab-group>` | Son etiquetas de un solo panel que se repinta (200/400/429…), no tres paneles vivos. Con `iswc-tab-group` habría un panel por código y el JSON se montaría N veces para enseñar uno |
 | `adoptCss` de `_shared.ts` | `IsUi.adoptCss` (`helpers/ui`) | Ver abajo |
 
 Ninguna es excusa para añadir más UI a mano. Si alguna se migra, se borra su
@@ -89,11 +89,11 @@ sí vienen del kit. Todo el detalle en [components/LLM.md](components/LLM.md).
 ## Flujo de datos, en una frase por capa
 
 1. `js/config.ts` resuelve de dónde sale el documento (`?conn=` > `<script
-   id="sw-config">` > `?spec=`/`?api=`) y lo carga.
+   id="docs-config">` > `?spec=`/`?api=`) y lo carga.
 2. `js/insoft-config.ts` traduce el formato InSoft a la forma que el visor lee;
    `js/openapi.ts` agrupa operaciones por tag y resuelve `$ref`.
-3. `sw-app` guarda **todo** el estado y reparte `props`.
-4. Cada `sw-*` pinta y **emite**; ninguno escribe la URL ni el estado global.
+3. `docs-app` guarda **todo** el estado y reparte `props`.
+4. Cada `docs-*` pinta y **emite**; ninguno escribe la URL ni el estado global.
 
 ## Qué hacer
 
@@ -102,7 +102,7 @@ sí vienen del kit. Todo el detalle en [components/LLM.md](components/LLM.md).
 - `props` por **propiedad**, nunca por atributo: llevan objetos y saltos de línea.
 - Toda entrada del documento pasa por `esc()` o por la plantilla `` html`` ``.
 - Un componente nuevo se registra en **cuatro** sitios: `index.html`,
-  `components/sw/all.ts`, `../docs/manifest.js` y su página.
+  `components/docs/all.ts`, `../docs/manifest.js` y su página.
 - `deno task test` antes de dar nada por hecho.
 
 ## Qué no hacer

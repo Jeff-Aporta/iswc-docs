@@ -2,12 +2,12 @@
  * kit-tags.ts — tags `is-*` que el visor carga con el loader del kit.
  *
  * Fuente de verdad para hosts (ISS PatyIA, demos, Pages): se publica en
- * `dist/cdn/js/kit-tags.js` y se importa antes de `L.load(...SW_KIT_TAGS)`.
+ * `dist/cdn/js/kit-tags.js` y se importa antes de `L.load(...DOCS_KIT_TAGS)`.
  *
- * Si un `sw-*` empieza a usar otro tag del kit, añadirlo **aquí** (y en LLM.md).
+ * Si un `docs-*` empieza a usar otro tag del kit, añadirlo **aquí** (y en LLM.md).
  * No duplicar la lista en el host: sin el tag el custom element no hace upgrade.
  */
-export const SW_KIT_TAGS = [
+export const DOCS_KIT_TAGS = [
   'iswc-button',
   'iswc-button-group',
   'iswc-copy-button',
@@ -43,4 +43,4 @@ export const SW_KIT_TAGS = [
   'iswc-diagram-lightbox',
 ] as const;
 
-export type SwKitTag = (typeof SW_KIT_TAGS)[number];
+export type DocsKitTag = (typeof DOCS_KIT_TAGS)[number];

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>docs-doc Â· preview</title>
+  <script src="../preview-boot.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/palettes.min.css">
+  <script type="module">
+    const { ISWebComponentsLoader: L } = await import('https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@eab3227d6a0666bcb2c1f053901c14effb02ca13/dist/cdn/core/loader.min.js');
+    const { DOCS_KIT_TAGS } = await import('../../dist/cdn/js/kit-tags.js');
+    await L.load(...DOCS_KIT_TAGS);
+  </script>
+  <link rel="stylesheet" href="../styles/preview.css">
+</head>
+<body>
+  <main class="preview"></main>
+  <iswc-toast placement="bottom-end"></iswc-toast>
+
+  <script type="module">
+    import '../../dist/cdn/components/docs/docs-doc.js';
+    import { crear, caso, montar, registrarEventos } from '../preview-kit.js';
+
+    const md = [
+      '# Consulta de terceros',
+      '',
+      'Devuelve la pÃ¡gina solicitada del maestro. El orden por defecto es',
+      'alfabÃ©tico por \`nombre\`.',
+      '',
+      '## ParÃ¡metros relevantes',
+      '',
+      '| Campo | Significado |',
+      '|---|---|',
+      '| \`search\` | Texto libre sobre nombre y documento |',
+      '| \`limit\` | MÃ¡ximo de filas (tope del servidor: 500) |',
+      '',
+      '> Un \`limit\` mayor que el tope **no** da error: se recorta en silencio.',
+      '',
+      '- Primer punto de una lista',
+      '- Segundo punto con [un enlace](https://contapyme.com)',
+      '- Tercero con ~~algo tachado~~ y *cursiva*',
+      '',
+      '\`\`\`json',
+      '{ "search": "insoft", "limit": 50 }',
+      '\`\`\`',
+    ].join('\n');
+
+    montar('docs-doc', 'Prosa Markdown: encabezados, tablas GFM, listas, cita, cÃ³digo cercado e inline. Todo se escapa antes de componer.', [
+      caso('Documento completo', null, crear('docs-doc', { markdown: md })),
+      caso('Sin documentaciÃ³n', 'El estado vacÃ­o es un iswc-callout, no un pÃ¡rrafo suelto.', crear('docs-doc', { markdown: '' })),
+      caso('Markdown hostil', 'El HTML del origen se pinta como texto, no se ejecuta.',
+        crear('docs-doc', { markdown: 'Una descripciÃ³n con <script>alert(1)</script> dentro.' })),
+    ]);
+  </script>
+</body>
+</html>
