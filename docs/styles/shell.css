@@ -16,9 +16,9 @@ body {
   display: grid;
   grid-template-rows: auto 1fr;
   overflow: hidden;
-  background: var(--is-bg, #0d1117);
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  background: var(--iswc-bg);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
 }
 
 /* ── Barra ──────────────────────────────────────────────────── */
@@ -28,8 +28,8 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.5rem 0.9rem;
-  border-bottom: 1px solid var(--is-border-soft, #1f242b);
-  background: var(--is-bg-soft, #14181d);
+  border-bottom: 1px solid var(--iswc-border-soft);
+  background: var(--iswc-bg-soft);
 }
 
 /* El botón de menú solo existe cuando el índice se convierte en panel. */
@@ -55,12 +55,12 @@ body {
   &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
 
   &:focus-visible {
-    outline: 2px solid var(--is-accent, #1a6eb0);
+    outline: 2px solid var(--iswc-accent);
     outline-offset: 1px;
   }
 }
 
-.marca__acento { color: var(--is-accent, #1a6eb0); }
+.marca__acento { color: var(--iswc-accent); }
 
 .marca__sub {
   font-size: 0.6875rem;
@@ -91,7 +91,7 @@ body {
   min-height: 0;
   padding: 0.7rem 0.55rem 2rem;
   overflow-y: auto;
-  border-right: 1px solid var(--is-border-soft, #1f242b);
+  border-right: 1px solid var(--iswc-border-soft);
   scrollbar-width: thin;
 }
 
@@ -128,12 +128,12 @@ body {
   &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
 
   &:focus-visible {
-    outline: 2px solid var(--is-accent, #1a6eb0);
+    outline: 2px solid var(--iswc-accent);
     outline-offset: -2px;
   }
 
   &[aria-current="true"] {
-    background: color-mix(in srgb, var(--is-accent, #1a6eb0) 16%, transparent);
+    background: color-mix(in srgb, var(--iswc-accent) 16%, transparent);
 
     .shell-nav__nombre { font-weight: 640; }
     .shell-nav__icono { opacity: 1; }
@@ -142,7 +142,7 @@ body {
 
 .shell-nav__icono {
   flex-shrink: 0;
-  color: var(--is-accent, #1a6eb0);
+  color: var(--iswc-accent);
   font-size: 1.05rem;
   opacity: 0.75;
 }
@@ -162,7 +162,7 @@ body {
 }
 
 .shell-nav__tag {
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-family: var(--iswc-font-mono);
   font-size: 0.6875rem;
   opacity: 0.42;
 }
@@ -207,7 +207,7 @@ body {
     z-index: 9;
     width: min(17rem, 84vw);
     padding-top: 1rem;
-    background: var(--is-bg-soft, #14181d);
+    background: var(--iswc-bg-soft);
     box-shadow: 0.5rem 0 1.5rem rgb(0 0 0 / 35%);
     transform: translateX(-100%);
     transition: transform 180ms ease;

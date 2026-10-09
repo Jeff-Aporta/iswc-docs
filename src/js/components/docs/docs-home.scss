@@ -1,5 +1,5 @@
+@use "tokens" as t;
 /* docs-home — portada del visor (info.description). */
-
 :host {
   display: block;
   width: 100%;
@@ -8,19 +8,19 @@
 }
 
 .vacio {
-  color: var(--is-color-text-2, #9aa7b8);
-  padding: var(--is-space-8, 2rem) 0;
+  color: var(--iswc-text-soft);
+  padding: t.esp(8) 0;
 }
 
 .home {
   display: grid;
-  gap: var(--is-space-5, 1.25rem);
-  padding-block: var(--is-space-2, .5rem) var(--is-space-8, 2rem);
+  gap: t.esp(5);
+  padding-block: t.esp(2) t.esp(8);
 }
 
 .home-cab {
   display: grid;
-  gap: var(--is-space-2, .5rem);
+  gap: t.esp(2);
 }
 
 .home-titulo {
@@ -28,7 +28,7 @@
   font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
   line-height: 1.15;
   font-weight: 700;
-  color: var(--is-color-text, #e6edf7);
+  color: var(--iswc-text);
   text-wrap: balance;
 }
 
@@ -36,7 +36,7 @@
   margin: 0;
   font-size: .875rem;
   font-weight: 600;
-  color: var(--is-color-text-3, #6b7a8d);
+  color: var(--iswc-text-dim);
 }
 
 .home-doc {

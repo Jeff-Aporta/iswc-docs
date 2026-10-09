@@ -190,11 +190,11 @@ export function buildIssDocsLlmViewHtml(opts: IssDocsLlmViewOpts): string {
 <link rel="stylesheet" href="${esc(kit)}/is-base.min.css"/>
 <link rel="stylesheet" href="${esc(kit)}/palettes.min.css"/>
 <style>
-  html,body{margin:0;min-height:100%;font-family:var(--is-font-sans,system-ui,sans-serif)}
+  html,body{margin:0;min-height:100%;font-family:var(--iswc-font-sans)}
   .llm-view{max-width:52rem;margin:0 auto;padding:1.25rem 1.5rem 3rem}
   .llm-view__hdr{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.25rem}
   .llm-view__hdr h1{margin:0;font-size:1.15rem;font-weight:650}
-  .llm-view a{color:var(--is-accent,#38bdf8)}
+  .llm-view a{color:var(--iswc-accent)}
 </style>
 </head>
 <body>

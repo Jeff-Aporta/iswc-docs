@@ -1,5 +1,5 @@
+@use "mixins" as m;
 /* docs-responses — respuestas declaradas. */
-
 :host {
   display: block;
   min-width: 0;
@@ -26,19 +26,17 @@
   flex-shrink: 0;
   min-width: 3.25rem;
   justify-content: center;
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-family: var(--iswc-font-mono);
   font-weight: 700;
 }
 
 .descripcion {
   min-width: 0;
-  overflow: hidden;
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  @include m.una-linea;
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
   font-size: 0.8125rem;
   opacity: 0.72;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .cuerpo {
@@ -47,19 +45,16 @@
 }
 
 .etiqueta {
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
   font-size: 0.625rem;
-  font-weight: 650;
-  letter-spacing: 0.07em;
-  opacity: 0.5;
-  text-transform: uppercase;
+  @include m.rotulo(0.5);
 }
 
 .sin-cuerpo {
   margin: 0;
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
   font-size: 0.8125rem;
   opacity: 0.55;
 }

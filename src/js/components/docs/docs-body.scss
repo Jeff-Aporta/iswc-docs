@@ -1,5 +1,5 @@
+@use "mixins" as m;
 /* docs-body — editor del cuerpo JSON. */
-
 :host {
   display: block;
   min-width: 0;
@@ -20,17 +20,14 @@
 
 .titulo {
   margin: 0;
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
   font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.07em;
-  opacity: 0.6;
-  text-transform: uppercase;
+  @include m.rotulo;
 }
 
 .requerido {
-  color: var(--is-color-danger-strong, #e03131);
+  color: var(--iswc-color-danger-strong);
   opacity: 1;
 }
 
@@ -41,8 +38,8 @@
 }
 
 .editor {
-  --is-textarea-font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  --iswc-sans: var(--iswc-font-mono);
+  font-family: var(--iswc-font-mono);
   font-size: 0.8125rem;
   tab-size: 2;
 }

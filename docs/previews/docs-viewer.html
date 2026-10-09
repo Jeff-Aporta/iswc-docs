@@ -27,10 +27,10 @@
     // de error. Eso es justo lo que hay que poder ver aqui: que el conmutador cambia la vista.
     const visor = document.createElement('docs-viewer');
     visor.setAttribute('conn', JSON.stringify({ apiBase: location.origin + '/api' }));
-    visor.style.cssText = 'display:block;min-height:60vh;border:1px solid var(--is-color-border);border-radius:12px;overflow:hidden;position:relative';
+    visor.style.cssText = 'display:block;min-height:60vh;border:1px solid var(--iswc-border);border-radius:12px;overflow:hidden;position:relative';
 
     const resumen = document.createElement('p');
-    resumen.style.cssText = 'margin:0;color:var(--is-color-text-2);font-size:.9375rem';
+    resumen.style.cssText = 'margin:0;color:var(--iswc-text-soft);font-size:.9375rem';
     resumen.textContent =
       'Driver activo al cargar: ' + readDriver() + '. Disponibles: ' +
       DRIVERS.map((d) => d.id + ' (' + d.label + ')').join(', ') + '.';

@@ -9,7 +9,6 @@
  * `is-base.css` y `palettes.css` solo declaran tokens y no pintan `html`/`body`
  * a propósito: el canvas es responsabilidad de la app, y es este archivo.
  */
-
 html,
 body {
   height: 100%;
@@ -17,9 +16,9 @@ body {
 
 body {
   margin: 0;
-  background: var(--is-bg, #0d1117);
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  background: var(--iswc-bg);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -39,7 +38,6 @@ docs-app {
 /* ── Diálogo de confirmación de `docs-try` ────────────────────── */
 /* Se monta en `document.body` para no multiplicar nodos por operación, así
    que su CSS no puede vivir en `docs-try.css`. */
-
 .docs-confirmar-texto {
   margin: 0 0 0.6rem;
   font-size: 0.875rem;
@@ -50,8 +48,8 @@ docs-app {
   display: block;
   padding: 0.5rem 0.65rem;
   border-radius: 0.4rem;
-  background: var(--is-code-bg, #0f1318);
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  background: var(--iswc-code-bg);
+  font-family: var(--iswc-font-mono);
   font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
@@ -67,8 +65,8 @@ docs-app {
   max-width: 34rem;
   margin: 4rem auto;
   padding: 1.25rem;
-  border: 1px solid var(--is-border-soft, #1f242b);
+  border: 1px solid var(--iswc-border-soft);
   border-radius: var(--docs-radius);
-  background: var(--is-bg-soft, #14181d);
+  background: var(--iswc-bg-soft);
   line-height: 1.6;
 }

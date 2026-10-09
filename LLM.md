@@ -546,6 +546,7 @@ colgarse en JSDOM/`search-state`: un hang no cuenta como verde; corre el archivo
 | `cdn.test.ts` | Artefactos públicos: `LLM.md`, `.d.ts`, `iss-docs-piezas.ts`, convertidor `.min.js` |
 | `pines.test.ts` | Pines congelados: un solo SHA del kit, ninguna ref mutable de CDN, tools vendorizadas al mismo SHA |
 | `nomenclatura.test.ts` | Renombre a iswc-docs: sin la nomenclatura anterior fuera de la capa de legado y de lo ajeno |
+| `estilos.test.ts` | Hojas `.scss` sin colores literales ni tokens `--is-*`; escala y patrones desde `_tokens`/`_mixins` |
 | `invariantes.test.ts` | Regresiones de bugs ya vistos (OpenAPI, flicker, auth, conn, spec por defecto) |
 
 El patrón de fallo de este stack es siempre el mismo: **el artefacto se genera

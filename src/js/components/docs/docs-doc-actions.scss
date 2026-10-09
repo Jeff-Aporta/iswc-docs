@@ -1,9 +1,8 @@
 /* docs-doc-actions — pastilla descarga + recarga. */
-
 :host {
   display: inline-flex;
   align-items: center;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-family: var(--iswc-font-sans);
 }
 
 .grupo {

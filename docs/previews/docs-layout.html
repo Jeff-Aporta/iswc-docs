@@ -24,13 +24,13 @@
 
     const zona = (texto, fondo) => {
       const d = document.createElement('div');
-      d.style.cssText = 'padding:1rem;font-size:.875rem;color:var(--is-color-text-2);background:' + fondo;
+      d.style.cssText = 'padding:1rem;font-size:.875rem;color:var(--iswc-text-soft);background:' + fondo;
       d.textContent = texto;
       return d;
     };
 
     const layout = document.createElement('docs-layout');
-    layout.style.cssText = 'display:block;height:26rem;border:1px solid var(--is-color-border);border-radius:12px;overflow:hidden';
+    layout.style.cssText = 'display:block;height:26rem;border:1px solid var(--iswc-border);border-radius:12px;overflow:hidden';
 
     const cab = zona('Cabecera del driver', 'transparent');
     cab.slot = 'cabecera';

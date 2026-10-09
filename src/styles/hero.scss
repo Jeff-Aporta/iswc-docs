@@ -5,12 +5,11 @@
  * `.doc--inicio`: aquí el hero es la página entera, no una sección dentro
  * de un layout de lectura.
  */
-
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--is-bg, #0c0f12);
-  color: var(--is-text, #e6edf3);
+  background: var(--iswc-bg);
+  color: var(--iswc-text);
 }
 
 .hero[hidden] {
@@ -39,7 +38,7 @@ body {
 
 .hero__kicker {
   margin: 0;
-  color: var(--is-accent, #1a6eb0);
+  color: var(--iswc-accent);
   font-size: 0.6875rem;
   font-weight: 680;
   letter-spacing: 0.11em;
@@ -56,7 +55,7 @@ body {
 }
 
 .hero__acento {
-  color: var(--is-accent, #1a6eb0);
+  color: var(--iswc-accent);
 }
 
 .hero__lede {
@@ -80,7 +79,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.7rem 1.1rem;
-  border: 1px solid var(--is-border-soft, #1f242b);
+  border: 1px solid var(--iswc-border-soft);
   border-radius: 0.65rem;
   background: transparent;
   color: inherit;
@@ -88,22 +87,20 @@ body {
   text-decoration: none;
   cursor: pointer;
   transition: background 120ms, border-color 120ms;
-}
-
-.hero__cta:hover {
-  background: var(--is-bg-hover, #161a1f);
-  border-color: var(--is-border, #2a3038);
+  &:hover {
+    background: var(--iswc-control-bg-hover);
+    border-color: var(--iswc-border);
+  }
 }
 
 .hero__cta--principal {
-  background: var(--is-accent, #1a6eb0);
-  border-color: var(--is-accent, #1a6eb0);
-  color: #fff;
-}
-
-.hero__cta--principal:hover {
-  background: var(--is-accent-hover, #2080c8);
-  border-color: var(--is-accent-hover, #2080c8);
+  background: var(--iswc-accent);
+  border-color: var(--iswc-accent);
+  color: var(--iswc-on-accent);
+  &:hover {
+    background: var(--iswc-color-brand-strong);
+    border-color: var(--iswc-color-brand-strong);
+  }
 }
 
 .hero__video {
@@ -118,9 +115,9 @@ body {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border: 1px solid var(--is-border-soft, #1f242b);
+  border: 1px solid var(--iswc-border-soft);
   border-radius: 0.85rem;
-  background: var(--is-code-bg, #0f1318);
+  background: var(--iswc-code-bg);
 }
 
 .hero__video figcaption {
@@ -136,7 +133,6 @@ body {
     gap: 1.5rem;
     padding: 1rem;
   }
-
   .hero__video {
     order: -1;
   }

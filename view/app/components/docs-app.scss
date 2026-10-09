@@ -1,13 +1,11 @@
 /* docs-app — shell del visor. */
-
 :host {
   display: block;
   min-height: 100%;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-family: var(--iswc-font-sans);
 }
 
 /* ── Lienzo ─────────────────────────────────────────────────── */
-
 .lienzo {
   padding: clamp(1rem, 2.5vw, 1.75rem) clamp(0.75rem, 2vw, 1.5rem) 4rem;
 }
@@ -28,7 +26,7 @@
 
 .resumen-total {
   margin: 0;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
@@ -36,18 +34,17 @@
 }
 
 /* ── Cargando ───────────────────────────────────────────────── */
-
 .cargando {
   display: grid;
   place-items: center;
   gap: 0.85rem;
   min-height: calc(100vh - 4rem);
   margin-block: 2rem;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   text-align: center;
-
-  iswc-spinner { font-size: 2rem; }
-
+  iswc-spinner {
+    font-size: 2rem;
+  }
   p {
     margin: 0;
     font-size: 0.875rem;
@@ -56,7 +53,6 @@
 }
 
 /* ── Fallo de carga ─────────────────────────────────────────── */
-
 .fallo {
   max-width: min(48rem, 100%);
   margin: clamp(2rem, 8vh, 5rem) auto;
@@ -72,7 +68,7 @@
 
 .fallo-texto {
   margin: 0 0 0.75rem;
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-family: var(--iswc-font-mono);
   font-size: 0.8125rem;
   line-height: 1.55;
   /* El mensaje trae detalle, URL y pista en líneas separadas. */
@@ -85,12 +81,11 @@
   font-size: 0.8125rem;
   line-height: 1.55;
   opacity: 0.75;
-
   code {
     padding: 0.05em 0.3em;
     border-radius: 0.25em;
     background: color-mix(in srgb, currentColor 12%, transparent);
-    font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+    font-family: var(--iswc-font-mono);
     font-size: 0.9em;
   }
 }

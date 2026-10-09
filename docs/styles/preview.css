@@ -7,9 +7,9 @@ body {
 }
 
 body {
-  background: var(--is-bg, #0d1117);
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  background: var(--iswc-bg);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
 }
 
 .preview {
@@ -26,12 +26,12 @@ body {
   display: grid;
   gap: 0.35rem;
   padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--is-border-soft, #1f242b);
+  border-bottom: 1px solid var(--iswc-border-soft);
 }
 
 .preview__tag {
-  color: var(--is-accent, #1a6eb0);
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  color: var(--iswc-accent);
+  font-family: var(--iswc-font-mono);
   font-size: 1rem;
   font-weight: 650;
 }
@@ -74,9 +74,9 @@ body {
   gap: 0.6rem;
   min-width: 0;
   padding: 0.9rem;
-  border: 1px dashed var(--is-border-soft, #1f242b);
+  border: 1px dashed var(--iswc-border-soft);
   border-radius: 0.625rem;
-  background: var(--is-bg-soft, #14181d);
+  background: var(--iswc-bg-soft);
 }
 
 /* ── Registro de eventos ────────────────────────────────────── */
@@ -86,12 +86,12 @@ body {
   gap: 0.2rem;
   padding: 0.5rem 0.65rem;
   border-radius: 0.4rem;
-  background: var(--is-code-bg, #0f1318);
+  background: var(--iswc-code-bg);
   font-size: 0.75rem;
 }
 
 .eventos__linea {
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-family: var(--iswc-font-mono);
   overflow-wrap: anywhere;
 }
 

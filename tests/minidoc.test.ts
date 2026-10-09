@@ -12,7 +12,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import { fuente } from './_lib/rutas.ts';
+import { fuente, publicado } from './_lib/rutas.ts';
 
 const dom = new JSDOM('<!doctype html><html><body></body></html>', {
   url: 'http://localhost/',
@@ -443,8 +443,9 @@ test('todos los chips de método miden lo mismo', async () => {
   const css = readFileSync(fuente('docs-method', 'scss'), 'utf8');
   const host = css.slice(css.indexOf(':host'), css.indexOf('.metodo'));
   assert.match(host, /width:\s*calc\(6ch/, 'el ancho debe basarse en DELETE (6ch) + padding');
-  assert.match(css, /\.metodo::part\(tag\)/, 'el pill de is-tag debe estirarse al ancho del host');
-  assert.match(css, /::part\(tag\)[\s\S]*width:\s*100%/, '::part(tag) width 100%');
+  // Lo que recibe el navegador es la hoja publicada (la fuente puede ir anidada).
+  const publicada = readFileSync(publicado('docs-method', 'css'), 'utf8');
+  assert.match(publicada, /\.metodo::part\(tag\)\{[^}]*width:100%/, 'el pill (::part(tag)) debe estirarse al 100% del host');
 });
 
 /* ── Regresiones de montaje ─────────────────────────────────── */

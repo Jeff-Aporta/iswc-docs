@@ -1,9 +1,7 @@
+@use "mixins" as m;
 /* docs-server — selector de servidor. */
-
 :host {
-  display: block;
-  min-width: 0;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  @include m.host-bloque;
 }
 
 .barra {
@@ -16,18 +14,15 @@
 
 .etiqueta {
   flex-shrink: 0;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.07em;
-  opacity: 0.6;
-  text-transform: uppercase;
+  @include m.rotulo;
 }
 
 .campo {
   flex: 1;
   min-width: min(22rem, 100%);
-  --is-input-font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  --iswc-sans: var(--iswc-font-mono);
 }
 
 .atajos {

@@ -1,9 +1,7 @@
+@use "mixins" as m;
 /* docs-tag-group — un tag con sus operaciones. */
-
 :host {
-  display: block;
-  min-width: 0;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  @include m.host-bloque;
 }
 
 .grupo {
@@ -13,7 +11,6 @@
 }
 
 /* ── Cabecera ───────────────────────────────────────────────── */
-
 .cabecera {
   display: grid;
   gap: 0.25rem;
@@ -24,7 +21,7 @@
   align-items: center;
   margin: 0;
   gap: 0.55rem;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 1.0625rem;
   font-weight: 640;
   letter-spacing: -0.012em;
@@ -32,7 +29,7 @@
 
 .contador {
   padding: 0.05rem 0.4rem;
-  border: 1px solid var(--is-border-soft, #1f242b);
+  border: 1px solid var(--iswc-border-soft);
   border-radius: 999px;
   font-size: 0.6875rem;
   font-variant-numeric: tabular-nums;
@@ -43,14 +40,13 @@
 .descripcion {
   margin: 0;
   max-width: min(100%, var(--docs-measure, 72ch));
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 0.8125rem;
   line-height: 1.55;
   opacity: 0.62;
 }
 
 /* ── Listas ─────────────────────────────────────────────────── */
-
 .operaciones {
   display: grid;
   gap: 0.4rem;
@@ -74,15 +70,14 @@
   align-items: center;
   margin: 0;
   gap: 0.45rem;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 0.75rem;
   font-weight: 620;
   letter-spacing: 0.03em;
   opacity: 0.72;
   text-transform: uppercase;
-
   iswc-icon {
-    color: var(--is-accent, #1a6eb0);
+    color: var(--iswc-accent);
     opacity: 0.85;
   }
 }

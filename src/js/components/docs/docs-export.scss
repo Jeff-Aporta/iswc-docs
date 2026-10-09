@@ -1,9 +1,8 @@
 /* docs-export — menú de descargas (trigger solo icono). */
-
 :host {
   display: inline-flex;
   align-items: center;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-family: var(--iswc-font-sans);
 }
 
 .menu {
@@ -19,7 +18,7 @@
 }
 
 [slot="details"] {
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  font-family: var(--iswc-font-mono);
   font-size: 0.6875rem;
   opacity: 0.55;
 }

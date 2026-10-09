@@ -1,8 +1,7 @@
 /* docs-auth — chip de sesión y diálogo de login. */
-
 :host {
   display: inline-flex;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-family: var(--iswc-font-sans);
 }
 
 .auth {
@@ -11,8 +10,8 @@
 }
 
 .dialogo {
-  --is-dialog-width: min(28rem, calc(100vw - 2rem));
-  --spacing: var(--is-dialog-spacing, 1rem);
+  --iswc-dialog-width: min(28rem, calc(100vw - 2rem));
+  --spacing: var(--iswc-dialog-spacing);
 }
 
 .formulario {
@@ -24,13 +23,14 @@
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
-
-  iswc-input { flex: 1; }
+  iswc-input {
+    flex: 1;
+  }
 }
 
 .nota {
   margin: 0;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 0.75rem;
   line-height: 1.45;
   opacity: 0.6;

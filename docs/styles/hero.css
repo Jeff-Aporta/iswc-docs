@@ -30,7 +30,7 @@
 
 .hero__kicker {
   margin: 0;
-  color: var(--is-accent, #1a6eb0);
+  color: var(--iswc-accent);
   font-size: 0.6875rem;
   font-weight: 680;
   letter-spacing: 0.11em;
@@ -49,7 +49,7 @@
 /* El acento no lleva degradado recortado: sobre tema claro un `background-clip:
    text` mal calibrado deja el texto invisible, y aquí no compensa el riesgo. */
 .hero__acento {
-  color: var(--is-accent, #1a6eb0);
+  color: var(--iswc-accent);
 }
 
 .hero__lede {
@@ -83,13 +83,13 @@
   width: 100%;
   /* 16:9 fijo: evita saltos de layout antes de que el iframe pinte. */
   aspect-ratio: 16 / 9;
-  border: 1px solid var(--is-border-soft, #1f242b);
+  border: 1px solid var(--iswc-border-soft);
   border-radius: 0.85rem;
-  background: var(--is-code-bg, #0f1318);
+  background: var(--iswc-code-bg);
 }
 
 .hero__video figcaption {
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: 0.75rem;
   letter-spacing: 0.02em;
   opacity: 0.5;

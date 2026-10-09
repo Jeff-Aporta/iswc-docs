@@ -1,6 +1,7 @@
+@use "tokens" as t;
+@use "mixins" as m;
 /* Driver de vistas. El armazón de tres zonas lo pone `docs-layout`; aquí solo van la cabecera
    y el índice, que son lo propio de este driver. */
-
 :host {
   display: block;
 }
@@ -9,24 +10,23 @@
   display: grid;
   place-items: center;
   min-height: 60vh;
-  padding: var(--is-space-6, 1.5rem);
+  padding: t.esp(6);
 }
 
 /* ── Cabecera ─────────────────────────────────────────────── */
-
 .cabecera {
   display: flex;
   align-items: center;
-  gap: var(--is-space-3, .75rem);
+  gap: t.esp(3);
 }
 
 .marca {
   display: inline-flex;
   align-items: center;
-  gap: var(--is-space-2, .5rem);
+  gap: t.esp(2);
   padding: 0.2rem 0.4rem;
   border: 0;
-  border-radius: var(--is-radius-sm, 6px);
+  border-radius: var(--iswc-radius-sm);
   background: none;
   color: inherit;
   font: inherit;
@@ -35,13 +35,11 @@
   white-space: nowrap;
   cursor: pointer;
   transition: background-color 120ms ease;
-
   &:hover {
     background: color-mix(in srgb, currentColor 6%, transparent);
   }
-
   &:focus-visible {
-    outline: 2px solid var(--is-color-brand, #1e90ff);
+    outline: 2px solid var(--iswc-color-brand);
     outline-offset: 2px;
   }
 }
@@ -50,7 +48,7 @@
    la vista sin competir con los chips de método, que sí codifican información. */
 .marca-logo {
   font-size: 1.375rem;
-  color: var(--is-color-brand, #1e90ff);
+  color: var(--iswc-color-brand);
 }
 
 .buscar {
@@ -62,43 +60,54 @@
 /* Por debajo de este ancho la cabecera no cabe en una línea: el nombre y la búsqueda se
    reparten arriba y los controles quedan accesibles sin que nada se salga. */
 @media (max-width: 60rem) {
-  .cabecera { flex-wrap: wrap; row-gap: var(--is-space-2, .5rem); }
-  .buscar { order: 9; flex-basis: 100%; max-width: none; margin-inline-end: 0; }
+  .cabecera {
+    flex-wrap: wrap;
+    row-gap: t.esp(2);
+  }
+  .buscar {
+    order: 9;
+    flex-basis: 100%;
+    max-width: none;
+    margin-inline-end: 0;
+  }
 }
 
 @media (max-width: 30rem) {
-  .marca-texto { display: none; }
+  .marca-texto {
+    display: none;
+  }
 }
 
 /* ── Índice ───────────────────────────────────────────────── */
-
-.grupo { margin-bottom: var(--is-space-5, 1.25rem); }
+.grupo {
+  margin-bottom: t.esp(5);
+}
 
 .grupo-titulo {
-  margin: 0 0 var(--is-space-2, .5rem);
-  padding-inline-start: var(--is-space-2, .5rem);
+  margin: 0 0 t.esp(2);
+  padding-inline-start: t.esp(2);
   font-size: .6875rem;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--is-color-text-3, #6b7a8d);
+  color: var(--iswc-text-dim);
 }
 
 .op {
   display: flex;
   align-items: center;
-  gap: var(--is-space-2, .5rem);
+  gap: t.esp(2);
   width: 100%;
   appearance: none;
   border: 0;
   background: transparent;
-  color: var(--is-color-text-2, #9aa7b8);
+  color: var(--iswc-text-soft);
   font: inherit;
   font-size: .875rem;
   line-height: 1.35;
   text-align: start;
   padding: .4rem .5rem;
-  border-radius: var(--is-radius-md, 8px);
+  border-radius: var(--iswc-radius);
   cursor: pointer;
 }
 
@@ -109,7 +118,7 @@
   height: 1rem;
   font-size: .875rem;
   line-height: 1;
-  color: var(--is-color-warning, #e6a23c);
+  color: var(--iswc-color-warning);
   opacity: .95;
 }
 
@@ -118,34 +127,35 @@
   visibility: hidden;
 }
 
-.op:hover { background: var(--is-color-surface-3, #161c27); color: var(--is-color-text, #e6edf7); }
-
-.op:focus-visible {
-  outline: 2px solid var(--is-color-brand, #1e90ff);
-  outline-offset: -2px;
-}
-
-/* El activo se marca con una barra a la izquierda además del fondo: en una lista larga el
+.op {
+  &:hover {
+    background: var(--iswc-bg-elev);
+    color: var(--iswc-text);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--iswc-color-brand);
+    outline-offset: -2px;
+  }
+  /* El activo se marca con una barra a la izquierda además del fondo: en una lista larga el
    cambio de fondo solo se ve si ya estás mirando la fila. */
-.op[data-activo] {
-  position: relative;
-  background: var(--is-color-surface-3, #161c27);
-  color: var(--is-color-text, #e6edf7);
-  font-weight: 600;
-}
-
-.op[data-activo]::before {
-  content: '';
-  position: absolute;
-  inset-block: .25rem;
-  inset-inline-start: 0;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: var(--is-color-brand, #1e90ff);
-}
-
-.op docs-method {
-  flex: 0 0 auto;
+  &[data-activo] {
+    position: relative;
+    background: var(--iswc-bg-elev);
+    color: var(--iswc-text);
+    font-weight: 600;
+  }
+  &[data-activo]::before {
+    content: '';
+    position: absolute;
+    inset-block: .25rem;
+    inset-inline-start: 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--iswc-color-brand);
+  }
+  docs-method {
+    flex: 0 0 auto;
+  }
 }
 
 /* Título + path apilados: el endpoint va debajo como caption. */
@@ -159,33 +169,29 @@
 
 .op-nombre {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include m.una-linea;
 }
 
 .op-path {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  @include m.una-linea;
+  font-family: var(--iswc-font-mono);
   font-size: .6875rem;
   font-weight: 400;
   letter-spacing: 0;
-  color: var(--is-color-text-3, #6b7a8d);
+  color: var(--iswc-text-dim);
   opacity: .85;
 }
 
 .op:hover .op-path,
 .op[data-activo] .op-path {
-  color: var(--is-color-text-2, #9aa7b8);
+  color: var(--iswc-text-soft);
   opacity: 1;
 }
 
 .sin-resultados {
   margin: 0;
-  padding-inline-start: var(--is-space-2, .5rem);
+  padding-inline-start: t.esp(2);
   font-size: .875rem;
-  color: var(--is-color-text-3, #6b7a8d);
+  color: var(--iswc-text-dim);
 }

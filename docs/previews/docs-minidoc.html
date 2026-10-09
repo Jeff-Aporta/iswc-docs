@@ -26,7 +26,7 @@
     // en vez de inyectarle una spec: es el mismo camino que recorre en producción.
     const visor = document.createElement('docs-minidoc');
     visor.conn = null;
-    visor.style.cssText = 'display:block;min-height:70vh;border:1px solid var(--is-color-border);border-radius:12px;overflow:hidden';
+    visor.style.cssText = 'display:block;min-height:70vh;border:1px solid var(--iswc-border);border-radius:12px;overflow:hidden';
     visor.setAttribute('conn', JSON.stringify({ apiBase: location.origin + '/api' }));
 
     montar('docs-minidoc', 'Driver 2 del visor: índice a la izquierda, la operación elegida ocupando la página y la petición fija a la derecha. Alternativa completa a docs-app, no un modo suyo — leen el mismo documento y no comparten estado.', [

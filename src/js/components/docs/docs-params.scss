@@ -1,5 +1,5 @@
+@use "mixins" as m;
 /* docs-params — campos de parámetros. */
-
 :host {
   display: block;
   min-width: 0;
@@ -14,13 +14,10 @@
 
 .titulo {
   margin: 0;
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-sans);
   font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.07em;
-  opacity: 0.6;
-  text-transform: uppercase;
+  @include m.rotulo;
 }
 
 .campos {
@@ -31,11 +28,15 @@
 
 /* Ancho del formulario (no del viewport): 1 col móvil, 2 tablet, máx. 3 desktop. */
 @container docs-params (min-width: 48rem) {
-  .campos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .campos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @container docs-params (min-width: 64rem) {
-  .campos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .campos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .fila {
@@ -55,10 +56,10 @@
   flex-shrink: 0;
   margin-top: 1.65rem;
   padding: 0.1rem 0.4rem;
-  border: 1px solid var(--is-border-soft, #1f242b);
+  border: 1px solid var(--iswc-border-soft);
   border-radius: 0.3rem;
-  color: var(--is-text, #e6edf3);
-  font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+  color: var(--iswc-text);
+  font-family: var(--iswc-font-mono);
   font-size: 0.625rem;
   letter-spacing: 0.03em;
   opacity: 0.5;

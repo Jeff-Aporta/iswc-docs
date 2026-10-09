@@ -1,9 +1,7 @@
+@use "mixins" as m;
 /* docs-info — cabecera del documento. */
-
 :host {
-  display: block;
-  min-width: 0;
-  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  @include m.host-bloque;
 }
 
 .info {
@@ -21,7 +19,7 @@
 
 .titulo {
   margin: 0;
-  color: var(--is-text, #e6edf3);
+  color: var(--iswc-text);
   font-size: clamp(1.25rem, 1.05rem + 1vw, 1.6rem);
   font-weight: 660;
   letter-spacing: -0.02em;
@@ -29,7 +27,7 @@
 }
 
 .version {
-  color: var(--is-text-dim, #8b949e);
+  color: var(--iswc-text-dim);
   font-size: 0.875rem;
   font-weight: 600;
 }

@@ -10,17 +10,17 @@ const CSS = /* css */ `
     margin: 0 0 0.75rem;
     font-size: 0.9375rem;
     line-height: 1.55;
-    color: var(--is-text, #e6edf3);
+    color: var(--iswc-text);
   }
   .docs-confirmar-url {
     display: block;
     margin: 0 0 0.25rem;
     padding: 0.65rem 0.75rem;
-    border: 1px solid var(--is-border-soft, var(--is-border, #1f242b));
+    border: 1px solid var(--iswc-border-soft);
     border-radius: 0.5rem;
-    background: var(--iswc-code-bg, #0f1318);
-    color: var(--is-text, #e6edf3);
-    font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
+    background: var(--iswc-code-bg);
+    color: var(--iswc-text);
+    font-family: var(--iswc-font-mono);
     font-size: 0.75rem;
     line-height: 1.45;
     overflow-wrap: anywhere;
@@ -34,9 +34,9 @@ const CSS = /* css */ `
   }
   iswc-dialog.docs-dialog-try,
   iswc-dialog.docs-dialog-confirm {
-    --is-dialog-width: min(52rem, calc(100vw - 2rem));
-    --is-dialog-spacing: 1.1rem;
-    --spacing: var(--is-dialog-spacing);
+    --iswc-dialog-width: min(52rem, calc(100vw - 2rem));
+    --iswc-dialog-spacing: 1.1rem;
+    --spacing: var(--iswc-dialog-spacing);
   }
   iswc-dialog.docs-dialog-try docs-try {
     display: block;
@@ -62,8 +62,8 @@ export function openHostDialog(opts: { label: string; className?: string; conten
   if (opts.className) dlg.classList.add(...opts.className.split(/\s+/).filter(Boolean));
   const width = opts.width || 'min(52rem, calc(100vw - 2rem))';
   dlg.setAttribute('width', width);
-  dlg.style.setProperty('--is-dialog-width', width);
-  dlg.style.setProperty('--spacing', 'var(--is-dialog-spacing, 1.1rem)');
+  dlg.style.setProperty('--iswc-dialog-width', width);
+  dlg.style.setProperty('--spacing', 'var(--iswc-dialog-spacing)');
   dlg.append(opts.content);
   // Solo el propio iswc-dialog puede cerrarse: tooltips/dropdowns anidados emiten iswc-hide composed.
   dlg.addEventListener('iswc-after-hide', (e: Event) => {
