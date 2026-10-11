@@ -138,7 +138,7 @@ test('resolveTryItBodyExamples toma los `examples` de la spec con su summary', (
       content: { 'application/json': { examples: { a: { summary: 'Caso A', value: { x: 1 } }, vacio: {} } } },
     },
   };
-  const r = resolveTryItBodyExamples(op);
+  const r = resolveTryItBodyExamples(op as any);
   assert.equal(r.length, 1);
   assert.equal(r[0]!.label, 'Caso A');
 });
@@ -148,36 +148,36 @@ test('defaultTryItBodyText no pinta el literal null (schema $ref sin ejemplo)', 
     method: 'query',
     requestBody: { content: { 'application/json': { schema: { $ref: '#/components/schemas/sqlFiltering' } } } },
   };
-  const texto = defaultTryItBodyText(op);
+  const texto = defaultTryItBodyText(op as any);
   assert.deepEqual(JSON.parse(texto), {});
   assert.notEqual(texto.trim(), 'null');
   assert.deepEqual(JSON.parse(formatBodyExample(null)), {});
 });
 
 test('opAllowsAttachments es genérico: plantilla, multipart o dataUrl; sin MIME', () => {
-  assert.equal(opAllowsAttachments({ method: 'query', requestBody: { content: { 'application/json': { schema: { type: 'object' } } } } }), false);
-  assert.equal(opAllowsAttachments({ tryitAttachments: 'conversacion' }), true);
-  assert.equal(opAllowsAttachments({ requestBody: { content: { 'multipart/form-data': { schema: { type: 'object' } } } } }), true);
+  assert.equal(opAllowsAttachments(<any>{ method: 'query', requestBody: { content: { 'application/json': { schema: { type: 'object' } } } } }), false);
+  assert.equal(opAllowsAttachments(<any>{ tryitAttachments: 'conversacion' }), true);
+  assert.equal(opAllowsAttachments(<any>{ requestBody: { content: { 'multipart/form-data': { schema: { type: 'object' } } } } }), true);
   assert.equal(
-    opAllowsAttachments({
+    opAllowsAttachments(<any>{
       requestBody: { content: { 'application/json': { schema: { type: 'object', properties: { dataUrl: { type: 'string' } } } } } },
     }),
     true,
   );
-  assert.deepEqual(attachmentFieldNames({ tryitAttachments: { images: { field: 'imagenes' }, audios: { field: 'audios' } } }), [
+  assert.deepEqual(attachmentFieldNames(<any>{ tryitAttachments: { images: { field: 'imagenes' }, audios: { field: 'audios' } } }, null), [
     'imagenes',
     'audios',
   ]);
 });
 
 test('packTryItBody sin archivos deja el JSON; con archivos no filtra tipo', async () => {
-  const { body, multipart } = await packTryItBody({ method: 'query' }, null, '', []);
+  const { body, multipart } = await packTryItBody(<any>{ method: 'query' }, null, '', []);
   assert.equal(multipart, false);
   assert.equal(body, '{}');
   const f = new File([Uint8Array.from([1, 2, 3])], 'nota.bin', { type: 'application/octet-stream' });
-  const packed = await packTryItBody({ tryitAttachments: { files: { field: 'archivos' } } }, null, '{\n  \n}', [f]);
+  const packed = await packTryItBody(<any>{ tryitAttachments: { files: { field: 'archivos' } } }, null, '{\n  \n}', [f]);
   assert.equal(packed.multipart, false);
-  const obj = JSON.parse(packed.body);
+  const obj = JSON.parse(packed.body as string);
   assert.equal(obj.archivos.length, 1);
   assert.match(obj.archivos[0], /^data:/);
 });
@@ -230,8 +230,8 @@ test('toPostmanCollection traduce {param} a :param y agrupa por tag', async () =
       '/t/{id}': { get: { tags: ['T'], parameters: [{ name: 'q', in: 'query' }], responses: {} } },
     },
   };
-  const col = await toPostmanCollection(spec);
-  assert.equal(col.item.length, 1);
+  const col = await toPostmanCollection(spec as any);
+  assert.equal((col.item as unknown[]).length, 1);
   assert.equal(col.item[0]!.name, 'T');
   const req = col.item[0]!.item[0]!.request;
   assert.deepEqual(req.url.path, ['t', ':id']);
@@ -252,7 +252,7 @@ test('parseIsDocument reconoce el documento IS y la config anidada', () => {
 });
 
 test('buildIsDocument no arrastra las URLs de arranque del host', () => {
-  const doc = buildIsDocument({ ns: 'ISA', specUrl: 'https://h/x.json', cssUrl: 'https://cdn/x.css' }, {});
+  const doc: any = buildIsDocument({ ns: 'ISA', specUrl: 'https://h/x.json', cssUrl: 'https://cdn/x.css' }, {});
   assert.equal(doc.viewer.ns, 'ISA');
   assert.equal(doc.viewer.specUrl, undefined);
   assert.equal(doc.viewer.cssUrl, undefined);
@@ -333,7 +333,7 @@ test('resolveConnConfig toma apiBase, paths y marca del payload base64url', () =
   assert.equal(r.paths.docs, '/custom?v=json');
   assert.equal(r.brand.title, 'ISS PatyIA');
   assert.equal(r.brand.icon, 'mdi:robot');
-  assert.equal(r.spec?.kind, 'config');
+  assert.equal((r.spec as any)?.kind, 'config');
 });
 
 test('resolveConnConfig rellena defaults info + docs y no inventa meta/config legacy', () => {
@@ -468,7 +468,7 @@ test('migrateLegacyNavToS pasa `?op=` plano a la bolsa `?s=`', () => {
 
 test('la búsqueda filtra aunque el tag esté en otra pestaña', () => {
   // `?tab=todo` y un grupo «Terceros» en otra pestaña: con query, debe verse.
-  const grupos = [
+  const grupos: any[] = [
     {
       name: 'Terceros',
       description: '',

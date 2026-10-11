@@ -1,1 +1,1 @@
-const _="2026-10-09T16:51:46Z";export{_ as DOCS_VERSION};
+const _="2026-10-11T15:35:27Z";export{_ as DOCS_VERSION};

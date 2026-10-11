@@ -251,14 +251,17 @@ function buildOperation(catalog: InsoftCatalog, method: string, def: Record<stri
   return op;
 }
 
-/** Construye el `servers` que el visor entiende. */
-function buildServers(apiBase: string): Array<{ url: string; description?: string }> {
-  const base = apiBase.replace(/\/$/, '');
-  return [
-    { url: base, description: 'Activo' },
-    { url: 'http://127.0.0.1:8802/api', description: 'Local (ISS Functions)' },
-    { url: 'https://ayudascp-ia-staging.azurewebsites.net/api', description: 'Web (staging Azure)' },
-  ];
+/**
+ * `servers` del visor: los que declara el documento (`viewer.servers`); sin ellos, solo el
+ * `apiBase` activo. El visor no quema URLs de ningún host.
+ */
+function buildServers(raw: InsoftConfig, apiBase: string): DocsServer[] {
+  const declarados = (raw.viewer as { servers?: unknown } | undefined)?.servers;
+  const servers = Array.isArray(declarados)
+    ? declarados.filter((s): s is DocsServer => !!s && typeof (s as DocsServer).url === 'string' && !!(s as DocsServer).url)
+        .map((s) => ({ url: s.url, ...(typeof s.description === 'string' ? { description: s.description } : {}) }))
+    : [];
+  return servers.length ? servers : [{ url: apiBase.replace(/\/$/, ''), description: 'Activo' }];
 }
 
 /** Convierte `tag.subgroups` (InSoft) en `tag.x-isa-subgroups` (visor). */
@@ -351,7 +354,7 @@ export function parseInsoftConfig(raw: InsoftConfig, apiBase: string): { config:
       version: String(raw.info?.version ?? '1.0.0'),
       description: raw.info?.description as string | undefined,
     },
-    servers: buildServers(apiBase),
+    servers: buildServers(raw, apiBase),
     tags: buildTags(raw.tags) as DocsTag[],
     paths: paths as DocsSpec['paths'],
     components: {

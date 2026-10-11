@@ -49,7 +49,7 @@ function montar(tag: string, props: unknown): ShadowRoot {
   return node.shadowRoot!;
 }
 
-const op = (over = {}) => ({
+const op = (over = {}): any => ({
   path: '/tercero/{id}',
   method: 'get',
   operationId: 'obtener',
@@ -66,38 +66,38 @@ test('docs-method pinta el verbo en mayúsculas', () => {
 
 test('docs-path marca los {parámetros} en un span aparte', () => {
   const root = montar('docs-path', { path: '/tercero/{id}' });
-  assert.equal(root.querySelector<HTMLElement>('.param')?.textContent, '{id}');
+  assert.equal(root.querySelector<any>('.param')?.textContent, '{id}');
 });
 
 test('docs-json monta is-code sin botón de copiar interno', () => {
   const root = montar('docs-json', { value: '{\n  "a": 1,\n  "b": "x"\n}', lang: 'json' });
-  const code = root.querySelector<HTMLElement>('iswc-code')!;
+  const code = root.querySelector<any>('iswc-code')!;
   assert.ok(code, 'falta is-code');
   assert.equal(code.getAttribute('lang'), 'json');
   assert.equal(code.getAttribute('readonly'), '');
-  assert.equal(root.querySelector<HTMLElement>('iswc-copy-button'), null);
+  assert.equal(root.querySelector<any>('iswc-copy-button'), null);
   assert.equal(code.value ?? code.getAttribute('value'), '{\n  "a": 1,\n  "b": "x"\n}');
 });
 
 test('docs-json no ejecuta HTML que venga en el cuerpo', () => {
   const root = montar('docs-json', { value: '<img src=x onerror=alert(1)>', lang: 'plaintext' });
   assert.equal(root.querySelector<HTMLImageElement>('img'), null);
-  const code = root.querySelector<HTMLElement>('iswc-code')!;
+  const code = root.querySelector<any>('iswc-code')!;
   assert.equal(code?.value ?? code?.getAttribute('value'), '<img src=x onerror=alert(1)>');
 });
 
 test('docs-json acepta lang shell para cURL', () => {
   const curl = 'curl -X PUT \'https://x/api\' \\\n  -H \'Content-Type: application/json\'';
   const root = montar('docs-json', { value: curl, lang: 'shell' });
-  assert.equal(root.querySelector<HTMLElement>('iswc-code')?.getAttribute('lang'), 'shell');
+  assert.equal(root.querySelector<any>('iswc-code')?.getAttribute('lang'), 'shell');
 });
 
 test('docs-doc monta is-md-render con el markdown', () => {
   const root = montar('docs-doc', { markdown: '# Hola\n\nUn **párrafo**.' });
-  const md = root.querySelector<HTMLElement>('iswc-md-render.md')!;
+  const md = root.querySelector<any>('iswc-md-render.md')!;
   assert.ok(md);
   assert.ok(md.hasAttribute('readonly'));
-  const source = md.querySelector<HTMLElement>('script[type="text/markdown"]')!;
+  const source = md.querySelector('script[type="text/markdown"]')!;
   assert.ok(source);
   assert.equal(source.textContent, '# Hola\n\nUn **párrafo**.');
 });
@@ -111,24 +111,24 @@ test('docs-params pinta un campo por parámetro y ninguno si la lista está vac�
     values: {},
     titulo: 'Query',
   });
-  assert.equal(con.querySelectorAll<HTMLElement>('.fila').length, 2);
+  assert.equal(con.querySelectorAll<any>('.fila').length, 2);
   // El enum va a is-select; el resto a is-input.
-  assert.ok(con.querySelector<HTMLElement>('iswc-select'));
-  assert.ok(con.querySelector<HTMLElement>('iswc-input'));
+  assert.ok(con.querySelector<any>('iswc-select'));
+  assert.ok(con.querySelector<any>('iswc-input'));
 
   const sin = montar('docs-params', { params: [], values: {}, titulo: 'Query' });
-  assert.equal(sin.querySelector<HTMLElement>('.bloque'), null);
+  assert.equal(sin.querySelector<any>('.bloque'), null);
 });
 
 test('docs-params emite docs-param-change al escribir', () => {
-  const node = dom.window.document.createElement('docs-params');
+  const node = dom.window.document.createElement('docs-params') as any;
   dom.window.document.body.append(node);
   node.props = { params: [{ name: 'a', in: 'query', schema: { type: 'string' } }], values: {}, titulo: '' };
 
   const visto = [];
-  node.addEventListener('docs-param-change', (e) => visto.push(e.detail));
+  node.addEventListener('docs-param-change', (e: any) => visto.push(e.detail));
 
-  const input = node.shadowRoot!.querySelector<HTMLElement>('iswc-input');
+  const input = node.shadowRoot!.querySelector('iswc-input');
   input.value = 'hola';
   input.dispatchEvent(new dom.window.Event('iswc-input', { bubbles: true }));
 
@@ -137,20 +137,20 @@ test('docs-params emite docs-param-change al escribir', () => {
 
 test('docs-responses lista un desplegable por código', () => {
   const root = montar('docs-responses', { responses: op().responses });
-  assert.equal(root.querySelectorAll<HTMLElement>('.respuesta').length, 2);
-  assert.equal(root.querySelector<HTMLElement>('[data-code="404"]')?.getAttribute('data-code'), '404');
+  assert.equal(root.querySelectorAll<any>('.respuesta').length, 2);
+  assert.equal(root.querySelector<any>('[data-code="404"]')?.getAttribute('data-code'), '404');
 });
 
 test('docs-operation cerrada no monta el cuerpo (coste diferido)', () => {
   const root = montar('docs-operation', { op: op(), spec: {}, abierto: false, tab: 'try' });
-  assert.ok(root.querySelector<HTMLElement>('docs-method'), 'falta el chip de método');
-  assert.equal(root.querySelector<HTMLElement>('.cuerpo'), null, 'el cuerpo no debe existir cerrado');
+  assert.ok(root.querySelector<any>('docs-method'), 'falta el chip de método');
+  assert.equal(root.querySelector<any>('.cuerpo'), null, 'el cuerpo no debe existir cerrado');
 });
 
 test('docs-operation abierta monta pestañas y contenido', () => {
   const root = montar('docs-operation', { op: op(), spec: {}, abierto: true, tab: 'try' });
-  assert.equal(root.querySelectorAll<HTMLElement>('.pestana').length, 3);
-  assert.ok(root.querySelector<HTMLElement>('docs-try'), 'la pestaña Probar no montó docs-try');
+  assert.equal(root.querySelectorAll<any>('.pestana').length, 3);
+  assert.ok(root.querySelector<any>('docs-try'), 'la pestaña Probar no montó docs-try');
 });
 
 test('docs-operation marca con candado lo que exige JWT', () => {
@@ -158,10 +158,10 @@ test('docs-operation marca con candado lo que exige JWT', () => {
   const conAuth = montar('docs-operation', {
     op: op({ security: [{ Bearer: [] }] }), spec, authEnabled: true, abierto: false, tab: 'try',
   });
-  assert.ok(conAuth.querySelector<HTMLElement>('.candado'));
+  assert.ok(conAuth.querySelector<any>('.candado'));
 
   const sinAuth = montar('docs-operation', { op: op(), spec, authEnabled: true, abierto: false, tab: 'try' });
-  assert.equal(sinAuth.querySelector<HTMLElement>('.candado'), null);
+  assert.equal(sinAuth.querySelector<any>('.candado'), null);
 });
 
 test('docs-tag-group aplana subgrupos en orden sin divisores', () => {
@@ -180,10 +180,10 @@ test('docs-tag-group aplana subgrupos en orden sin divisores', () => {
       ],
     },
   });
-  assert.equal(root.querySelectorAll<HTMLElement>('.subgrupo').length, 0);
-  const ids = [...root.querySelectorAll<HTMLElement>('docs-operation')].map((o) => o.props.op.operationId);
+  assert.equal(root.querySelectorAll<any>('.subgrupo').length, 0);
+  const ids = [...root.querySelectorAll<any>('docs-operation')].map((o) => o.props.op.operationId);
   assert.deepEqual(ids, ['a', 'b'], 'debe respetar el orden de subgrupos, no el de operations');
-  assert.match(root.querySelector<HTMLElement>('.titulo').textContent, /Terceros/);
+  assert.match(root.querySelector<any>('.titulo').textContent, /Terceros/);
 });
 
 test('docs-tag-group sin subgrupos lista plano', () => {
@@ -191,12 +191,12 @@ test('docs-tag-group sin subgrupos lista plano', () => {
     spec: {},
     group: { name: 'Sistema', description: '', meta: {}, operations: [op()], subgroups: [] },
   });
-  assert.equal(root.querySelectorAll<HTMLElement>('.subgrupo').length, 0);
-  assert.equal(root.querySelectorAll<HTMLElement>('docs-operation').length, 1);
+  assert.equal(root.querySelectorAll<any>('.subgrupo').length, 0);
+  assert.equal(root.querySelectorAll<any>('docs-operation').length, 1);
 });
 
 test('docs-info sin `info` no pinta cabecera vacía', () => {
-  assert.equal(montar('docs-info', { spec: {} }).querySelector<HTMLElement>('.info'), null);
+  assert.equal(montar('docs-info', { spec: {} }).querySelector<any>('.info'), null);
   assert.match(montar('docs-info', { spec: { info: { title: 'X', version: '1' } } }).textContent, /X/);
 });
 
@@ -204,7 +204,7 @@ test('todo componente pintado enlaza su .css hermano', () => {
   // El link se pone después de rellenar el shadow; si alguien lo pusiera antes,
   // el vaciado se lo llevaría y el componente saldría sin estilos.
   const root = montar('docs-method', { method: 'get' });
-  const link = root.querySelector<HTMLElement>('link[rel="stylesheet"]')!;
+  const link = root.querySelector<any>('link[rel="stylesheet"]')!;
   assert.ok(link, 'sin <link> de CSS');
   assert.match(link.getAttribute('href'), /docs-method\.css$/);
 });

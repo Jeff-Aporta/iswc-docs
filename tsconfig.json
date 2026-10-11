@@ -22,7 +22,6 @@
     "src/types/**/*.d.ts",
     "src/js/**/*.ts",
     "view/**/*.ts",
-    "docs/**/*.ts",
-    "tests/**/*.ts"
+    "docs/**/*.ts"
   ]
 }

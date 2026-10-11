@@ -152,6 +152,43 @@ export function resolveBootConfig(connDirecto?: DocsConn | null, docDirecto?: un
   return config;
 }
 
+/**
+ * `documento.schema.js` publicado junto a este módulo. Se importa por URL calculada para que el
+ * bundler no meta zod en `all.min.js`. ponytail: dos layouts (`js/core/config.js` suelto o el
+ * bundle en la raíz del CDN); si aparece un tercero, pasar la raíz del CDN explícita.
+ */
+const URL_SCHEMA = new URL(
+  import.meta.url.includes('/js/core/') ? '../dominio/documento.schema.js' : './js/dominio/documento.schema.js',
+  import.meta.url,
+).href;
+
+/** Problemas del documento InSoft según el schema. Si el schema no carga, no bloquea el visor. */
+async function erroresInsoft(raw: unknown): Promise<string[]> {
+  try {
+    const mod = (await import(URL_SCHEMA)) as typeof import('../dominio/documento.schema.js');
+    return mod.validarDocumento(raw).errores;
+  } catch (e) {
+    console.warn('[iswc-docs] no se pudo cargar el schema del documento:', (e as Error)?.message ?? e);
+    return [];
+  }
+}
+
+/**
+ * Materializa y, si es documento InSoft, lo valida. Inválido y sin materializar → error con cada
+ * problema y su ruta (lo pinta el visor). Materializable con problemas → aviso en consola: un
+ * documento viejo sigue cargando.
+ */
+async function materializarValidado(config: DocsConfig, raw: unknown, origen: string): Promise<{ config: DocsConfig; spec: DocsSpec } | null> {
+  const r = materializeEmbeddedSpec(config, raw);
+  if (!raw || typeof raw !== 'object' || (raw as { kind?: unknown }).kind !== 'config') return r;
+  const errores = await erroresInsoft(raw);
+  if (!r) {
+    throw new Error(`ISWC Docs: el documento InSoft de ${origen} no es válido:\n${errores.map((e) => `· ${e}`).join('\n')}`);
+  }
+  if (errores.length) console.warn(`[iswc-docs] el documento InSoft de ${origen} trae ${errores.length} problema(s):\n${errores.join('\n')}`);
+  return r;
+}
+
 async function fetchJsonNetwork(url: string): Promise<unknown> {
   let res: Response;
   try {
@@ -183,7 +220,7 @@ export async function loadViewerDocument(config: DocsConfig, opts: { force?: boo
   }
 
   if (config.spec && typeof config.spec === 'object') {
-    const materializado = materializeEmbeddedSpec(config, config.spec);
+    const materializado = await materializarValidado(config, config.spec, '`doc`');
     if (materializado) return materializado;
     throw new Error('ISWC Docs: el `doc`/`spec` embebido no es documento InSoft, ni OpenAPI 3, ni documento IS.');
   }
@@ -198,7 +235,7 @@ export async function loadViewerDocument(config: DocsConfig, opts: { force?: boo
   if (opts.force) clearJsonCache(url);
 
   const data = await fetchJson(url, { force: opts.force });
-  const materializado = materializeEmbeddedSpec({ ...config, specUrl: url }, data);
+  const materializado = await materializarValidado({ ...config, specUrl: url }, data, url);
   if (materializado) {
     return { config: { ...materializado.config, specUrl: url }, spec: materializado.spec };
   }

@@ -32,7 +32,7 @@ test('si llega doc, conn se ignora por completo', async () => {
   globalThis.location = dom.window.location;
 
   let fetches = 0;
-  globalThis.fetch = async () => { fetches += 1; throw new Error('no fetch'); };
+  (globalThis as any).fetch = async () => { fetches += 1; throw new Error('no fetch'); };
 
   const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const boot = resolveBootConfig(
@@ -59,7 +59,7 @@ test('atributo doc= materializa sin fetch ni conn', async () => {
   globalThis.location = dom.window.location;
 
   let fetches = 0;
-  globalThis.fetch = async () => { fetches += 1; throw new Error('no fetch'); };
+  (globalThis as any).fetch = async () => { fetches += 1; throw new Error('no fetch'); };
 
   const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const boot = resolveBootConfig(null, sample);
@@ -79,7 +79,7 @@ test('?conn= con spec quemado no hace fetch', async () => {
     spec: sample,
   }));
   let fetches = 0;
-  globalThis.fetch = async () => { fetches += 1; throw new Error('no fetch'); };
+  (globalThis as any).fetch = async () => { fetches += 1; throw new Error('no fetch'); };
 
   const { resolveBootConfig, loadViewerDocument } = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const boot = resolveBootConfig();
@@ -92,7 +92,7 @@ test('?conn= con spec quemado no hace fetch', async () => {
 test('sin spec quemado cae a default /docs?v=json', async () => {
   mountDom(buildUrl({ apiBase: 'https://h/api', title: 'Sin spec' }));
   let fetched = '';
-  globalThis.fetch = async (req: string) => {
+  (globalThis as any).fetch = async (req: string) => {
     fetched = String(req);
     return new Response(JSON.stringify(sample), { status: 200 });
   };
@@ -110,7 +110,7 @@ test('paths.docs personalizado se respeta', async () => {
     paths: { docs: '/mi/doc.json' },
   }));
   let fetched = '';
-  globalThis.fetch = async (req: string) => {
+  (globalThis as any).fetch = async (req: string) => {
     fetched = String(req);
     return new Response(JSON.stringify({ openapi: '3.0.3', paths: {} }), { status: 200 });
   };
@@ -146,7 +146,7 @@ test('spec quemado gana sobre specUrl del script (no pide config.json legacy)', 
   globalThis.location = dom.window.location;
 
   let fetched = '';
-  globalThis.fetch = async (req: string) => { fetched = String(req); return new Response('{}', { status: 404 }); };
+  (globalThis as any).fetch = async (req: string) => { fetched = String(req); return new Response('{}', { status: 404 }); };
 
   const cfgMod = await import('../dist/cdn/js/core/config.js?bust=' + Math.random());
   const cfg = cfgMod.resolveBootConfig();

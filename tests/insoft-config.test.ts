@@ -46,34 +46,34 @@ test('los tags convierten `subgroups` a la extensión x-isa-subgroups', () => {
 
 test('las operaciones exponen x-iss-doc-md desde catalog.docs', () => {
   const { spec } = parseInsoftConfig(SAMPLE, 'https://h/api');
-  const op = spec.paths!['/system/openai']?.get;
-  assert.ok(op, 'GET /system/openai debe existir');
+  const op = spec.paths!['/sistema/cfg']?.get;
+  assert.ok(op, 'GET /sistema/cfg debe existir');
   assert.ok(op['x-iss-doc-md'], 'markdown inyectado desde catalog.docs');
-  assert.match(op['x-iss-doc-md'], /SYS_VALUES/);
+  assert.match(String(op['x-iss-doc-md']), /SYS_VALUES/);
 });
 
 test('x-iss-doc-md quita backticks sobre-escapados del catalog IS', () => {
   const raw = structuredClone(SAMPLE);
-  raw.catalog.docs.systemOpenai = '## Doc\n\n\\`\\`\\`http\nGET /api/x\n\\`\\`\\`\n';
+  raw.catalog.docs['sistema-cfg'] = '## Doc\n\n\\`\\`\\`http\nGET /api/x\n\\`\\`\\`\n';
   const { spec } = parseInsoftConfig(raw, 'https://h/api');
-  const md = spec.paths!['/system/openai']!.get['x-iss-doc-md'];
+  const md = String(spec.paths!['/sistema/cfg']!.get['x-iss-doc-md']);
   assert.match(md, /```http\nGET \/api\/x\n```/);
   assert.equal(md.includes('\\`'), false, 'no debe quedar barra delante del backtick');
 });
 
 test('el template "ok" genera respuestas 200 con el envelope InSoft', () => {
   const { spec } = parseInsoftConfig(SAMPLE, 'https://h/api');
-  const op = spec.paths!['/system/openai']!.get;
+  const op = spec.paths!['/sistema/cfg']!.get;
   const r200 = op.responses['200'];
   assert.ok(r200, 'debe haber respuesta 200');
-  assert.match(r200.description, /SYS_VALUES\.openai/);
+  assert.match(r200.description, /SYS_VALUES.runtime/);
   assert.ok(r200.content['application/json']!.schema, 'schema del envelope');
   assert.ok(r200.content['application/json']!.example, 'example resuelto desde catalog.payloads');
 });
 
 test('el template "authForbidden" añade 401 y 403 además del 200', () => {
   const { spec } = parseInsoftConfig(SAMPLE, 'https://h/api');
-  const put = spec.paths!['/system/openai']!.put;
+  const put = spec.paths!['/sistema/cfg']!.put;
   assert.ok(put.security, 'security debe estar declarado');
   assert.deepEqual(put.security, [{ Bearer: [] }]);
   assert.ok(put.responses['200'], '200');
@@ -83,7 +83,7 @@ test('el template "authForbidden" añade 401 y 403 además del 200', () => {
 
 test('requestBody.bodyKey resuelve el ejemplo desde catalog.requestBodies', () => {
   const { spec } = parseInsoftConfig(SAMPLE, 'https://h/api');
-  const put = spec.paths!['/system/openai']!.put;
+  const put = spec.paths!['/sistema/cfg']!.put;
   assert.ok(put.requestBody, 'PUT con body');
   assert.ok(put.requestBody.content['application/json']!.schema, 'schema inline del body');
 });
@@ -103,7 +103,7 @@ test('QUERY con parameters in:query los mueve al body, no a la URL', () => {
     },
     catalog: { docs: {} },
   }, 'https://h');
-  const op = spec.paths!['/metricas']!.query;
+  const op: any = spec.paths!['/metricas']!.query;
   assert.ok(op, 'debe seguir siendo método query, no get');
   assert.equal((op.parameters ?? []).some((p) => p.in === 'query'), false);
   assert.equal(op.requestBody.content['application/json']!.example.dias, 30);
@@ -131,7 +131,7 @@ test('QUERY con requestBody OpenAPI (content) no pierde el schema', () => {
     },
     catalog: { docs: {} },
   }, 'https://h');
-  const media = spec.paths!['/metricas']!.query.requestBody.content['application/json'];
+  const media: any = spec.paths!['/metricas']!.query.requestBody.content['application/json'];
   assert.equal(media.example.dias, 30);
   assert.ok(media.schema.properties.dias, 'el visor pintaba body vacío y dias como ?dias=');
 });
@@ -144,7 +144,7 @@ test('el viewer del ISS se traduce a DocsConfig del visor', () => {
   assert.equal(config.serverSelect, false);
   assert.equal(config.auth.enabled, true);
   assert.equal(config.auth.loginKind, 'portal');
-  assert.equal(config.auth.loginPath, '/api/auth/token');
+  assert.equal(config.auth.loginPath, '/api/auth/portal-login');
 });
 
 test('la spec sintetizada es válida para los módulos puros del visor', async () => {
@@ -170,7 +170,7 @@ test('conn.spec InSoft del fixture termina con un spec listo (sin red a config.j
   const sample = JSON.parse(readFileSync(new URL('./fixtures/insoft-config.sample.json', import.meta.url), 'utf8'));
   const cfgMod = await import('../dist/cdn/js/core/config.js');
 
-  globalThis.fetch = async () => {
+  (globalThis as any).fetch = async () => {
     throw new Error('no debe haber fetch a /system/swagger/config.json');
   };
 
@@ -187,4 +187,71 @@ test('conn.spec InSoft del fixture termina con un spec listo (sin red a config.j
   assert.ok(spec.paths && Object.keys(spec.paths).length > 0, 'spec materializada del JSON quemado');
   assert.equal(config.brand.title, 'ISS PatyIA');
   assert.equal(spec.openapi, undefined, 'la spec InSoft no lleva openapi');
+});
+/* ── servers: los declara el documento, el visor no quema hosts ─────────── */
+
+test('viewer.servers del documento son los servers del spec', () => {
+  const { spec } = parseInsoftConfig(SAMPLE, 'https://otro/api');
+  assert.deepEqual(spec.servers, SAMPLE.viewer.servers);
+});
+
+test('sin viewer.servers queda solo el apiBase activo', () => {
+  const raw = structuredClone(SAMPLE);
+  delete raw.viewer.servers;
+  const { spec } = parseInsoftConfig(raw, 'https://h/api/');
+  assert.deepEqual(spec.servers, [{ url: 'https://h/api', description: 'Activo' }]);
+});
+
+test('el template raw sigue traduciendo items (SSE y HTML)', () => {
+  const { spec } = parseInsoftConfig(SAMPLE, 'https://h/api');
+  const post: any = spec.paths!['/conversacion']!.post;
+  assert.match(post.responses['200'].description, /text\/event-stream/);
+  assert.ok(post.responses['401'], '401 declarado en items');
+  assert.match((spec.paths!['/docs']!.get as any).responses['200'].description, /text\/html/);
+});
+
+/* ── validarDocumento: el contrato Zod del consumidor ───────────────────── */
+
+const { validarDocumento } = await import('../dist/cdn/js/dominio/documento.schema.js');
+
+test('validarDocumento acepta el documento vigente', () => {
+  assert.deepEqual(validarDocumento(SAMPLE), { ok: true, errores: [] });
+});
+
+test('validarDocumento tolera claves que el visor no lee (documentos viejos)', () => {
+  const raw = structuredClone(SAMPLE);
+  raw.protocol = { serverUrl: '/api' };
+  raw.viewer.app = 'doc-viewer';
+  assert.equal(validarDocumento(raw).ok, true);
+});
+
+test('validarDocumento señala cada problema con su ruta', () => {
+  const raw = structuredClone(SAMPLE);
+  raw.paths['/sistema/cfg'].get.doc = 'no-existe';
+  raw.paths['/sistema/cfg'].put.responses.template = 'sse';
+  raw.paths['/docs'].get.summary = '';
+  const { ok, errores } = validarDocumento(raw);
+  assert.equal(ok, false);
+  const todo = errores.join('\n');
+  assert.match(todo, /paths › \/sistema\/cfg › put › responses › template/);
+  assert.match(todo, /paths › \/docs › get › summary/);
+});
+
+test('validarDocumento cruza las referencias al catálogo', () => {
+  const raw = structuredClone(SAMPLE);
+  raw.paths['/sistema/cfg'].get.doc = 'no-existe';
+  raw.paths['/sistema/cfg'].get.subgroup = 'otro';
+  raw.viewer.nav[0].tags = ['Fantasma'];
+  const todo = validarDocumento(raw).errores.join('\n');
+  assert.match(todo, /paths › \/sistema\/cfg › get › doc: «no-existe» no existe en catalog\.docs/);
+  assert.match(todo, /paths › \/sistema\/cfg › get › subgroup/);
+  assert.match(todo, /viewer › nav › 0 › tags › 0/);
+});
+
+test('un documento InSoft sin paths no se traga: el error trae la ruta', async () => {
+  const cfgMod = await import('../dist/cdn/js/core/config.js');
+  await assert.rejects(
+    cfgMod.loadViewerDocument({ apiBase: 'https://h/api', spec: { kind: 'config', version: 1, info: { title: 'X' } } }),
+    /no es válido:[\s\S]*paths/,
+  );
 });

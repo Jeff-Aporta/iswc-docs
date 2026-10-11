@@ -1,13 +1,20 @@
 {
   "compilerOptions": {
-    "lib": ["ES2022", "DOM", "DOM.Iterable", "deno.ns"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable",
+      "deno.ns"
+    ],
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true
   },
   "nodeModulesDir": "auto",
-  "unstable": ["sloppy-imports"],
+  "unstable": [
+    "sloppy-imports"
+  ],
   "imports": {
     "@browserbasehq/stagehand": "npm:@browserbasehq/stagehand@4.1.0",
     "@types/node": "npm:@types/node@^22.20.5",
@@ -22,7 +29,11 @@
     "build": "deno run -A scripts/build.ts",
     "dev": "deno run -A scripts/build.ts --watch",
     "serve": "deno run -A jsr:@std/http@1/file-server -p 4190 --host 127.0.0.1",
-    "check": "deno check scripts/ && deno run -A npm:typescript@5.9.3/tsc --noEmit -p tsconfig.json",
-    "test": "deno task build && deno test -A --no-check tests/"
+    "check": "deno check scripts/ tests/e2e/ && deno run -A npm:typescript@5.9.3/tsc --noEmit -p tsconfig.json && deno run -A npm:typescript@5.9.3/tsc --noEmit -p tsconfig.tests.json",
+    "test": "deno task build && deno test -A --no-check --ignore=tests/e2e tests/",
+    "test:all": "deno test -A --no-check tests/pines.test.ts && deno task test && deno task test:e2e",
+    "pin": "deno run -A src/vendor/is-webcomponents/tools/pin-update.mjs --raices=index.html,src,docs,demo,view",
+    "vendor:iswc": "deno run -A scripts/vendor-iswc-tools.mjs",
+    "test:e2e": "deno test -A --no-check tests/e2e/"
   }
 }

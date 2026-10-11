@@ -129,7 +129,7 @@ test('resolveBootConfig con conn.spec no hereda specUrl del script ni inventa co
 
 test('filterGroupsByQuery no exige tab activa cuando hay query', async () => {
   const { filterGroupsByQuery } = await import('../dist/cdn/js/dominio/nav.js');
-  const grupos = [
+  const grupos: any[] = [
     {
       name: 'Terceros',
       description: '',

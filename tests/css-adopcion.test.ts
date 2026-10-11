@@ -22,7 +22,8 @@ for (const k of ['window', 'document', 'HTMLElement', 'customElements', 'CustomE
 }
 
 /* Hojas construibles emuladas. */
-globalThis.CSSStyleSheet = class {
+(globalThis as any).CSSStyleSheet = class {
+  cssText: string;
   constructor() {
     this.cssText = '';
   }
@@ -43,7 +44,7 @@ Object.defineProperty(dom.window.ShadowRoot.prototype, 'adoptedStyleSheets', {
 
 /* Red instrumentada: lo que se mide es cuántas veces se pide cada hoja. */
 let peticiones = [];
-globalThis.fetch = async (url: string) => {
+(globalThis as any).fetch = async (url: string) => {
   peticiones.push(String(url));
   return { ok: true, status: 200, text: async () => '.x{color:red}' };
 };
@@ -70,14 +71,14 @@ test('la primera adopción enlaza el .css hermano y lo descarga una vez', async 
 
   // Respaldo síncrono: sin él, el primer componente de la página se pintaría
   // sin estilos mientras baja el texto.
-  const link = shadow.querySelector<HTMLElement>('link[rel="stylesheet"]')!;
+  const link = shadow.querySelector<any>('link[rel="stylesheet"]')!;
   assert.ok(link, 'falta el <link> de respaldo en la primera adopción');
   assert.equal(link.getAttribute('href'), HOJA);
   assert.deepEqual(peticiones, [HOJA]);
 
   await asentar();
   assert.equal(shadow.adoptedStyleSheets.length, 1, 'la hoja construida no se adoptó');
-  assert.equal(shadow.querySelector<HTMLElement>('link[rel="stylesheet"]'), null, 'el <link> de respaldo debió retirarse');
+  assert.equal(shadow.querySelector<any>('link[rel="stylesheet"]'), null, 'el <link> de respaldo debió retirarse');
 });
 
 test('adopciones posteriores son síncronas, sin <link> ni segunda descarga', async () => {
@@ -88,7 +89,7 @@ test('adopciones posteriores son síncronas, sin <link> ni segunda descarga', as
   // Nada de esperar: esto es lo que evita el frame sin estilos al recrear
   // decenas de shadow roots en un cambio de sección.
   assert.equal(shadow.adoptedStyleSheets.length, 1, 'la hoja cacheada no se adoptó en el acto');
-  assert.equal(shadow.querySelector<HTMLElement>('link[rel="stylesheet"]'), null, 'no debe volver a enlazarse la hoja');
+  assert.equal(shadow.querySelector<any>('link[rel="stylesheet"]'), null, 'no debe volver a enlazarse la hoja');
   assert.deepEqual(peticiones, [], 'la hoja cacheada no debe volver a pedirse');
 });
 
@@ -110,7 +111,7 @@ test('repintar el shadow no se lleva la hoja', () => {
   adoptCss(shadow, MODULO);
 
   assert.deepEqual(shadow.adoptedStyleSheets, [hoja], 'repintar duplicó o perdió la hoja');
-  assert.equal(shadow.querySelector<HTMLElement>('link[rel="stylesheet"]'), null);
+  assert.equal(shadow.querySelector<any>('link[rel="stylesheet"]'), null);
 });
 
 test('N shadow roots en paralelo comparten una sola descarga', async () => {

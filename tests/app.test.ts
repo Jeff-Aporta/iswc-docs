@@ -30,7 +30,7 @@ globalThis.sessionStorage = dom.window.sessionStorage;
 globalThis.localStorage = dom.window.localStorage;
 
 // La spec se sirve desde memoria: el test no depende de que haya un servidor.
-globalThis.fetch = async (url: string) => {
+(globalThis as any).fetch = async (url: string) => {
   if (String(url).includes('openapi.sample.json')) {
     return new Response(JSON.stringify(spec), {
       status: 200,
@@ -67,7 +67,7 @@ await new Promise((r) => setTimeout(r, 30));
 // `docs-app` abre su shadow en el constructor: si no estuviera, el componente
 // no habria arrancado y el test debe romper aqui, no en cada assert.
 const root = app.shadowRoot!;
-const $ = (sel: string) => root.querySelector<HTMLElement>(sel);
+const $ = (sel: string) => root.querySelector<any>(sel);
 
 test('el shell termina de cargar y pinta el visor', () => {
   assert.equal($('.cargando'), null, 'se quedó en «cargando»');
@@ -78,23 +78,23 @@ test('el shell termina de cargar y pinta el visor', () => {
 });
 
 test('agrupa las operaciones de la spec de demo', () => {
-  const grupos = root.querySelectorAll<HTMLElement>('docs-tag-group');
+  const grupos = root.querySelectorAll<any>('docs-tag-group');
   assert.equal(grupos.length, 2, 'se esperaban los tags Terceros y Sistema');
   // 5 en Terceros + 2 en Sistema.
   assert.match($('.resumen-total').textContent, /^7 operaciones$/);
 });
 
 test('respeta el orden de spec.tags, no el de paths', () => {
-  const nombres = [...root.querySelectorAll<HTMLElement>('docs-tag-group')].map((g) =>
-    g.shadowRoot!.querySelector<HTMLElement>('.titulo').textContent.trim().split(/\s+/)[0],
+  const nombres = [...root.querySelectorAll<any>('docs-tag-group')].map((g) =>
+    g.shadowRoot!.querySelector('.titulo').textContent.trim().split(/\s+/)[0],
   );
   assert.deepEqual(nombres, ['Terceros', 'Sistema']);
 });
 
 test('los subgrupos del tag ordenan operaciones sin pintar divisores', () => {
-  const terceros = root.querySelector<HTMLElement>('docs-tag-group').shadowRoot;
-  assert.equal(terceros.querySelectorAll<HTMLElement>('.subgrupo').length, 0, 'no debe haber divisores de entidad');
-  const ids = [...terceros.querySelectorAll<HTMLElement>('docs-operation')].map((o) => o.props.op.operationId);
+  const terceros = root.querySelector<any>('docs-tag-group').shadowRoot;
+  assert.equal(terceros.querySelectorAll('.subgrupo').length, 0, 'no debe haber divisores de entidad');
+  const ids = [...terceros.querySelectorAll('docs-operation')].map((o) => o.props.op.operationId);
   assert.deepEqual(ids, [
     'listarTerceros',
     'obtenerTercero',
@@ -106,20 +106,20 @@ test('los subgrupos del tag ordenan operaciones sin pintar divisores', () => {
 
 test('la base del servidor sale del primer `servers` de la spec', () => {
   const srv = $('docs-server').shadowRoot;
-  assert.equal(srv.querySelector<HTMLElement>('iswc-input').getAttribute('value'), 'https://httpbin.org');
+  assert.equal(srv.querySelector('iswc-input').getAttribute('value'), 'https://httpbin.org');
   // Ambos servidores del documento entran en el menú de conocidos.
-  assert.ok(srv.querySelector<HTMLElement>('iswc-dropdown'), 'con dos servidores debe haber menú');
+  assert.ok(srv.querySelector('iswc-dropdown'), 'con dos servidores debe haber menú');
 });
 
 test('la operación obsoleta se marca y la protegida lleva candado', () => {
-  const ops = [...root.querySelectorAll<HTMLElement>('docs-tag-group')]
-    .flatMap((g) => [...g.shadowRoot!.querySelectorAll<HTMLElement>('docs-operation')])
+  const ops = [...root.querySelectorAll<any>('docs-tag-group')]
+    .flatMap((g) => [...g.shadowRoot!.querySelectorAll('docs-operation')])
     .map((o) => o.shadowRoot);
 
-  assert.ok(ops.some((o) => o.querySelector<HTMLElement>('.obsoleta')), 'ninguna marcada como obsoleta');
+  assert.ok(ops.some((o) => o.querySelector('.obsoleta')), 'ninguna marcada como obsoleta');
   // `auth.enabled` es false en esta config, así que no debe haber candados:
   // el candado promete un login que la app no ofrece.
-  assert.equal(ops.filter((o) => o.querySelector<HTMLElement>('.candado')).length, 0);
+  assert.equal(ops.filter((o) => o.querySelector('.candado')).length, 0);
 });
 
 test('la búsqueda filtra y actualiza el contador', () => {
@@ -128,7 +128,7 @@ test('la búsqueda filtra y actualiza el contador', () => {
   assert.match($('.resumen-total').textContent, /^1 operación$/);
 
   nav.dispatchEvent(new dom.window.CustomEvent('docs-search', { detail: { query: 'zzz-no-existe' }, bubbles: true }));
-  assert.equal(root.querySelectorAll<HTMLElement>('docs-tag-group').length, 0);
+  assert.equal(root.querySelectorAll<any>('docs-tag-group').length, 0);
   assert.ok($('iswc-callout'), 'sin resultados debe salir el estado vacío');
 
   nav.dispatchEvent(new dom.window.CustomEvent('docs-search', { detail: { query: '' }, bubbles: true }));
@@ -138,16 +138,16 @@ test('la búsqueda filtra y actualiza el contador', () => {
 test('cambiar de sección filtra por los tags de la pestaña', () => {
   const nav = $('docs-nav');
   nav.dispatchEvent(new dom.window.CustomEvent('docs-nav-tab', { detail: { tab: 'sistema' }, bubbles: true }));
-  assert.equal(root.querySelectorAll<HTMLElement>('docs-tag-group').length, 1);
+  assert.equal(root.querySelectorAll<any>('docs-tag-group').length, 1);
   assert.match($('.resumen-total').textContent, /^2 operaciones$/);
 
   nav.dispatchEvent(new dom.window.CustomEvent('docs-nav-tab', { detail: { tab: 'todo' }, bubbles: true }));
-  assert.equal(root.querySelectorAll<HTMLElement>('docs-tag-group').length, 2);
+  assert.equal(root.querySelectorAll<any>('docs-tag-group').length, 2);
 });
 
 test('abrir una operación la escribe en la URL y monta su cuerpo', () => {
-  const grupo = root.querySelector<HTMLElement>('docs-tag-group')!;
-  const op = grupo.shadowRoot!.querySelector<HTMLElement>('docs-operation');
+  const grupo = root.querySelector<any>('docs-tag-group')!;
+  const op = grupo.shadowRoot!.querySelector('docs-operation');
   const id = op.props.op.operationId;
 
   op.dispatchEvent(
@@ -160,9 +160,9 @@ test('abrir una operación la escribe en la URL y monta su cuerpo', () => {
   assert.ok(raw, 'debe escribir `?s=`');
   const dec = JSON.parse(atob(raw.replace(/-/g, '+').replace(/_/g, '/')));
   assert.equal(dec.op, id);
-  const abierta = grupo.shadowRoot!.querySelector<HTMLElement>('docs-operation');
-  assert.ok(abierta.shadowRoot!.querySelector<HTMLElement>('.cuerpo'), 'no montó el cuerpo al abrir');
-  assert.ok(abierta.shadowRoot!.querySelector<HTMLElement>('docs-try'), 'la pestaña por defecto debe ser Probar');
+  const abierta = grupo.shadowRoot!.querySelector('docs-operation');
+  assert.ok(abierta.shadowRoot!.querySelector('.cuerpo'), 'no montó el cuerpo al abrir');
+  assert.ok(abierta.shadowRoot!.querySelector('docs-try'), 'la pestaña por defecto debe ser Probar');
 });
 
 test('index.html referencia solo assets que el build produce', () => {

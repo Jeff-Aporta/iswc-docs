@@ -21,7 +21,7 @@ const {
   buildDocIndex,
 } = await import('../dist/cdn/js/dominio/openapi.js');
 
-const spec = {
+const spec: DocsSpec = <any>{
   openapi: '3.0.3',
   servers: [{ url: 'https://api.example/{stage}', variables: { stage: { default: 'v1' } } }],
   tags: [

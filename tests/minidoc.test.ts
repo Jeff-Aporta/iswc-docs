@@ -50,7 +50,7 @@ function montar(tag: string, props: unknown): ShadowRoot {
   return node.shadowRoot!;
 }
 
-const op = (over = {}) => ({
+const op = (over = {}): any => ({
   path: '/v2/tareas/{id}',
   method: 'get',
   operationId: 'listarTareas',
@@ -81,14 +81,14 @@ test('docs-minidoc-view pinta la operación entera, sin plegar nada', () => {
   assert.match(texto, /Parámetros de consulta/, 'no agrupa los de consulta');
   assert.match(texto, /page_num/, 'falta un parámetro');
   // Sin acordeón: la razón de existir de este driver es que no haya nada que abrir.
-  assert.equal(root.querySelectorAll<HTMLElement>('iswc-details').length, 0, 'la vista no debe plegar contenido');
+  assert.equal(root.querySelectorAll<any>('iswc-details').length, 0, 'la vista no debe plegar contenido');
 });
 
 test('docs-minidoc-view marca los obligatorios y enseña los valores de un enum', () => {
   const root = montar('docs-minidoc-view', {
     op: op(), spec: null, grupo: '', serverBase: '', authEnabled: false, docMd: '',
   });
-  assert.equal(root.querySelectorAll<HTMLElement>('.param-req').length, 2, 'id y page_num son obligatorios');
+  assert.equal(root.querySelectorAll<any>('.param-req').length, 2, 'id y page_num son obligatorios');
   assert.match(root.textContent, /queued/, 'no lista los valores del enum');
 });
 
@@ -111,9 +111,9 @@ test('docs-home pinta info.description como portada', () => {
   });
   assert.match(root.textContent, /ISS PatyIA/);
   assert.match(root.textContent, /v1\.0\.0/);
-  const doc = root.querySelector<HTMLElement>('docs-doc')!;
+  const doc = root.querySelector<any>('docs-doc')!;
   assert.ok(doc, 'debe renderizar la descripción vía docs-doc');
-  const fuente = doc?.shadowRoot?.querySelector<HTMLElement>('script[type="text/markdown"]');
+  const fuente = doc?.shadowRoot?.querySelector('script[type="text/markdown"]');
   assert.match(fuente?.textContent ?? '', /Bienvenido/);
 });
 
@@ -123,9 +123,9 @@ test('docs-minidoc-code abre en el primer código de estado y ofrece los demás'
   const root = montar('docs-minidoc-code', {
     op: op(), spec: null, serverBase: 'https://h/api', requiereBearer: false,
   });
-  const estados = [...root.querySelectorAll<HTMLElement>('.estado')].map((b) => b.textContent.trim());
+  const estados = [...root.querySelectorAll<any>('.estado')].map((b) => b.textContent.trim());
   assert.deepEqual(estados, ['200', '429'], 'los estados van ordenados');
-  assert.equal(root.querySelector<HTMLElement>('.estado[data-activo]').textContent.trim(), '200');
+  assert.equal(root.querySelector<any>('.estado[data-activo]').textContent.trim(), '200');
 });
 
 test('docs-minidoc-code cambia de estado sin tocar la URL', () => {
@@ -133,8 +133,8 @@ test('docs-minidoc-code cambia de estado sin tocar la URL', () => {
   const root = montar('docs-minidoc-code', {
     op: op(), spec: null, serverBase: 'https://h/api', requiereBearer: false,
   });
-  root.querySelectorAll<HTMLElement>('.estado')[1]!.click();
-  assert.equal(root.querySelector<HTMLElement>('.estado[data-activo]').textContent.trim(), '429');
+  root.querySelectorAll<any>('.estado')[1]!.click();
+  assert.equal(root.querySelector<any>('.estado[data-activo]').textContent.trim(), '429');
   assert.equal(dom.window.location.search, antes, 'cambiar de código no es navegación');
 });
 
@@ -193,8 +193,8 @@ test('docs-app y docs-minidoc son tags distintos y ninguno registra el del otro'
 });
 
 test('los dos drivers pueden montarse en la misma página sin romperse', () => {
-  const a = dom.window.document.createElement('docs-app');
-  const b = dom.window.document.createElement('docs-minidoc');
+  const a = dom.window.document.createElement('docs-app') as any;
+  const b = dom.window.document.createElement('docs-minidoc') as any;
   dom.window.document.body.append(a, b);
   // Sin red no cargan documento, pero deben tener shadow propio y no compartirlo.
   assert.ok(a.shadowRoot, 'docs-app sin shadow');
@@ -205,7 +205,7 @@ test('los dos drivers pueden montarse en la misma página sin romperse', () => {
 });
 
 test('docs-minidoc acepta el conn como objeto y como atributo JSON', () => {
-  const node = dom.window.document.createElement('docs-minidoc');
+  const node = dom.window.document.createElement('docs-minidoc') as any;
   node.setAttribute('conn', '{"apiBase":"https://h/api"}');
   dom.window.document.body.append(node);
   assert.ok(node.shadowRoot, 'no montó con conn en atributo');
@@ -216,7 +216,7 @@ test('docs-minidoc acepta el conn como objeto y como atributo JSON', () => {
 });
 
 test('docs-minidoc no revienta con un conn de JSON roto en el atributo', () => {
-  const node = dom.window.document.createElement('docs-minidoc');
+  const node = dom.window.document.createElement('docs-minidoc') as any;
   node.setAttribute('conn', '{esto no es json');
   dom.window.document.body.append(node);
   assert.ok(node.shadowRoot, 'un atributo corrupto no debe dejar la página en blanco');
@@ -288,23 +288,23 @@ test('docs-viewer monta el driver activo y lo cambia en caliente', () => {
   dom.window.history.replaceState({}, '', '/');
   globalThis.localStorage?.removeItem('docs:driver');
 
-  const visor = dom.window.document.createElement('docs-viewer');
+  const visor = dom.window.document.createElement('docs-viewer') as any;
   dom.window.document.body.append(visor);
 
-  const montado = () => visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild?.tagName.toLowerCase();
+  const montado = () => visor.shadowRoot!.querySelector('.montaje').firstElementChild?.tagName.toLowerCase();
   assert.equal(montado(), DRIVER_DEFAULT, 'no montó el driver por defecto');
 
   visor.driver = 'docs-minidoc';
   assert.equal(montado(), 'docs-minidoc', 'no cambió el driver montado');
-  assert.equal(visor.shadowRoot!.querySelectorAll<HTMLElement>('.montaje > *').length, 1, 'quedaron dos drivers vivos');
+  assert.equal(visor.shadowRoot!.querySelectorAll('.montaje > *').length, 1, 'quedaron dos drivers vivos');
 
   visor.remove();
 });
 
 test('docs-driver-switch ofrece una opción por driver registrado', () => {
-  const sel = dom.window.document.createElement('docs-driver-switch');
+  const sel = dom.window.document.createElement('docs-driver-switch') as any;
   dom.window.document.body.append(sel);
-  const valores = [...sel.shadowRoot!.querySelectorAll<HTMLElement>('iswc-option')].map((o) => o.getAttribute('value'));
+  const valores = [...sel.shadowRoot!.querySelectorAll('iswc-option')].map((o) => o.getAttribute('value'));
   assert.deepEqual(valores, DRIVERS.map((d) => d.id));
   sel.remove();
 });
@@ -312,13 +312,13 @@ test('docs-driver-switch ofrece una opción por driver registrado', () => {
 test('docs-driver-switch no monta drivers: solo emite el cambio', () => {
   // Reparto de responsabilidades: el selector escribe la preferencia y avisa; quien sabe
   // dónde está montado el driver —y por tanto quien lo reemplaza— es docs-viewer.
-  const sel = dom.window.document.createElement('docs-driver-switch');
+  const sel = dom.window.document.createElement('docs-driver-switch') as any;
   dom.window.document.body.append(sel);
   let recibido = null;
-  sel.addEventListener('docs-driver-change', (e) => { recibido = e.detail?.driver; });
+  sel.addEventListener('docs-driver-change', (e: any) => { recibido = e.detail?.driver; });
 
   const otro = DRIVERS.find((d) => d.id !== readDriver()).id;
-  const select = sel.shadowRoot!.querySelector<HTMLElement>('iswc-select');
+  const select = sel.shadowRoot!.querySelector('iswc-select');
   select.value = otro;
   select.dispatchEvent(new dom.window.CustomEvent('iswc-change', { bubbles: true }));
 
@@ -332,29 +332,29 @@ test('docs-driver-switch no monta drivers: solo emite el cambio', () => {
 test('docs-viewer cambia de driver al recibir docs-driver-change desde la cabecera', () => {
   dom.window.history.replaceState({}, '', '/');
   globalThis.localStorage?.removeItem('docs:driver');
-  const visor = dom.window.document.createElement('docs-viewer');
+  const visor = dom.window.document.createElement('docs-viewer') as any;
   dom.window.document.body.append(visor);
 
   const otro = DRIVERS.find((d) => d.id !== visor.driver).id;
   visor.dispatchEvent(new dom.window.CustomEvent('docs-driver-change', { detail: { driver: otro } }));
 
-  const montado = visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild?.tagName.toLowerCase();
+  const montado = visor.shadowRoot!.querySelector('.montaje').firstElementChild?.tagName.toLowerCase();
   assert.equal(montado, otro, 'el evento de la cabecera no cambió el driver montado');
   visor.remove();
 });
 
 test('docs-viewer reenvía el conn al driver que monta', () => {
-  const visor = dom.window.document.createElement('docs-viewer');
+  const visor = dom.window.document.createElement('docs-viewer') as any;
   visor.conn = { apiBase: 'https://h/api' };
   dom.window.document.body.append(visor);
 
-  const activo = visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild;
+  const activo = visor.shadowRoot!.querySelector('.montaje').firstElementChild;
   assert.deepEqual(activo.conn, { apiBase: 'https://h/api' }, 'el driver montó sin conn');
 
   // Y al siguiente también: si no, cambiar de vista perdería la conexión del anfitrión.
   visor.driver = visor.driver === 'docs-app' ? 'docs-minidoc' : 'docs-app';
   assert.deepEqual(
-    visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild.conn,
+    visor.shadowRoot!.querySelector('.montaje').firstElementChild.conn,
     { apiBase: 'https://h/api' },
     'el conn se perdió al cambiar de driver',
   );
@@ -364,17 +364,17 @@ test('docs-viewer reenvía el conn al driver que monta', () => {
 /* ── Armazón de tres zonas ──────────────────────────────────── */
 
 test('docs-layout expone las cuatro zonas por slot', () => {
-  const l = dom.window.document.createElement('docs-layout');
+  const l = dom.window.document.createElement('docs-layout') as any;
   dom.window.document.body.append(l);
-  const nombres = [...l.shadowRoot!.querySelectorAll<HTMLSlotElement>('slot')].map((s) => s.getAttribute('name')).sort();
+  const nombres = [...l.shadowRoot!.querySelectorAll('slot')].map((s) => s.getAttribute('name')).sort();
   assert.deepEqual(nombres, ['cabecera', 'centro', 'fin', 'inicio']);
   l.remove();
 });
 
 test('docs-layout anida dos splits, uno por divisor arrastrable', () => {
-  const l = dom.window.document.createElement('docs-layout');
+  const l = dom.window.document.createElement('docs-layout') as any;
   dom.window.document.body.append(l);
-  const splits = l.shadowRoot!.querySelectorAll<HTMLElement>('iswc-split-panel');
+  const splits = l.shadowRoot!.querySelectorAll('iswc-split-panel');
   assert.equal(splits.length, 2, 'hacen falta dos: índice|resto y centro|código');
   // storage-key: el ancho que el usuario elige tiene que sobrevivir a recargar.
   for (const sp of splits) assert.ok(sp.getAttribute('storage-key'), 'split sin storage-key');
@@ -382,11 +382,11 @@ test('docs-layout anida dos splits, uno por divisor arrastrable', () => {
 });
 
 test('docs-layout trae un cajón y una hamburguesa por lateral', () => {
-  const l = dom.window.document.createElement('docs-layout');
+  const l = dom.window.document.createElement('docs-layout') as any;
   dom.window.document.body.append(l);
   for (const lado of ['inicio', 'fin']) {
-    assert.ok(l.shadowRoot!.querySelector<HTMLElement>(`iswc-drawer[data-lado="${lado}"]`), `sin cajón ${lado}`);
-    assert.ok(l.shadowRoot!.querySelector<HTMLElement>(`.hamburguesa-${lado}`), `sin hamburguesa ${lado}`);
+    assert.ok(l.shadowRoot!.querySelector(`iswc-drawer[data-lado="${lado}"]`), `sin cajón ${lado}`);
+    assert.ok(l.shadowRoot!.querySelector(`.hamburguesa-${lado}`), `sin hamburguesa ${lado}`);
   }
   l.remove();
 });
@@ -394,10 +394,10 @@ test('docs-layout trae un cajón y una hamburguesa por lateral', () => {
 test('docs-layout esconde las hamburguesas mientras los paneles caben', () => {
   // jsdom no implementa matchMedia con umbrales reales: sin coincidencia, ambos laterales
   // están al lado y ninguna hamburguesa debe verse. Es el caso de escritorio.
-  const l = dom.window.document.createElement('docs-layout');
+  const l = dom.window.document.createElement('docs-layout') as any;
   dom.window.document.body.append(l);
   for (const lado of ['inicio', 'fin']) {
-    assert.equal(l.shadowRoot!.querySelector<HTMLElement>(`.hamburguesa-${lado}`).hidden, true, `hamburguesa ${lado} visible de más`);
+    assert.equal(l.shadowRoot!.querySelector(`.hamburguesa-${lado}`).hidden, true, `hamburguesa ${lado} visible de más`);
   }
   l.remove();
 });
@@ -457,11 +457,11 @@ test('docs-viewer entrega el conn ANTES de conectar el driver', () => {
   dom.window.history.replaceState({}, '', '/');
   globalThis.localStorage?.removeItem('docs:driver');
 
-  const visor = dom.window.document.createElement('docs-viewer');
+  const visor = dom.window.document.createElement('docs-viewer') as any;
   visor.setAttribute('conn', JSON.stringify({ apiBase: 'https://h/api' }));
   dom.window.document.body.append(visor);
 
-  const drv = visor.shadowRoot!.querySelector<HTMLElement>('.montaje').firstElementChild;
+  const drv = visor.shadowRoot!.querySelector('.montaje').firstElementChild;
   assert.ok(drv, 'no montó driver');
   assert.deepEqual(drv.conn, { apiBase: 'https://h/api' }, 'el driver se conectó sin conn');
   visor.remove();
@@ -559,7 +559,7 @@ test('QUERY ofrece editor de cuerpo: es su razón de ser frente a GET', async ()
 
 test('buildCurl QUERY no pone el filtro en la query string', () => {
   const { texto } = buildCurl(
-    {
+    <any>{
       method: 'query',
       path: '/metricas',
       requestBody: {

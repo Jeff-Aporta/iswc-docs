@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "noUncheckedIndexedAccess": false,
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "src/types/**/*.d.ts",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "tests/e2e/**"
+  ],
+  "//": "tests/e2e corre bajo Deno (Deno.serve, Stagehand): lo revisa `deno check tests/e2e/` en la task check."
+}

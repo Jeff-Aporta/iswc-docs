@@ -60,3 +60,13 @@ test('iss-docs-md.min.js es un ESM autónomo', async () => {
   });
   assert.match(md, /`GET` `\/z`/);
 });
+
+test('el schema Zod del documento viaja al CDN aparte del bundle (zod no infla all.min.js)', () => {
+  for (const f of ['js/dominio/documento.schema.js', 'js/dominio/documento.schema.d.ts', 'js/base/zod.js']) {
+    assert.ok(existsSync(join(CDN, f)), f);
+  }
+  assert.match(readFileSync(join(CDN, 'js', 'dominio', 'documento.schema.d.ts'), 'utf8'), /export declare function validarDocumento/);
+  const bundle = readFileSync(join(CDN, 'all.min.js'), 'utf8');
+  assert.ok(bundle.length < 160_000, `all.min.js creció a ${bundle.length} bytes`);
+  assert.doesNotMatch(bundle, /\$ZodObject/, 'zod entró en all.min.js');
+});

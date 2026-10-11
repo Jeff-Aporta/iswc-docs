@@ -20,7 +20,8 @@ for (const k of ['window', 'document', 'HTMLElement', 'customElements', 'CustomE
   globalThis[k] = dom.window[k];
 }
 
-globalThis.CSSStyleSheet = class {
+(globalThis as any).CSSStyleSheet = class {
+  cssText: string;
   constructor() {
     this.cssText = '';
   }
@@ -40,7 +41,7 @@ Object.defineProperty(dom.window.ShadowRoot.prototype, 'adoptedStyleSheets', {
 });
 
 let peticiones = [];
-globalThis.fetch = async (url: string) => {
+(globalThis as any).fetch = async (url: string) => {
   peticiones.push(String(url));
   return { ok: true, status: 200, text: async () => '.x{color:red}' };
 };
@@ -79,7 +80,7 @@ test('el primer componente conserva su <link>: nunca se queda sin estilos', asyn
   const shadow = nuevoShadow();
   enlazarComoElKit(shadow, KIT);
 
-  assert.ok(shadow.querySelector<HTMLElement>('link[rel="stylesheet"]'), 'el primer <link> debe pasar tal cual');
+  assert.ok(shadow.querySelector<any>('link[rel="stylesheet"]'), 'el primer <link> debe pasar tal cual');
   assert.deepEqual(peticiones, [KIT], 'la descarga debe dispararse en paralelo');
 
   await asentar();
@@ -93,7 +94,7 @@ test('los siguientes adoptan la hoja y ya no enlazan nada', () => {
 
   // Síncrono y sin `<link>`: esto es exactamente lo que evita el frame sin
   // estilos al recrear decenas de `is-*` en un cambio de sección.
-  assert.equal(shadow.querySelector<HTMLElement>('link[rel="stylesheet"]'), null);
+  assert.equal(shadow.querySelector<any>('link[rel="stylesheet"]'), null);
   assert.equal(shadow.adoptedStyleSheets.length, 1);
   assert.deepEqual(peticiones, []);
 });
@@ -110,8 +111,8 @@ test('el kit prepende dos hojas de golpe y las dos se adoptan', () => {
   primero.prepend(l1, l2);
 
   // `scrollbars.css` es nueva: se queda. `KIT` ya está cacheada: se adopta.
-  assert.equal(primero.querySelectorAll<HTMLElement>('link[rel="stylesheet"]').length, 1);
-  assert.equal(primero.querySelector<HTMLElement>('link').href, scrollbars);
+  assert.equal(primero.querySelectorAll<any>('link[rel="stylesheet"]').length, 1);
+  assert.equal(primero.querySelector<any>('link').href, scrollbars);
   assert.equal(primero.adoptedStyleSheets.length, 1);
 });
 
@@ -138,6 +139,6 @@ test('los docs-* comparten el caché: una sola descarga por hoja', async () => {
   const segundo = nuevoShadow();
   adoptCss(segundo, modulo);
   assert.equal(segundo.adoptedStyleSheets.length, 1);
-  assert.equal(segundo.querySelector<HTMLElement>('link[rel="stylesheet"]'), null);
+  assert.equal(segundo.querySelector<any>('link[rel="stylesheet"]'), null);
   assert.deepEqual(peticiones, [hoja], 'la hoja cacheada no debe volver a pedirse');
 });
